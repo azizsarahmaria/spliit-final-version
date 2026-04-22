@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - Blinkle
+  - Spike
   layers:
   - Default
   - TransparentFX
