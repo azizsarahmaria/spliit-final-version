@@ -4,11 +4,11 @@ public class BouncyMushroom : MonoBehaviour
 {
     [Header("Bounce Settings")]
     [SerializeField] private float bounceForce = 25f;
-    
+
     [Header("Animation Names")]
     [SerializeField] private string mushroomTrigger = "Bounce";
     [SerializeField] private string playerJumpTrigger = "Jump";
-    [SerializeField] private string playerJumpStateName = "Player_Jump"; // The actual name of the animation clip/state
+    [SerializeField] private string playerJumpStateName = "Player_Jump";
 
     private Animator mushroomAnim;
 
@@ -17,18 +17,28 @@ public class BouncyMushroom : MonoBehaviour
         mushroomAnim = GetComponent<Animator>();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    // Switched to Trigger so the player doesn't "hit a wall"
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            if (collision.contacts[0].normal.y < -0.5f)
-            {
-                Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
-                Animator playerAnim = collision.gameObject.GetComponent<Animator>();
+            Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
+            Animator playerAnim = other.GetComponentInChildren<Animator>();
 
-                if (rb != null)
+            if (rb != null)
+            {
+                // Kill downward velocity so the bounce is consistent
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+
+                // Use Force instead of Impulse if it feels too "teleporty" 
+                // but Impulse is usually better for trampolines
+                rb.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
+
+                if (mushroomAnim != null) mushroomAnim.SetTrigger(mushroomTrigger);
+
+                if (playerAnim != null)
                 {
-                    // 1. Apply Physics
+                    // 1. Apply Physics again for consistent bounce
                     rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
                     rb.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
 
@@ -36,15 +46,8 @@ public class BouncyMushroom : MonoBehaviour
                     if (mushroomAnim != null) mushroomAnim.SetTrigger(mushroomTrigger);
 
                     // 3. Play Player Animation
-                    if (playerAnim != null)
-                    {
-                        // Strategy A: Fire the trigger
-                        playerAnim.SetTrigger(playerJumpTrigger);
-                        
-                        // Strategy B: Force the state (The "Hammer" approach)
-                        // Use this if the trigger is being ignored by your transitions
-                        playerAnim.Play(playerJumpStateName, 0, 0f);
-                    }
+                    playerAnim.SetTrigger(playerJumpTrigger);
+                    playerAnim.Play(playerJumpStateName, 0, 0f);
                 }
             }
         }
