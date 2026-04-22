@@ -137,18 +137,20 @@ public class player : MonoBehaviour
     // ─────────────────────────────────────────────
     private void HandleJump()
     {
-        // Count down buffer
         if (jumpBufferTimer > 0f)
             jumpBufferTimer -= Time.fixedDeltaTime;
 
-        // Fire buffered ground jump the moment we land
-        if (jumpBufferTimer > 0f && isGrounded && jumpsRemaining == maxJumps)
+        // Fire buffered jump ONLY if grounded 
+        if (jumpBufferTimer > 0f && isGrounded)
         {
-            ExecuteJump(jumpForce);
-            return;
+            // Only jump if we are stationary or falling (prevents double-firing)
+            if (rb.linearVelocity.y <= 0.1f)
+            {
+                ExecuteJump(jumpForce);
+            }
         }
 
-        // Jump cut: player released Space while still rising → short hop
+        // Jump cut logic...
         if (jumpReleased)
         {
             if (rb.linearVelocity.y > 0f)
@@ -164,6 +166,28 @@ public class player : MonoBehaviour
         jumpReleased = false;
         isGrounded = false;
         jumpsRemaining--;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Check if we hit a Moving Platform
+        if (collision.gameObject.CompareTag("MovingPlatform"))
+        {
+            // Use SetParent(transform, true) to keep the player's world position exactly the same
+            transform.SetParent(collision.transform, true);
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("MovingPlatform"))
+        {
+            // Check if the player's object is still active to avoid the error you saw
+            if (gameObject.activeInHierarchy)
+            {
+                transform.SetParent(null);
+            }
+        }
     }
 
     // ─────────────────────────────────────────────

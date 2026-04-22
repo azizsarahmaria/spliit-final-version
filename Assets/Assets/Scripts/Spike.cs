@@ -17,32 +17,29 @@ public class Spike : MonoBehaviour
     {
         startPos = transform.position;
         originalScale = transform.localScale;
-        anim.SetBool("isWalking", true); // always walking
-    }
 
-    void HandleAnimations() { } // can delete this entirely
+        // Safety check: only set the bool if the animator actually exists
+        if (anim != null)
+        {
+            anim.SetBool("isWalking", true);
+        }
+    }
 
     void Update()
     {
         Patrol();
-        HandleAnimations();
     }
 
     void Patrol()
     {
-        // Move left or right
         transform.Translate(Vector2.right * moveDirection * moveSpeed * Time.deltaTime);
 
-        // Turn around at patrol boundaries
         if (transform.position.x >= startPos.x + patrolDistance)
             moveDirection = -1;
         else if (transform.position.x <= startPos.x - patrolDistance)
             moveDirection = 1;
 
-        // Flip sprite to face movement direction
         float scaleX = Mathf.Abs(originalScale.x) * moveDirection;
         transform.localScale = new Vector3(scaleX, originalScale.y, originalScale.z);
     }
-
-   
 }
