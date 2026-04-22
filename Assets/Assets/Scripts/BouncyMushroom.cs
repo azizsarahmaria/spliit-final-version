@@ -4,7 +4,7 @@ public class BouncyMushroom : MonoBehaviour
 {
     [Header("Bounce Settings")]
     [SerializeField] private float bounceForce = 25f;
-
+    
     [Header("Animation Names")]
     [SerializeField] private string mushroomTrigger = "Bounce";
     [SerializeField] private string playerJumpTrigger = "Jump";
@@ -40,7 +40,7 @@ public class BouncyMushroom : MonoBehaviour
                     {
                         // Strategy A: Fire the trigger
                         playerAnim.SetTrigger(playerJumpTrigger);
-
+                        
                         // Strategy B: Force the state (The "Hammer" approach)
                         // Use this if the trigger is being ignored by your transitions
                         playerAnim.Play(playerJumpStateName, 0, 0f);
