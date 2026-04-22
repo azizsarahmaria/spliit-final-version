@@ -17,29 +17,25 @@ public class BouncyMushroom : MonoBehaviour
         mushroomAnim = GetComponent<Animator>();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    // Switched to Trigger so the player doesn't "hit a wall"
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            // REMOVED: if (collision.contacts[0].normal.y < -0.5f)
-            // Now it triggers if you touch it from the side OR the top.
-
-            Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
-
-            // Look for Animator on the Player or its children
-            Animator playerAnim = collision.gameObject.GetComponentInChildren<Animator>();
+            Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
+            Animator playerAnim = other.GetComponentInChildren<Animator>();
 
             if (rb != null)
             {
-                // 1. Apply Physics
-                // Resetting velocity prevents the "double force" bug if you're already moving
+                // Kill downward velocity so the bounce is consistent
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+
+                // Use Force instead of Impulse if it feels too "teleporty" 
+                // but Impulse is usually better for trampolines
                 rb.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
 
-                // 2. Play Mushroom Animation
                 if (mushroomAnim != null) mushroomAnim.SetTrigger(mushroomTrigger);
 
-                // 3. Play Player Animation
                 if (playerAnim != null)
                 {
                     playerAnim.SetTrigger(playerJumpTrigger);
