@@ -242,8 +242,16 @@ public class player : MonoBehaviour
     // ─────────────────────────────────────────────
     private void UpdateAnimations()
     {
+        // Use the actual velocity for the Animator's float
+        anim.SetFloat("yVelocity", rb.linearVelocity.y);
+
         anim.SetBool("isWalking", MoveInput.x != 0 && !isSliding && isGrounded);
-        anim.SetBool("isJumping", !isGrounded);
+        anim.SetBool("isGrounded", isGrounded);
+        anim.SetBool("isSliding", isSliding);
+
+        // Tighten the thresholds to 0.1 for more responsiveness
+        anim.SetBool("isJumping", rb.linearVelocity.y > 0.1f);
+        anim.SetBool("isFalling", rb.linearVelocity.y < -0.1f);
     }
 
     // ─────────────────────────────────────────────
