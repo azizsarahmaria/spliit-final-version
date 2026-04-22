@@ -423,12 +423,24 @@ PrefabInstance:
       value: Blinkle
       objectReference: {fileID: 0}
     - target: {fileID: 1502105642122105081, guid: ea568c53359815e488b8863ec5916164, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1502105642122105081, guid: ea568c53359815e488b8863ec5916164, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1502105642122105081, guid: ea568c53359815e488b8863ec5916164, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1502105642122105081, guid: ea568c53359815e488b8863ec5916164, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.53
+      value: -4.1
       objectReference: {fileID: 0}
     - target: {fileID: 1502105642122105081, guid: ea568c53359815e488b8863ec5916164, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.71
+      value: -2.88
       objectReference: {fileID: 0}
     - target: {fileID: 1502105642122105081, guid: ea568c53359815e488b8863ec5916164, type: 3}
       propertyPath: m_LocalPosition.z
@@ -461,6 +473,10 @@ PrefabInstance:
     - target: {fileID: 1502105642122105081, guid: ea568c53359815e488b8863ec5916164, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1502105642122105081, guid: ea568c53359815e488b8863ec5916164, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2209,8 +2225,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1476267185}
   - component: {fileID: 1476267186}
+  - component: {fileID: 1476267187}
+  - component: {fileID: 1476267188}
   m_Layer: 0
-  m_Name: Square
+  m_Name: bubblegum
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2225,7 +2243,7 @@ Transform:
   m_GameObject: {fileID: 1476267184}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.936, y: -1.221, z: 0}
+  m_LocalPosition: {x: 9.17, y: -1.06, z: 0}
   m_LocalScale: {x: 0.11, y: 0.11, z: 0.11}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -2290,6 +2308,42 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!95 &1476267187
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476267184}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6a7e349085b43bb45906e457d9194fee, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1476267188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476267184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9c5dc323c9c0c4081b96e6f0b9108e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  animator: {fileID: 0}
+  dispenseCooldown: 2
 --- !u!1 &1572761481
 GameObject:
   m_ObjectHideFlags: 0
@@ -2343,6 +2397,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3926363557670626314, guid: 0eaa013f1758e6640bc9d01ad576cdc5, type: 3}
+      propertyPath: doubleJumpForce
+      value: 12.4
+      objectReference: {fileID: 0}
     - target: {fileID: 6290047995834696174, guid: 0eaa013f1758e6640bc9d01ad576cdc5, type: 3}
       propertyPath: m_Name
       value: Player

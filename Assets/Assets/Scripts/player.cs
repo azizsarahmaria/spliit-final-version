@@ -12,6 +12,12 @@ public class player : MonoBehaviour
     private bool canJump = true;
     private bool isGrounded = true;
 
+    [Header("Double Jump")]
+    public bool enableDoubleJump = true;
+    public float doubleJumpForce = 4.5f; // Slightly less than first jump
+    private int jumpsRemaining = 1;
+    private int maxJumps = 2; // 1 = single jump, 2 = double jump
+
     [Header("Movement Variables")]
     public float speed = 5f;
     public int facingDirection = 1;
@@ -37,8 +43,6 @@ public class player : MonoBehaviour
     private float slideTimer = 0f;
     private float slideCooldownTimer = 0f;
 
-    // Tracks when a jump was just initiated, so HandleMovement doesn't
-    // overwrite the jump velocity with slide or walk velocity.
     private bool justJumped = false;
 
     void Start()
@@ -51,6 +55,9 @@ public class player : MonoBehaviour
             playercollider.size = new Vector2(playercollider.size.x, normalHeight);
             playercollider.offset = normalOffset;
         }
+
+        maxJumps = enableDoubleJump ? 2 : 1;
+        jumpsRemaining = maxJumps;
     }
 
     void Update()
@@ -67,8 +74,6 @@ public class player : MonoBehaviour
 
     private void HandleMovement()
     {
-        // If we just jumped, don't override vertical velocity this step.
-        // Preserve horizontal movement so the player can still steer mid-air.
         if (justJumped)
         {
             justJumped = false;
@@ -129,16 +134,19 @@ public class player : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
-        if (!value.isPressed || !canJump) return;
+        if (!value.isPressed || jumpsRemaining <= 0) return;
 
         // If sliding, end the slide cleanly first.
         if (isSliding)
             StopSlide(triggerCooldown: true);
 
-        // Apply jump velocity IMMEDIATELY on input frame.
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        // Use appropriate jump force (first jump vs double jump)
+        float currentJumpForce = (jumpsRemaining == maxJumps) ? jumpForce : doubleJumpForce;
 
-        canJump = false;
+        // Apply jump velocity
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, currentJumpForce);
+
+        jumpsRemaining--;
         isGrounded = false;
         justJumped = true;
     }
@@ -175,12 +183,11 @@ public class player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            // Only mark grounded if we're actually falling/landing, not if we
-            // just jumped (collider resize during StopSlide can briefly retrigger this).
             if (rb.linearVelocity.y <= 0.01f)
             {
                 canJump = true;
                 isGrounded = true;
+                jumpsRemaining = maxJumps; // Reset jumps when landing
             }
         }
     }
