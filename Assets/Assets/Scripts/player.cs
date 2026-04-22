@@ -13,7 +13,7 @@ public class player : MonoBehaviour
     // ─────────────────────────────────────────────
     [Header("Jump")]
     public float jumpForce = 5f;
-    private bool isGrounded = true;
+    public bool isGrounded = true;
 
     [Header("Variable Jump Height")]
     public float jumpCutMultiplier = 0.5f;

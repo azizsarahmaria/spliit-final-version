@@ -226,6 +226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1ae760912a7644392f76b59db71bba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RainbowColor
-  cycleSpeed: 1
-  saturation: 1
+  cycleSpeed: 0.2
+  saturation: 0.5
   brightness: 1
