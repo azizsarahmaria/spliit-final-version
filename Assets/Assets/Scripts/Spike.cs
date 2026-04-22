@@ -17,7 +17,10 @@ public class Spike : MonoBehaviour
     {
         startPos = transform.position;
         originalScale = transform.localScale;
+        anim.SetBool("isWalking", true); // always walking
     }
+
+    void HandleAnimations() { } // can delete this entirely
 
     void Update()
     {
@@ -41,8 +44,5 @@ public class Spike : MonoBehaviour
         transform.localScale = new Vector3(scaleX, originalScale.y, originalScale.z);
     }
 
-    void HandleAnimations()
-    {
-        anim.SetBool("isWalking", moveSpeed > 0);
-    }
+   
 }
