@@ -5,24 +5,57 @@ public class player : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator anim;
+    private SpriteRenderer spriteRenderer; // FIX 0: cached so Flip() doesn't use fragile GetChild(0)
     public CapsuleCollider2D playercollider;
 
+    // ─────────────────────────────────────────────
+    //  JUMP
+    // ─────────────────────────────────────────────
     [Header("Jump")]
     public float jumpForce = 5f;
-    private bool canJump = true;
     private bool isGrounded = true;
 
+    [Header("Variable Jump Height")]
+    public float jumpCutMultiplier = 0.5f; // releasing early multiplies upward velocity by this
+
+    [Header("Variable Gravity")]
+    public float normalGravity = 1f;   // on the ground / at apex
+    public float jumpGravity = 1f;   // while rising  (keep at 1 or slightly above)
+    public float fallGravity = 2.5f; // while falling (makes the arc snappy)
+
+    [Header("Jump Buffer")]
+    public float jumpBufferTime = 0.15f; // seconds the jump input is remembered before landing
+    private float jumpBufferTimer = 0f;
+    private bool jumpReleased = false;   // flag: player let go of jump button
+
+    // ─────────────────────────────────────────────
+    //  DOUBLE JUMP
+    // ─────────────────────────────────────────────
     [Header("Double Jump")]
     public bool enableDoubleJump = true;
-    public float doubleJumpForce = 4.5f; // Slightly less than first jump
+    public float doubleJumpForce = 4.5f;
     private int jumpsRemaining = 1;
-    private int maxJumps = 2; // 1 = single jump, 2 = double jump
+    private int maxJumps = 2;
 
+    // ─────────────────────────────────────────────
+    //  MOVEMENT
+    // ─────────────────────────────────────────────
     [Header("Movement Variables")]
     public float speed = 5f;
     public int facingDirection = 1;
     private Vector2 MoveInput;
 
+    // ─────────────────────────────────────────────
+    //  GROUND CHECK
+    // ─────────────────────────────────────────────
+    [Header("Ground Check")]
+    public Transform groundCheck;           // empty child GameObject placed at the player's feet
+    public float groundCheckRadius = 0.1f;
+    public LayerMask groundLayer;           // set this to your Ground layer in the Inspector
+
+    // ─────────────────────────────────────────────
+    //  SLIDE
+    // ─────────────────────────────────────────────
     [Header("Slide")]
     public float slideSpeed = 10f;
     public float slideDuration = 0.4f;
@@ -43,12 +76,14 @@ public class player : MonoBehaviour
     private float slideTimer = 0f;
     private float slideCooldownTimer = 0f;
 
-    private bool justJumped = false;
-
+    // ─────────────────────────────────────────────
+    //  INIT
+    // ─────────────────────────────────────────────
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>(); // FIX 0
 
         if (playercollider != null)
         {
@@ -58,8 +93,12 @@ public class player : MonoBehaviour
 
         maxJumps = enableDoubleJump ? 2 : 1;
         jumpsRemaining = maxJumps;
+        rb.gravityScale = normalGravity;
     }
 
+    // ─────────────────────────────────────────────
+    //  UPDATE  (timers + animations + visuals)
+    // ─────────────────────────────────────────────
     void Update()
     {
         HandleSlideTimers();
@@ -67,26 +106,105 @@ public class player : MonoBehaviour
         Flip();
     }
 
+    // ─────────────────────────────────────────────
+    //  FIXED UPDATE  (all physics here)
+    // ─────────────────────────────────────────────
     void FixedUpdate()
     {
+        CheckGrounded();        // FIX 1: reliable overlap-circle ground detection
+        ApplyVariableGravity(); // FIX 3: 3-state gravity
         HandleMovement();
+        HandleJump();           // FIX 2: jump buffer + jump cut live here
     }
 
-    private void HandleMovement()
+    // ─────────────────────────────────────────────
+    //  FIX 1 — GROUND CHECK (OverlapCircle)
+    // ─────────────────────────────────────────────
+    // Replaces the old OnCollisionEnter/Exit pair which could desync.
+    // Steps to set up in Unity:
+    //   1. Right-click your Player in the Hierarchy → Create Empty → name it "GroundCheck"
+    //   2. Move it to the bottom of your sprite (feet level)
+    //   3. Drag it into the "Ground Check" field on this script in the Inspector
+    //   4. Set "Ground Layer" to whatever layer your ground tiles are on
+    private void CheckGrounded()
     {
-        if (justJumped)
+        bool wasGrounded = isGrounded;
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
+        // reset jumps the moment we touch ground
+        if (isGrounded && !wasGrounded)
         {
-            justJumped = false;
-            rb.linearVelocity = new Vector2(MoveInput.x * speed, rb.linearVelocity.y);
+            jumpsRemaining = maxJumps;
+            rb.gravityScale = normalGravity;
+        }
+    }
+
+    // ─────────────────────────────────────────────
+    //  FIX 2 — JUMP BUFFER + JUMP CUT
+    // ─────────────────────────────────────────────
+    // Jump buffer:  pressing jump up to 0.15s before landing still fires the jump.
+    // Jump cut:     releasing the button early cuts upward velocity by jumpCutMultiplier,
+    //               giving a short hop vs a full hold jump.
+    private void HandleJump()
+    {
+        if (jumpBufferTimer > 0f)
+            jumpBufferTimer -= Time.fixedDeltaTime;
+
+        // consume a buffered jump the moment we are grounded
+        if (jumpBufferTimer > 0f && isGrounded && jumpsRemaining == maxJumps)
+        {
+            ExecuteJump(jumpForce);
             return;
         }
 
+        // jump cut: player released button while still rising
+        if (jumpReleased)
+        {
+            if (rb.linearVelocity.y > 0f)
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
+            jumpReleased = false;
+        }
+    }
+
+    private void ExecuteJump(float force)
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, force);
+        jumpBufferTimer = 0f;
+        jumpReleased = false;
+        isGrounded = false;
+        jumpsRemaining--;
+    }
+
+    // ─────────────────────────────────────────────
+    //  FIX 3 — 3-STATE VARIABLE GRAVITY
+    // ─────────────────────────────────────────────
+    // Rising  → jumpGravity  (tune the rise arc)
+    // Falling → fallGravity  (tune the fall arc, higher = snappier)
+    // Ground  → normalGravity
+    private void ApplyVariableGravity()
+    {
+        if (rb.linearVelocity.y < -0.1f)
+            rb.gravityScale = fallGravity;
+        else if (rb.linearVelocity.y > 0.1f)
+            rb.gravityScale = jumpGravity;
+        else
+            rb.gravityScale = normalGravity;
+    }
+
+    // ─────────────────────────────────────────────
+    //  MOVEMENT
+    // ─────────────────────────────────────────────
+    private void HandleMovement()
+    {
         if (isSliding)
             rb.linearVelocity = new Vector2(facingDirection * slideSpeed, rb.linearVelocity.y);
         else
             rb.linearVelocity = new Vector2(MoveInput.x * speed, rb.linearVelocity.y);
     }
 
+    // ─────────────────────────────────────────────
+    //  SLIDE
+    // ─────────────────────────────────────────────
     private void HandleSlideTimers()
     {
         if (isSliding)
@@ -119,6 +237,60 @@ public class player : MonoBehaviour
         }
     }
 
+    // ─────────────────────────────────────────────
+    //  ANIMATIONS
+    // ─────────────────────────────────────────────
+    private void UpdateAnimations()
+    {
+        anim.SetBool("isWalking", MoveInput.x != 0 && !isSliding && isGrounded);
+        anim.SetBool("isJumping", !isGrounded);
+    }
+
+    // ─────────────────────────────────────────────
+    //  FLIP  (FIX 0 — uses cached spriteRenderer)
+    // ─────────────────────────────────────────────
+    private void Flip()
+    {
+        if (isSliding) return;
+
+        if (MoveInput.x > 0.1f)
+        {
+            facingDirection = 1;
+            spriteRenderer.flipX = false;
+        }
+        else if (MoveInput.x < -0.1f)
+        {
+            facingDirection = -1;
+            spriteRenderer.flipX = true;
+        }
+    }
+
+    // ─────────────────────────────────────────────
+    //  INPUT CALLBACKS
+    // ─────────────────────────────────────────────
+    public void OnMove(InputValue value)
+    {
+        MoveInput = value.Get<Vector2>();
+    }
+
+    public void OnJump(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            jumpBufferTimer = jumpBufferTime; // always store buffer on press
+            jumpReleased = false;
+
+            // if airborne and double jump available, fire immediately
+            if (!isGrounded && jumpsRemaining > 0)
+                ExecuteJump(doubleJumpForce);
+        }
+        else
+        {
+            // released → trigger jump cut in next FixedUpdate
+            jumpReleased = true;
+        }
+    }
+
     public void OnSlide(InputValue value)
     {
         if (value.isPressed && canSlide && !isSliding && MoveInput.x != 0 && isGrounded)
@@ -132,69 +304,15 @@ public class player : MonoBehaviour
         }
     }
 
-    public void OnJump(InputValue value)
+    // ─────────────────────────────────────────────
+    //  GIZMOS
+    // ─────────────────────────────────────────────
+    private void OnDrawGizmosSelected()
     {
-        if (!value.isPressed || jumpsRemaining <= 0) return;
-
-        // If sliding, end the slide cleanly first.
-        if (isSliding)
-            StopSlide(triggerCooldown: true);
-
-        // Use appropriate jump force (first jump vs double jump)
-        float currentJumpForce = (jumpsRemaining == maxJumps) ? jumpForce : doubleJumpForce;
-
-        // Apply jump velocity
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, currentJumpForce);
-
-        jumpsRemaining--;
-        isGrounded = false;
-        justJumped = true;
-    }
-
-    public void OnMove(InputValue value)
-    {
-        MoveInput = value.Get<Vector2>();
-    }
-
-    private void UpdateAnimations()
-    {
-        anim.SetBool("isWalking", MoveInput.x != 0 && !isSliding && isGrounded);
-        anim.SetBool("isJumping", !isGrounded);
-    }
-
-    private void Flip()
-    {
-        if (!isSliding)
+        if (groundCheck != null)
         {
-            if (MoveInput.x > 0.1f)
-            {
-                facingDirection = 1;
-                this.transform.GetChild(0).transform.GetComponent<SpriteRenderer>().flipX = false;
-            }
-            else if (MoveInput.x < -0.1f)
-            {
-                this.transform.GetChild(0).transform.GetComponent<SpriteRenderer>().flipX = true;
-                facingDirection = -1;
-            }
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            if (rb.linearVelocity.y <= 0.01f)
-            {
-                canJump = true;
-                isGrounded = true;
-                jumpsRemaining = maxJumps; // Reset jumps when landing
-            }
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-            isGrounded = false;
     }
 }
