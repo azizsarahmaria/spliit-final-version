@@ -22,7 +22,7 @@ public class ParallaxManager : MonoBehaviour
 
     void LateUpdate()
     {
-        Vector3 cameraDelta = camTransform.position - lastCameraPosition;
+        Vector3 cameraDelta = camTransform.position - lastCameraPosition;x`
 
         foreach (ParallaxLayer layer in layers)
         {
