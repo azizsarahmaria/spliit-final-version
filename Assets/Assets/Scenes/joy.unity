@@ -368,7 +368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   moveSpeed: 3
-  patrolDistance: 4
+  patrolDistance: 2
   anim: {fileID: 109959233}
 --- !u!1 &180030267
 GameObject:
