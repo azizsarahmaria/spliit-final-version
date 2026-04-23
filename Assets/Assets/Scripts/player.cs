@@ -27,6 +27,7 @@ public class player : MonoBehaviour
     public float jumpBufferTime = 0.15f;
     private float jumpBufferTimer = 0f;
     private bool jumpReleased = false;
+    private bool isJumpHeld = false;
 
     // ─────────────────────────────────────────────
     //  DOUBLE JUMP
@@ -112,9 +113,9 @@ public class player : MonoBehaviour
     void FixedUpdate()
     {
         CheckGrounded();
+        HandleJump();          // must run BEFORE gravity so cut + gravity happen same frame
         ApplyVariableGravity();
         HandleMovement();
-        HandleJump(); // ← BUG FIX: this was missing before, so jump cut never ran
     }
 
     // ─────────────────────────────────────────────
@@ -133,28 +134,38 @@ public class player : MonoBehaviour
     }
 
     // ─────────────────────────────────────────────
-    //  HANDLE JUMP (called every FixedUpdate)
+    //  HANDLE JUMP
     // ─────────────────────────────────────────────
     private void HandleJump()
     {
         if (jumpBufferTimer > 0f)
             jumpBufferTimer -= Time.fixedDeltaTime;
 
-        // Fire buffered jump ONLY if grounded 
-        if (jumpBufferTimer > 0f && isGrounded)
+        // Fire buffered jump when grounded
+        if (jumpBufferTimer > 0f && isGrounded && rb.linearVelocity.y <= 0.1f)
         {
-            // Only jump if we are stationary or falling (prevents double-firing)
-            if (rb.linearVelocity.y <= 0.1f)
+            ExecuteJump(jumpForce);
+
+            // KEY FIX: if space was already released before this FixedUpdate ran
+            // (i.e. the player tapped), apply the cut immediately in the same frame.
+            // Without this, ExecuteJump used to reset jumpReleased and the cut never fired.
+            if (jumpReleased)
             {
-                ExecuteJump(jumpForce);
+                rb.linearVelocity = new Vector2(
+                    rb.linearVelocity.x,
+                    rb.linearVelocity.y * jumpCutMultiplier
+                );
+                jumpReleased = false;
             }
         }
-
-        // Jump cut logic...
-        if (jumpReleased)
+        // Apply cut for a jump already in the air when space was released
+        else if (jumpReleased)
         {
             if (rb.linearVelocity.y > 0f)
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
+                rb.linearVelocity = new Vector2(
+                    rb.linearVelocity.x,
+                    rb.linearVelocity.y * jumpCutMultiplier
+                );
             jumpReleased = false;
         }
     }
@@ -163,31 +174,10 @@ public class player : MonoBehaviour
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, force);
         jumpBufferTimer = 0f;
-        jumpReleased = false;
+        // NOTE: jumpReleased is NOT reset here anymore.
+        // If the player tapped, jumpReleased=true must survive into HandleJump to cut velocity.
         isGrounded = false;
         jumpsRemaining--;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        // Check if we hit a Moving Platform
-        if (collision.gameObject.CompareTag("MovingPlatform"))
-        {
-            // Use SetParent(transform, true) to keep the player's world position exactly the same
-            transform.SetParent(collision.transform, true);
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("MovingPlatform"))
-        {
-            // Check if the player's object is still active to avoid the error you saw
-            if (gameObject.activeInHierarchy)
-            {
-                transform.SetParent(null);
-            }
-        }
     }
 
     // ─────────────────────────────────────────────
@@ -195,9 +185,22 @@ public class player : MonoBehaviour
     // ─────────────────────────────────────────────
     private void ApplyVariableGravity()
     {
-        if (rb.linearVelocity.y < -0.1f) rb.gravityScale = fallGravity;
-        else if (rb.linearVelocity.y > 0.1f) rb.gravityScale = jumpGravity;
-        else rb.gravityScale = normalGravity;
+        if (rb.linearVelocity.y < -0.1f)
+        {
+            // Falling — always pull down fast
+            rb.gravityScale = fallGravity;
+        }
+        else if (rb.linearVelocity.y > 0.1f)
+        {
+            // Rising:
+            // HOLD → low gravity (floaty full arc)
+            // TAP  → high gravity (short hop, falls back quickly)
+            rb.gravityScale = isJumpHeld ? jumpGravity : fallGravity;
+        }
+        else
+        {
+            rb.gravityScale = normalGravity;
+        }
     }
 
     // ─────────────────────────────────────────────
@@ -277,6 +280,21 @@ public class player : MonoBehaviour
     }
 
     // ─────────────────────────────────────────────
+    //  PLATFORM PARENTING
+    // ─────────────────────────────────────────────
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("MovingPlatform"))
+            transform.SetParent(collision.transform, true);
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("MovingPlatform") && gameObject.activeInHierarchy)
+            transform.SetParent(null);
+    }
+
+    // ─────────────────────────────────────────────
     //  INPUT CALLBACKS
     // ─────────────────────────────────────────────
     public void OnMove(InputValue value)
@@ -284,11 +302,11 @@ public class player : MonoBehaviour
         MoveInput = value.Get<Vector2>();
     }
 
-    // BUG FIX: OnJump was defined twice before — now there is only ONE
     public void OnJump(InputValue value)
     {
         if (value.isPressed)
         {
+            isJumpHeld = true;
             jumpBufferTimer = jumpBufferTime;
             jumpReleased = false;
 
@@ -298,7 +316,7 @@ public class player : MonoBehaviour
         }
         else
         {
-            // Released → trigger jump cut next FixedUpdate = short hop
+            isJumpHeld = false;
             jumpReleased = true;
         }
     }
