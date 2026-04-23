@@ -38,6 +38,14 @@ public class BouncyMushroom : MonoBehaviour
 
                 if (playerAnim != null)
                 {
+                    // 1. Apply Physics again for consistent bounce
+                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+                    rb.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
+
+                    // 2. Play Mushroom Animation
+                    if (mushroomAnim != null) mushroomAnim.SetTrigger(mushroomTrigger);
+
+                    // 3. Play Player Animation
                     playerAnim.SetTrigger(playerJumpTrigger);
                     playerAnim.Play(playerJumpStateName, 0, 0f);
                 }

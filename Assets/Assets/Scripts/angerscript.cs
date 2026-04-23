@@ -17,45 +17,18 @@ public class angerscript : MonoBehaviour
     public int facingDirection = 1;
     private Vector2 MoveInput;
 
-    [Header("Slide")]
-    public float slideSpeed = 10f;
-    public float slideDuration = 0.4f;
-    public float slideCooldown = 0.8f;
-
-    [Tooltip("The height of the collider while sliding")]
-    public float slideHeight;
-    [Tooltip("The Y offset to keep the collider on the ground while sliding")]
-    public Vector2 slideOffset;
-
-    [Tooltip("Your character's standing height")]
-    public float normalHeight;
-    [Tooltip("Your character's standing Y offset")]
-    public Vector2 normalOffset;
-
-    private bool isSliding = false;
-    private bool canSlide = true;
-    private float slideTimer = 0f;
-    private float slideCooldownTimer = 0f;
-
     // Tracks when a jump was just initiated, so HandleMovement doesn't
-    // overwrite the jump velocity with slide or walk velocity.
+    // overwrite the jump velocity with walk velocity.
     private bool justJumped = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
-
-        if (playercollider != null)
-        {
-            playercollider.size = new Vector2(playercollider.size.x, normalHeight);
-            playercollider.offset = normalOffset;
-        }
     }
 
     void Update()
     {
-        HandleSlideTimers();
         UpdateAnimations();
         Flip();
     }
@@ -76,64 +49,12 @@ public class angerscript : MonoBehaviour
             return;
         }
 
-        if (isSliding)
-            rb.linearVelocity = new Vector2(facingDirection * slideSpeed, rb.linearVelocity.y);
-        else
-            rb.linearVelocity = new Vector2(MoveInput.x * speed, rb.linearVelocity.y);
-    }
-
-    private void HandleSlideTimers()
-    {
-        if (isSliding)
-        {
-            slideTimer -= Time.deltaTime;
-            if (slideTimer <= 0f)
-                StopSlide();
-        }
-
-        if (!canSlide)
-        {
-            slideCooldownTimer -= Time.deltaTime;
-            if (slideCooldownTimer <= 0f)
-                canSlide = true;
-        }
-    }
-
-    private void StopSlide(bool triggerCooldown = true)
-    {
-        isSliding = false;
-        anim.SetBool("isSliding", false);
-
-        playercollider.size = new Vector2(playercollider.size.x, normalHeight);
-        playercollider.offset = normalOffset;
-
-        if (triggerCooldown)
-        {
-            canSlide = false;
-            slideCooldownTimer = slideCooldown;
-        }
-    }
-
-    public void OnSlide(InputValue value)
-    {
-        if (value.isPressed && canSlide && !isSliding && MoveInput.x != 0 && isGrounded)
-        {
-            isSliding = true;
-            slideTimer = slideDuration;
-            anim.SetBool("isSliding", true);
-
-            playercollider.size = new Vector2(playercollider.size.x, slideHeight);
-            playercollider.offset = slideOffset;
-        }
+        rb.linearVelocity = new Vector2(MoveInput.x * speed, rb.linearVelocity.y);
     }
 
     public void OnJump(InputValue value)
     {
         if (!value.isPressed || !canJump) return;
-
-        // If sliding, end the slide cleanly first.
-        if (isSliding)
-            StopSlide(triggerCooldown: true);
 
         // Apply jump velocity IMMEDIATELY on input frame.
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
@@ -150,24 +71,22 @@ public class angerscript : MonoBehaviour
 
     private void UpdateAnimations()
     {
-        anim.SetBool("isWalking", MoveInput.x != 0 && !isSliding && isGrounded);
-        anim.SetBool("isJumping", !isGrounded);
+        // Only need isJumping and isFalling for your 3 animations
+        anim.SetBool("isJumping", rb.linearVelocity.y > 0.1f);
+        anim.SetBool("isFalling", rb.linearVelocity.y < -0.1f);
     }
 
     private void Flip()
     {
-        if (!isSliding)
+        if (MoveInput.x > 0.1f)
         {
-            if (MoveInput.x > 0.1f)
-            {
-                facingDirection = 1;
-                this.transform.GetChild(0).transform.GetComponent<SpriteRenderer>().flipX = false;
-            }
-            else if (MoveInput.x < -0.1f)
-            {
-                this.transform.GetChild(0).transform.GetComponent<SpriteRenderer>().flipX = true;
-                facingDirection = -1;
-            }
+            facingDirection = 1;
+            this.transform.GetChild(0).transform.GetComponent<SpriteRenderer>().flipX = false;
+        }
+        else if (MoveInput.x < -0.1f)
+        {
+            this.transform.GetChild(0).transform.GetComponent<SpriteRenderer>().flipX = true;
+            facingDirection = -1;
         }
     }
 
@@ -175,8 +94,7 @@ public class angerscript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            // Only mark grounded if we're actually falling/landing, not if we
-            // just jumped (collider resize during StopSlide can briefly retrigger this).
+            // Only mark grounded if we're actually falling/landing
             if (rb.linearVelocity.y <= 0.01f)
             {
                 canJump = true;
