@@ -2185,7 +2185,7 @@ GameObject:
   - component: {fileID: 1699441437}
   - component: {fileID: 1699441435}
   - component: {fileID: 1699441434}
-  - component: {fileID: 1699441438}
+  - component: {fileID: 1699441440}
   - component: {fileID: 1699441439}
   m_Layer: 0
   m_Name: Anger
@@ -2274,22 +2274,6 @@ Transform:
   - {fileID: 191235199}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1699441438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699441433}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83f432c1b5f961247b27fb72f0d89cff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::angerscript
-  playercollider: {fileID: 1699441434}
-  jumpForce: 5
-  speed: 5
-  facingDirection: 1
 --- !u!114 &1699441439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2320,6 +2304,42 @@ MonoBehaviour:
   m_DefaultActionMap: 
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1699441440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699441433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1caa63e24a8fc4441825134176a97b7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::player
+  playercollider: {fileID: 1699441434}
+  jumpForce: 5
+  isGrounded: 1
+  jumpCutMultiplier: 0.5
+  normalGravity: 1
+  jumpGravity: 1
+  fallGravity: 2.5
+  jumpBufferTime: 0.15
+  enableDoubleJump: 0
+  doubleJumpForce: 4.5
+  speed: 5
+  facingDirection: 1
+  groundCheck: {fileID: 0}
+  groundCheckRadius: 0.1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  slideSpeed: 10
+  slideDuration: 0.4
+  slideCooldown: 0.8
+  slideHeight: 0
+  slideOffset: {x: 0, y: 0}
+  normalHeight: 0
+  normalOffset: {x: 0, y: 0}
 --- !u!1 &1839673622
 GameObject:
   m_ObjectHideFlags: 0
