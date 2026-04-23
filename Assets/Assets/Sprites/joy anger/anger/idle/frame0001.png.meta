@@ -53,7 +53,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -103,12 +103,12 @@ TextureImporter:
       name: frame0001_0
       rect:
         serializedVersion: 2
-        x: 13
+        x: 11
         y: 18
-        width: 67
-        height: 70
+        width: 70
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 2dc41f7e11df87c4aa1f1cae7bf16d15
     internalID: 0
     vertices: []
     indices: 

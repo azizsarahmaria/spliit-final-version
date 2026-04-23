@@ -1463,7 +1463,7 @@ Transform:
   m_GameObject: {fileID: 773189989}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.827, y: -1.355, z: 0}
+  m_LocalPosition: {x: -1.881, y: -1.563, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2403,7 +2403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::player
   playercollider: {fileID: 0}
-  jumpForce: 5
+  jumpForce: 7
   isGrounded: 1
   jumpCutMultiplier: 0.5
   normalGravity: 1
@@ -2412,7 +2412,7 @@ MonoBehaviour:
   jumpBufferTime: 0.15
   enableDoubleJump: 0
   doubleJumpForce: 4.5
-  speed: 5
+  speed: 7
   facingDirection: 1
   groundCheck: {fileID: 773189990}
   groundCheckRadius: 0.2
@@ -2460,8 +2460,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -1.8233557, y: -0.15935919}
-  m_Size: {x: 1.2101489, y: 2.6900563}
+  m_Offset: {x: -1.8760765, y: -0.41197017}
+  m_Size: {x: 1.0143293, y: 2.6445844}
   m_Direction: 0
 --- !u!1 &1839673622
 GameObject:
