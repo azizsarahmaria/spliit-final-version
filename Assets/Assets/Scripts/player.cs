@@ -8,341 +8,235 @@ public class player : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public CapsuleCollider2D playercollider;
 
-    // ─────────────────────────────────────────────
-    //  JUMP
-    // ─────────────────────────────────────────────
-    [Header("Jump")]
-    public float jumpForce = 5f;
-    public bool isGrounded = true;
+    // NEW: direct reference to the jump action for reliable polling
+    private PlayerInput playerInput;
+    private InputAction jumpAction;
 
-    [Header("Variable Jump Height")]
-    public float jumpCutMultiplier = 0.5f;
+    [Header("Jump Settings")]
+    public float jumpForce = 15f;
+    public float doubleJumpForce = 12f;
+    public float jumpCutMultiplier = 0.4f;
+    public bool isGrounded;
 
-    [Header("Variable Gravity")]
-    public float normalGravity = 1f;
-    public float jumpGravity = 1f;
-    public float fallGravity = 2.5f;
+    [Header("Gravity Settings")]
+    public float normalGravity = 3f;
+    public float jumpGravity = 2.5f;
+    public float fallGravity = 5f;
 
-    [Header("Jump Buffer")]
-    public float jumpBufferTime = 0.15f;
-    private float jumpBufferTimer = 0f;
-    private bool jumpReleased = false;
-    private bool isJumpHeld = false;
+    [Header("Buffer & Coyote")]
+    public float jumpBufferTime = 0.1f;
+    private float jumpBufferTimer;
 
-    // ─────────────────────────────────────────────
-    //  DOUBLE JUMP
-    // ─────────────────────────────────────────────
     [Header("Double Jump")]
     public bool enableDoubleJump = true;
-    public float doubleJumpForce = 4.5f;
-    private int jumpsRemaining = 1;
+    private int jumpsRemaining;
     private int maxJumps = 2;
 
-    // ─────────────────────────────────────────────
-    //  MOVEMENT
-    // ─────────────────────────────────────────────
-    [Header("Movement Variables")]
-    public float speed = 5f;
-    public int facingDirection = 1;
+    [Header("Movement")]
+    public float speed = 10f;
     private Vector2 MoveInput;
+    private int facingDirection = 1;
 
-    // ─────────────────────────────────────────────
-    //  GROUND CHECK
-    // ─────────────────────────────────────────────
     [Header("Ground Check")]
     public Transform groundCheck;
-    public float groundCheckRadius = 0.1f;
+    public float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
 
-    // ─────────────────────────────────────────────
-    //  SLIDE
-    // ─────────────────────────────────────────────
-    [Header("Slide")]
-    public float slideSpeed = 10f;
+    [Header("Slide Settings")]
+    public float slideSpeed = 15f;
     public float slideDuration = 0.4f;
-    public float slideCooldown = 0.8f;
+    public float slideCooldown = 0.6f;
+    public float slideHeight = 1.5f;
+    public Vector2 slideOffset = new Vector2(0, -0.88f);
+    public float normalHeight = 2.97f;
+    public Vector2 normalOffset = new Vector2(0, -0.14f);
 
-    [Tooltip("The height of the collider while sliding")]
-    public float slideHeight;
-    [Tooltip("The Y offset to keep the collider on the ground while sliding")]
-    public Vector2 slideOffset;
-
-    [Tooltip("Your character's standing height")]
-    public float normalHeight;
-    [Tooltip("Your character's standing Y offset")]
-    public Vector2 normalOffset;
-
-    private bool isSliding = false;
+    private bool isSliding;
     private bool canSlide = true;
-    private float slideTimer = 0f;
-    private float slideCooldownTimer = 0f;
+    private bool isJumpHeld;
+    private bool canVariableJump;
+    private float slideTimer;
+    private float slideCooldownTimer;
 
-    // ─────────────────────────────────────────────
-    //  INIT
-    // ─────────────────────────────────────────────
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
+        // NEW: grab the Jump action so we can poll it
+        playerInput = GetComponent<PlayerInput>();
+        jumpAction = playerInput.actions["Jump"];
+
+        maxJumps = enableDoubleJump ? 2 : 1;
+        jumpsRemaining = maxJumps;
+
         if (playercollider != null)
         {
             playercollider.size = new Vector2(playercollider.size.x, normalHeight);
             playercollider.offset = normalOffset;
         }
-
-        maxJumps = enableDoubleJump ? 2 : 1;
-        jumpsRemaining = maxJumps;
-        rb.gravityScale = normalGravity;
     }
 
-    // ─────────────────────────────────────────────
-    //  UPDATE
-    // ─────────────────────────────────────────────
     void Update()
     {
         HandleSlideTimers();
         UpdateAnimations();
         Flip();
+
+        if (jumpBufferTimer > 0) jumpBufferTimer -= Time.deltaTime;
+
+        // NEW: poll jump input for reliable press + release detection
+        PollJumpInput();
     }
 
-    // ─────────────────────────────────────────────
-    //  FIXED UPDATE
-    // ─────────────────────────────────────────────
     void FixedUpdate()
     {
         CheckGrounded();
-        HandleJump();          // must run BEFORE gravity so cut + gravity happen same frame
+        HandleJumpLogic();
         ApplyVariableGravity();
         HandleMovement();
     }
 
-    // ─────────────────────────────────────────────
-    //  GROUND CHECK
-    // ─────────────────────────────────────────────
-    private void CheckGrounded()
+    // NEW: replaces OnJump entirely
+    private void PollJumpInput()
     {
-        bool wasGrounded = isGrounded;
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        bool pressed = jumpAction.IsPressed();
 
-        if (isGrounded && !wasGrounded)
+        // Rising edge: just pressed this frame
+        if (pressed && !isJumpHeld)
         {
-            jumpsRemaining = maxJumps;
-            rb.gravityScale = normalGravity;
+            isJumpHeld = true;
+            jumpBufferTimer = jumpBufferTime;
+
+            // Air double-jump
+            if (!isGrounded && jumpsRemaining > 0)
+            {
+                ExecuteJump(doubleJumpForce);
+            }
+        }
+        // Falling edge: just released this frame
+        else if (!pressed && isJumpHeld)
+        {
+            isJumpHeld = false;
+
+            if (rb.linearVelocity.y > 0 && canVariableJump)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
+                canVariableJump = false;
+            }
         }
     }
 
-    // ─────────────────────────────────────────────
-    //  HANDLE JUMP
-    // ─────────────────────────────────────────────
-    private void HandleJump()
+    private void CheckGrounded()
     {
-        if (jumpBufferTimer > 0f)
-            jumpBufferTimer -= Time.fixedDeltaTime;
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
-        // Fire buffered jump when grounded
-        if (jumpBufferTimer > 0f && isGrounded && rb.linearVelocity.y <= 0.1f)
+        if (isGrounded && rb.linearVelocity.y <= 0.1f)
+        {
+            jumpsRemaining = maxJumps;
+            canVariableJump = false;
+        }
+    }
+
+    private void HandleJumpLogic()
+    {
+        if (jumpBufferTimer > 0 && isGrounded)
         {
             ExecuteJump(jumpForce);
-
-            // KEY FIX: if space was already released before this FixedUpdate ran
-            // (i.e. the player tapped), apply the cut immediately in the same frame.
-            // Without this, ExecuteJump used to reset jumpReleased and the cut never fired.
-            if (jumpReleased)
-            {
-                rb.linearVelocity = new Vector2(
-                    rb.linearVelocity.x,
-                    rb.linearVelocity.y * jumpCutMultiplier
-                );
-                jumpReleased = false;
-            }
-        }
-        // Apply cut for a jump already in the air when space was released
-        else if (jumpReleased)
-        {
-            if (rb.linearVelocity.y > 0f)
-                rb.linearVelocity = new Vector2(
-                    rb.linearVelocity.x,
-                    rb.linearVelocity.y * jumpCutMultiplier
-                );
-            jumpReleased = false;
         }
     }
 
     private void ExecuteJump(float force)
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, force);
-        jumpBufferTimer = 0f;
-        // NOTE: jumpReleased is NOT reset here anymore.
-        // If the player tapped, jumpReleased=true must survive into HandleJump to cut velocity.
-        isGrounded = false;
+        jumpBufferTimer = 0;
+        canVariableJump = true;
         jumpsRemaining--;
+
+        // NEW: if the player already let go before this ran (quick tap),
+        // cut the jump immediately. This fixes the timing race.
+        if (!isJumpHeld)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
+            canVariableJump = false;
+        }
     }
 
-    // ─────────────────────────────────────────────
-    //  VARIABLE GRAVITY
-    // ─────────────────────────────────────────────
     private void ApplyVariableGravity()
     {
         if (rb.linearVelocity.y < -0.1f)
-        {
-            // Falling — always pull down fast
             rb.gravityScale = fallGravity;
-        }
-        else if (rb.linearVelocity.y > 0.1f)
-        {
-            // Rising:
-            // HOLD → low gravity (floaty full arc)
-            // TAP  → high gravity (short hop, falls back quickly)
-            rb.gravityScale = isJumpHeld ? jumpGravity : fallGravity;
-        }
+        else if (rb.linearVelocity.y > 0.1f && isJumpHeld)
+            rb.gravityScale = jumpGravity;
         else
-        {
             rb.gravityScale = normalGravity;
-        }
     }
 
-    // ─────────────────────────────────────────────
-    //  MOVEMENT
-    // ─────────────────────────────────────────────
     private void HandleMovement()
     {
-        if (isSliding)
-            rb.linearVelocity = new Vector2(facingDirection * slideSpeed, rb.linearVelocity.y);
-        else
-            rb.linearVelocity = new Vector2(MoveInput.x * speed, rb.linearVelocity.y);
+        float targetSpeed = isSliding ? facingDirection * slideSpeed : MoveInput.x * speed;
+        rb.linearVelocity = new Vector2(targetSpeed, rb.linearVelocity.y);
     }
 
-    // ─────────────────────────────────────────────
-    //  SLIDE
-    // ─────────────────────────────────────────────
+    // OnJump is GONE — replaced by PollJumpInput above
+
+    public void OnMove(InputValue value) => MoveInput = value.Get<Vector2>();
+
+    public void OnSlide(InputValue value)
+    {
+        if (value.isPressed && canSlide && !isSliding && isGrounded && MoveInput.x != 0)
+            StartSlide();
+    }
+
+    private void StartSlide()
+    {
+        isSliding = true;
+        canSlide = false;
+        slideTimer = slideDuration;
+        playercollider.size = new Vector2(playercollider.size.x, slideHeight);
+        playercollider.offset = slideOffset;
+    }
+
+    private void StopSlide()
+    {
+        isSliding = false;
+        slideCooldownTimer = slideCooldown;
+        playercollider.size = new Vector2(playercollider.size.x, normalHeight);
+        playercollider.offset = normalOffset;
+    }
+
     private void HandleSlideTimers()
     {
         if (isSliding)
         {
             slideTimer -= Time.deltaTime;
-            if (slideTimer <= 0f) StopSlide();
+            if (slideTimer <= 0) StopSlide();
         }
-
-        if (!canSlide)
+        else if (!canSlide)
         {
             slideCooldownTimer -= Time.deltaTime;
-            if (slideCooldownTimer <= 0f) canSlide = true;
+            if (slideCooldownTimer <= 0) canSlide = true;
         }
     }
 
-    private void StopSlide(bool triggerCooldown = true)
-    {
-        isSliding = false;
-        anim.SetBool("isSliding", false);
-
-        playercollider.size = new Vector2(playercollider.size.x, normalHeight);
-        playercollider.offset = normalOffset;
-
-        if (triggerCooldown)
-        {
-            canSlide = false;
-            slideCooldownTimer = slideCooldown;
-        }
-    }
-
-    // ─────────────────────────────────────────────
-    //  ANIMATIONS
-    // ─────────────────────────────────────────────
     private void UpdateAnimations()
     {
-        anim.SetFloat("yVelocity", rb.linearVelocity.y);
-        anim.SetBool("isWalking", MoveInput.x != 0 && !isSliding && isGrounded);
+        anim.SetBool("isWalking", MoveInput.x != 0 && isGrounded && !isSliding);
         anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isSliding", isSliding);
-        anim.SetBool("isJumping", rb.linearVelocity.y > 0.5f);
-        anim.SetBool("isFalling", rb.linearVelocity.y < -0.5f);
+        anim.SetFloat("yVelocity", rb.linearVelocity.y);
     }
 
-    // ─────────────────────────────────────────────
-    //  FLIP
-    // ─────────────────────────────────────────────
     private void Flip()
     {
         if (isSliding) return;
-
-        if (MoveInput.x > 0.1f)
-        {
-            facingDirection = 1;
-            spriteRenderer.flipX = false;
-        }
-        else if (MoveInput.x < -0.1f)
-        {
-            facingDirection = -1;
-            spriteRenderer.flipX = true;
-        }
+        if (MoveInput.x > 0.1f) { facingDirection = 1; spriteRenderer.flipX = false; }
+        else if (MoveInput.x < -0.1f) { facingDirection = -1; spriteRenderer.flipX = true; }
     }
 
-    // ─────────────────────────────────────────────
-    //  PLATFORM PARENTING
-    // ─────────────────────────────────────────────
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("MovingPlatform"))
-            transform.SetParent(collision.transform, true);
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("MovingPlatform") && gameObject.activeInHierarchy)
-            transform.SetParent(null);
-    }
-
-    // ─────────────────────────────────────────────
-    //  INPUT CALLBACKS
-    // ─────────────────────────────────────────────
-    public void OnMove(InputValue value)
-    {
-        MoveInput = value.Get<Vector2>();
-    }
-
-    public void OnJump(InputValue value)
-    {
-        if (value.isPressed)
-        {
-            isJumpHeld = true;
-            jumpBufferTimer = jumpBufferTime;
-            jumpReleased = false;
-
-            // Double jump fires immediately while airborne
-            if (!isGrounded && jumpsRemaining > 0)
-                ExecuteJump(doubleJumpForce);
-        }
-        else
-        {
-            isJumpHeld = false;
-            jumpReleased = true;
-        }
-    }
-
-    public void OnSlide(InputValue value)
-    {
-        if (value.isPressed && canSlide && !isSliding && MoveInput.x != 0 && isGrounded)
-        {
-            isSliding = true;
-            slideTimer = slideDuration;
-            anim.SetBool("isSliding", true);
-
-            playercollider.size = new Vector2(playercollider.size.x, slideHeight);
-            playercollider.offset = slideOffset;
-        }
-    }
-
-    // ─────────────────────────────────────────────
-    //  GIZMOS
-    // ─────────────────────────────────────────────
     private void OnDrawGizmosSelected()
     {
-        if (groundCheck != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-        }
+        if (groundCheck) Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
 }
