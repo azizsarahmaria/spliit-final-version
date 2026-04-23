@@ -785,6 +785,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a0d6cca76dd29d4496e927365dd29dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxManager
+  layers: []
+  camTransform: {fileID: 0}
 --- !u!114 &519420035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1436,6 +1438,37 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
+--- !u!1 &773189989
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 773189990}
+  m_Layer: 0
+  m_Name: Groundcheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &773189990
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773189989}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.76, y: -1.331, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1699441437}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &900275111
 GameObject:
   m_ObjectHideFlags: 0
@@ -1690,7 +1723,7 @@ GameObject:
   - component: {fileID: 1360650403}
   - component: {fileID: 1360650407}
   - component: {fileID: 1360650406}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Tilemap
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -2228,8 +2261,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -1.7606418, y: -0.055459626}
-  m_Size: {x: 1.7400082, y: 3.0291798}
+  m_Offset: {x: -1.928692, y: -0.19245537}
+  m_Size: {x: 0.9180879, y: 2.6977513}
   m_Direction: 0
 --- !u!50 &1699441435
 Rigidbody2D:
@@ -2272,6 +2305,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 191235199}
+  - {fileID: 773189990}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1699441439
@@ -2328,11 +2362,11 @@ MonoBehaviour:
   doubleJumpForce: 4.5
   speed: 5
   facingDirection: 1
-  groundCheck: {fileID: 0}
-  groundCheckRadius: 0.1
+  groundCheck: {fileID: 773189990}
+  groundCheckRadius: 0.2
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   slideSpeed: 10
   slideDuration: 0.4
   slideCooldown: 0.8
