@@ -728,7 +728,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 7.5177684
+  orthographic size: 9.6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2402,16 +2402,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::player
   playercollider: {fileID: 0}
   jumpForce: 7
-  isGrounded: 1
+  doubleJumpForce: 4.5
   jumpCutMultiplier: 0.5
+  isGrounded: 1
   normalGravity: 1
   jumpGravity: 1
   fallGravity: 2.5
   jumpBufferTime: 0.15
   enableDoubleJump: 0
-  doubleJumpForce: 4.5
   speed: 7
-  facingDirection: 1
   groundCheck: {fileID: 773189990}
   groundCheckRadius: 0.2
   groundLayer:
