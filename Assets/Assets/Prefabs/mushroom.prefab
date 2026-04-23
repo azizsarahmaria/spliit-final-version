@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd530ebf63703d4448a1d89c4d6ab7ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  bounceForce: 18
+  bounceForce: 28
   mushroomTrigger: Bounce
   playerJumpTrigger: Jump
   playerJumpStateName: jumpp
