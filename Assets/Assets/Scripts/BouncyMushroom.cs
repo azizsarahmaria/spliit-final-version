@@ -7,8 +7,6 @@ public class BouncyMushroom : MonoBehaviour
 
     [Header("Animation Names")]
     [SerializeField] private string mushroomTrigger = "Bounce";
-    [SerializeField] private string playerJumpTrigger = "Jump";
-    [SerializeField] private string playerJumpStateName = "Player_Jump";
 
     private Animator mushroomAnim;
 
@@ -17,39 +15,41 @@ public class BouncyMushroom : MonoBehaviour
         mushroomAnim = GetComponent<Animator>();
     }
 
-    // Switched to Trigger so the player doesn't "hit a wall"
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (other.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
-            Animator playerAnim = other.GetComponentInChildren<Animator>();
+            // Get the contact point normal (direction of collision)
+            Vector2 contactNormal = collision.contacts[0].normal;
 
-            if (rb != null)
+            // Only bounce if player is hitting from above
+            // Normal points DOWN (negative Y) when player lands on top
+            if (contactNormal.y < -0.5f)
             {
-                // Kill downward velocity so the bounce is consistent
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+                Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
+                player playerScript = collision.gameObject.GetComponent<player>();
 
-                // Use Force instead of Impulse if it feels too "teleporty" 
-                // but Impulse is usually better for trampolines
-                rb.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
-
-                if (mushroomAnim != null) mushroomAnim.SetTrigger(mushroomTrigger);
-
-                if (playerAnim != null)
+                if (rb != null && playerScript != null)
                 {
-                    // 1. Apply Physics again for consistent bounce
+                    // Apply bounce force
                     rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
                     rb.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
 
-                    // 2. Play Mushroom Animation
-                    if (mushroomAnim != null) mushroomAnim.SetTrigger(mushroomTrigger);
+                    // Set player as airborne for animation
+                    playerScript.isGrounded = false;
 
-                    // 3. Play Player Animation
-                    playerAnim.SetTrigger(playerJumpTrigger);
-                    playerAnim.Play(playerJumpStateName, 0, 0f);
+                    // IMPORTANT: Set jumps remaining to 1
+                    // This allows only ONE more jump until they land
+                    playerScript.jumpsRemaining = 1;
+
+                    // Play mushroom bounce animation
+                    if (mushroomAnim != null)
+                    {
+                        mushroomAnim.SetTrigger(mushroomTrigger);
+                    }
                 }
             }
+            // If hitting from side or bottom, mushroom acts like a normal wall
         }
     }
 }

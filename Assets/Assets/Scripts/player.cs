@@ -29,7 +29,7 @@ public class player : MonoBehaviour
 
     [Header("Double Jump")]
     public bool enableDoubleJump = true;
-    private int jumpsRemaining;
+    public int jumpsRemaining;
     private int maxJumps = 2;
 
     [Header("Movement")]
