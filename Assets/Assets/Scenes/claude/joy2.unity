@@ -71613,8 +71613,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   flashSpeed: 0.08
-  flashCycles: 3
-  knockbackForce: 5
+  flashCycles: 2
+  knockbackForce: 9
   knockbackDuration: 0.2
 --- !u!1001 &1951605608
 PrefabInstance:
