@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: 3fe948fede36cf14c833a98c3b4f6048
+guid: d044eda2aa8f7854fac45e221cf74fc5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -14681694713547210
-    second: 16x16 Heart Health Dark Blue Horizontal_0
+      213: -2142804272338743242
+    second: 16x16 Heart Health Red Horizontal_0
   - first:
-      213: -990092006270704092
-    second: 16x16 Heart Health Dark Blue Horizontal_1
+      213: 1877868199121601114
+    second: 16x16 Heart Health Red Horizontal_1
   - first:
-      213: 6664334493748818181
-    second: 16x16 Heart Health Dark Blue Horizontal_2
+      213: 3182714034271678438
+    second: 16x16 Heart Health Red Horizontal_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -43,7 +43,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -57,7 +57,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -80,7 +80,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -106,7 +106,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 16x16 Heart Health Dark Blue Horizontal_0
+      name: 16x16 Heart Health Red Horizontal_0
       rect:
         serializedVersion: 2
         x: 1
@@ -121,14 +121,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 636f5e19317dbcff0800000000000000
-      internalID: -14681694713547210
+      spriteID: 6305f0c0eda3342e0800000000000000
+      internalID: -2142804272338743242
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 16x16 Heart Health Dark Blue Horizontal_1
+      name: 16x16 Heart Health Red Horizontal_1
       rect:
         serializedVersion: 2
         x: 17
@@ -143,14 +143,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 426e747e09c7242f0800000000000000
-      internalID: -990092006270704092
+      spriteID: a5245af7d278f0a10800000000000000
+      internalID: 1877868199121601114
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 16x16 Heart Health Dark Blue Horizontal_2
+      name: 16x16 Heart Health Red Horizontal_2
       rect:
         serializedVersion: 2
         x: 33
@@ -165,8 +165,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 501f744b9e87c7c50800000000000000
-      internalID: 6664334493748818181
+      spriteID: 6efe96a2d854b2c20800000000000000
+      internalID: 3182714034271678438
       vertices: []
       indices: 
       edges: []
@@ -185,9 +185,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      16x16 Heart Health Dark Blue Horizontal_0: -14681694713547210
-      16x16 Heart Health Dark Blue Horizontal_1: -990092006270704092
-      16x16 Heart Health Dark Blue Horizontal_2: 6664334493748818181
+      16x16 Heart Health Red Horizontal_0: -2142804272338743242
+      16x16 Heart Health Red Horizontal_1: 1877868199121601114
+      16x16 Heart Health Red Horizontal_2: 3182714034271678438
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
