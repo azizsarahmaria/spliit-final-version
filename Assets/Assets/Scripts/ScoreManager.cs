@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -7,8 +8,8 @@ public class ScoreManager : MonoBehaviour
     public int score = 0;
 
     [Header("UI")]
-    public GameObject collectibleIconPrefab;  // UI Image prefab of your sprite
-    public Transform iconPanel;               // empty panel in Canvas to hold icons
+    public Image collectibleIcon;
+    public TextMeshProUGUI scoreText;
 
     private void Awake()
     {
@@ -21,12 +22,6 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int amount)
     {
         score += amount;
-        SpawnIcon();
-    }
-
-    private void SpawnIcon()
-    {
-        // every collectible picked up = one icon appears in the panel
-        Instantiate(collectibleIconPrefab, iconPanel);
+        scoreText.text = "x " + score;
     }
 }
