@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6081497971052864585}
   - component: {fileID: 1052010753551722808}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Square (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 3792600523363047407}
   - component: {fileID: 4183960606960729367}
   - component: {fileID: 3914555095093536614}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: MovingPlatform
   m_TagString: MovingPlatform
   m_Icon: {fileID: 0}
