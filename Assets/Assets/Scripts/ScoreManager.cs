@@ -1,15 +1,17 @@
 using UnityEngine;
-using TMPro; // or use UnityEngine.UI if you're using Text instead
+using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager instance;
     public int score = 0;
-    public TextMeshProUGUI scoreText; // drag your UI text here in the Inspector
+
+    [Header("UI")]
+    public GameObject collectibleIconPrefab;  // UI Image prefab of your sprite
+    public Transform iconPanel;               // empty panel in Canvas to hold icons
 
     private void Awake()
     {
-        // Singleton pattern — only one ScoreManager can exist
         if (instance == null)
             instance = this;
         else
@@ -19,12 +21,12 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int amount)
     {
         score += amount;
-        UpdateScoreUI();
+        SpawnIcon();
     }
 
-    private void UpdateScoreUI()
+    private void SpawnIcon()
     {
-        if (scoreText != null)
-            scoreText.text = "Score: " + score;
+        // every collectible picked up = one icon appears in the panel
+        Instantiate(collectibleIconPrefab, iconPanel);
     }
 }
