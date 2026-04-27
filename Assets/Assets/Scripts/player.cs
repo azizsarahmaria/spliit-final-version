@@ -1,46 +1,46 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections; // Required for the Dash Coroutine
 
 public class player : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator anim;
     private SpriteRenderer spriteRenderer;
-    public CapsuleCollider2D playercollider;
 
-    // NEW: direct reference to the jump action for reliable polling
+    [Header("Required References")]
+    public CapsuleCollider2D playercollider;
+    public Transform groundCheck;
+    public LayerMask groundLayer;
+
     private PlayerInput playerInput;
     private InputAction jumpAction;
+
+    [Header("Movement Settings")]
+    public float speed = 10f;
+    private Vector2 MoveInput;
+    private int facingDirection = 1;
 
     [Header("Jump Settings")]
     public float jumpForce = 15f;
     public float doubleJumpForce = 12f;
     public float jumpCutMultiplier = 0.4f;
     public bool isGrounded;
+    public float groundCheckRadius = 0.2f;
 
     [Header("Gravity Settings")]
     public float normalGravity = 3f;
     public float jumpGravity = 2.5f;
     public float fallGravity = 5f;
 
-    [Header("Buffer & Coyote")]
+    [Header("Jump Helpers")]
     public float jumpBufferTime = 0.1f;
     private float jumpBufferTimer;
-
-    [Header("Double Jump")]
     public bool enableDoubleJump = true;
     public int jumpsRemaining;
     private int maxJumps = 2;
-
-    [Header("Movement")]
-    public float speed = 10f;
-    private Vector2 MoveInput;
-    private int facingDirection = 1;
-
-    [Header("Ground Check")]
-    public Transform groundCheck;
-    public float groundCheckRadius = 0.2f;
-    public LayerMask groundLayer;
+    private bool isJumpHeld;
+    private bool canVariableJump;
 
     [Header("Slide Settings")]
     public float slideSpeed = 15f;
@@ -53,83 +53,138 @@ public class player : MonoBehaviour
 
     private bool isSliding;
     private bool canSlide = true;
-    private bool isJumpHeld;
-    private bool canVariableJump;
     private float slideTimer;
     private float slideCooldownTimer;
-    private bool isMushroomBouncing;
+
+    [Header("Dash Settings (Air Only)")]
+    public float dashSpeed = 25f;
+    public float dashDuration = 0.2f;
+    public float dashCooldown = 1f;
+    private bool isDashing;
+    private bool canDash = true;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        // Using GetComponentInChildren in case the visuals are on a child object
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
-        // NEW: grab the Jump action so we can poll it
         playerInput = GetComponent<PlayerInput>();
         jumpAction = playerInput.actions["Jump"];
 
         maxJumps = enableDoubleJump ? 2 : 1;
         jumpsRemaining = maxJumps;
 
+        // Initialize collider
         if (playercollider != null)
         {
             playercollider.size = new Vector2(playercollider.size.x, normalHeight);
             playercollider.offset = normalOffset;
         }
+        else
+        {
+            Debug.LogError("Producer Warning: Drag your CapsuleCollider2D into the Playercollider slot in the Inspector!");
+        }
     }
 
     void Update()
     {
+        // If we are dashing, we skip normal movement logic
+        if (isDashing) return;
+
         HandleSlideTimers();
         UpdateAnimations();
         Flip();
 
         if (jumpBufferTimer > 0) jumpBufferTimer -= Time.deltaTime;
 
-        // NEW: poll jump input for reliable press + release detection
         PollJumpInput();
     }
 
     void FixedUpdate()
     {
+        if (isDashing) return;
+
         CheckGrounded();
         HandleJumpLogic();
         ApplyVariableGravity();
         HandleMovement();
     }
 
+    // --- INPUT SYSTEM EVENTS ---
 
-    // NEW: replaces OnJump entirely
+    public void OnMove(InputValue value) => MoveInput = value.Get<Vector2>();
+
+    public void OnSlide(InputValue value)
+    {
+        if (value.isPressed && canSlide && !isSliding && isGrounded && MoveInput.x != 0)
+            StartSlide();
+    }
+
+    public void OnDash(InputValue value)
+    {
+        // Dash only allowed if: Button pressed + Not grounded + Cooldown ready + Not sliding
+        if (value.isPressed && canDash && !isGrounded && !isSliding)
+        {
+            StartCoroutine(PerformDash());
+        }
+    }
+
+    // --- DASH COROUTINE ---
+    private IEnumerator PerformDash()
+    {
+        canDash = false;
+        isDashing = true;
+
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f; // Freeze gravity for a linear dash
+
+        // Dash in the direction the player is currently facing
+        rb.linearVelocity = new Vector2(facingDirection * dashSpeed, 0f);
+
+        yield return new WaitForSeconds(dashDuration);
+
+        rb.gravityScale = originalGravity;
+        isDashing = false;
+
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+    }
+
+    // --- MOVEMENT LOGIC ---
+
+    private void HandleMovement()
+    {
+        float targetSpeed = isSliding ? facingDirection * slideSpeed : MoveInput.x * speed;
+        rb.linearVelocity = new Vector2(targetSpeed, rb.linearVelocity.y);
+    }
+
     private void PollJumpInput()
     {
         bool pressed = jumpAction.IsPressed();
 
-        // Rising edge: just pressed this frame
         if (pressed && !isJumpHeld)
         {
             isJumpHeld = true;
             jumpBufferTimer = jumpBufferTime;
 
-            // Air double-jump
             if (!isGrounded && jumpsRemaining > 0)
             {
                 ExecuteJump(doubleJumpForce);
             }
         }
-        // Falling edge: just released this frame
         else if (!pressed && isJumpHeld)
         {
             isJumpHeld = false;
 
-            // ADD THE CHECK HERE: !isMushroomBouncing
-            if (rb.linearVelocity.y > 0 && canVariableJump && !isMushroomBouncing)
+            if (rb.linearVelocity.y > 0 && canVariableJump)
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
                 canVariableJump = false;
             }
         }
-        }
+    }
 
     private void CheckGrounded()
     {
@@ -139,6 +194,8 @@ public class player : MonoBehaviour
         {
             jumpsRemaining = maxJumps;
             canVariableJump = false;
+            // Producer Note: This allows dash to reset immediately upon landing
+            if (!isDashing) canDash = true;
         }
     }
 
@@ -157,8 +214,6 @@ public class player : MonoBehaviour
         canVariableJump = true;
         jumpsRemaining--;
 
-        // NEW: if the player already let go before this ran (quick tap),
-        // cut the jump immediately. This fixes the timing race.
         if (!isJumpHeld)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
@@ -168,14 +223,6 @@ public class player : MonoBehaviour
 
     private void ApplyVariableGravity()
     {
-        // If bouncing on a mushroom, use normal gravity until we start falling
-        if (isMushroomBouncing)
-        {
-            rb.gravityScale = normalGravity;
-            if (rb.linearVelocity.y < 0) isMushroomBouncing = false; // Reset when falling
-            return;
-        }
-
         if (rb.linearVelocity.y < -0.1f)
             rb.gravityScale = fallGravity;
         else if (rb.linearVelocity.y > 0.1f && isJumpHeld)
@@ -184,40 +231,7 @@ public class player : MonoBehaviour
             rb.gravityScale = normalGravity;
     }
 
-    private void HandleMovement()
-    {
-        float targetSpeed = isSliding ? facingDirection * slideSpeed : MoveInput.x * speed;
-
-        float platformX = 0f;
-        if (isGrounded)
-        {
-            // Raycast down to check if we're standing on a moving platform
-            RaycastHit2D hit = Physics2D.Raycast(
-                groundCheck.position,
-                Vector2.down,
-                groundCheckRadius + 0.2f,
-                groundLayer
-            );
-            if (hit.collider != null)
-            {
-                MovingPlatform platform = hit.collider.GetComponent<MovingPlatform>();
-                if (platform != null)
-                    platformX = platform.PlatformVelocity.x;
-            }
-        }
-
-        rb.linearVelocity = new Vector2(targetSpeed + platformX, rb.linearVelocity.y);
-    }
-
-    // OnJump is GONE — replaced by PollJumpInput above
-
-    public void OnMove(InputValue value) => MoveInput = value.Get<Vector2>();
-
-    public void OnSlide(InputValue value)
-    {
-        if (value.isPressed && canSlide && !isSliding && isGrounded && MoveInput.x != 0)
-            StartSlide();
-    }
+    // --- SLIDE LOGIC ---
 
     private void StartSlide()
     {
@@ -255,20 +269,19 @@ public class player : MonoBehaviour
         anim.SetBool("isWalking", MoveInput.x != 0 && isGrounded && !isSliding);
         anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isSliding", isSliding);
+        anim.SetBool("isDashing", isDashing); // Link to Animator
         anim.SetFloat("yVelocity", rb.linearVelocity.y);
     }
-
-    private void Flip()
-    {
-        if (isSliding) return;
-        if (MoveInput.x > 0.1f) { facingDirection = 1; spriteRenderer.flipX = false; }
-        else if (MoveInput.x < -0.1f) { facingDirection = -1; spriteRenderer.flipX = true; }
-    }
-
     public void NotifyMushroomBounce()
     {
-        isMushroomBouncing = true;
-        canVariableJump = false; // Prevents the jump-cut logic from triggering
+        // Optional: play animation, sound, or state change
+        Debug.Log("Player bounced on mushroom!");
+    }
+    private void Flip()
+    {
+        if (isSliding || isDashing) return;
+        if (MoveInput.x > 0.1f) { facingDirection = 1; spriteRenderer.flipX = false; }
+        else if (MoveInput.x < -0.1f) { facingDirection = -1; spriteRenderer.flipX = true; }
     }
 
     private void OnDrawGizmosSelected()
