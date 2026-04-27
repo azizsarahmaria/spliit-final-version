@@ -57,6 +57,7 @@ public class player : MonoBehaviour
     private bool canVariableJump;
     private float slideTimer;
     private float slideCooldownTimer;
+    private bool isMushroomBouncing;
 
     void Start()
     {
@@ -98,6 +99,7 @@ public class player : MonoBehaviour
         HandleMovement();
     }
 
+
     // NEW: replaces OnJump entirely
     private void PollJumpInput()
     {
@@ -120,13 +122,14 @@ public class player : MonoBehaviour
         {
             isJumpHeld = false;
 
-            if (rb.linearVelocity.y > 0 && canVariableJump)
+            // ADD THE CHECK HERE: !isMushroomBouncing
+            if (rb.linearVelocity.y > 0 && canVariableJump && !isMushroomBouncing)
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
                 canVariableJump = false;
             }
         }
-    }
+        }
 
     private void CheckGrounded()
     {
@@ -165,6 +168,14 @@ public class player : MonoBehaviour
 
     private void ApplyVariableGravity()
     {
+        // If bouncing on a mushroom, use normal gravity until we start falling
+        if (isMushroomBouncing)
+        {
+            rb.gravityScale = normalGravity;
+            if (rb.linearVelocity.y < 0) isMushroomBouncing = false; // Reset when falling
+            return;
+        }
+
         if (rb.linearVelocity.y < -0.1f)
             rb.gravityScale = fallGravity;
         else if (rb.linearVelocity.y > 0.1f && isJumpHeld)
@@ -252,6 +263,12 @@ public class player : MonoBehaviour
         if (isSliding) return;
         if (MoveInput.x > 0.1f) { facingDirection = 1; spriteRenderer.flipX = false; }
         else if (MoveInput.x < -0.1f) { facingDirection = -1; spriteRenderer.flipX = true; }
+    }
+
+    public void NotifyMushroomBounce()
+    {
+        isMushroomBouncing = true;
+        canVariableJump = false; // Prevents the jump-cut logic from triggering
     }
 
     private void OnDrawGizmosSelected()
