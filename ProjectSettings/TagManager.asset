@@ -8,6 +8,7 @@ TagManager:
   - Blinkle
   - Spike
   - MovingPlatform
+  - Enemy
   layers:
   - Default
   - TransparentFX
