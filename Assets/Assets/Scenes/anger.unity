@@ -2189,22 +2189,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::player
   playercollider: {fileID: 0}
+  groundCheck: {fileID: 773189990}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  speed: 7
   jumpForce: 7
   doubleJumpForce: 4.5
   jumpCutMultiplier: 0.5
   isGrounded: 1
+  groundCheckRadius: 0.2
   normalGravity: 1
   jumpGravity: 1
   fallGravity: 2.5
   jumpBufferTime: 0.15
   enableDoubleJump: 0
   jumpsRemaining: 0
-  speed: 7
-  groundCheck: {fileID: 773189990}
-  groundCheckRadius: 0.2
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
   slideSpeed: 10
   slideDuration: 0.4
   slideCooldown: 0.8
@@ -2212,6 +2212,9 @@ MonoBehaviour:
   slideOffset: {x: 0, y: 0}
   normalHeight: 0
   normalOffset: {x: 0, y: 0}
+  dashSpeed: 25
+  dashDuration: 0.2
+  dashCooldown: 1
 --- !u!70 &1699441441
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
