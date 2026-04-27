@@ -95,15 +95,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Dash",
-                    "type": "Button",
-                    "id": "78929278-7c0f-4725-8ae4-b22feee1519a",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -500,17 +491,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Slide",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a91243ee-6e3a-4831-aa71-a45fdbe89c53",
-                    "path": "<Keyboard>/x",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
