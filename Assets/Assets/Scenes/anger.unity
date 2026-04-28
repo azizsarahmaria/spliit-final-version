@@ -2193,7 +2193,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  speed: 7
+  speed: 12
   jumpForce: 7
   doubleJumpForce: 4.5
   jumpCutMultiplier: 0.5
@@ -2213,7 +2213,7 @@ MonoBehaviour:
   normalHeight: 0
   normalOffset: {x: 0, y: 0}
   dashSpeed: 25
-  dashDuration: 0.5
+  dashDuration: 0.3
   dashCooldown: 1
 --- !u!70 &1699441441
 CapsuleCollider2D:
