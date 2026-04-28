@@ -154,7 +154,26 @@ public class player : MonoBehaviour
     private void HandleMovement()
     {
         float targetSpeed = isSliding ? facingDirection * slideSpeed : MoveInput.x * speed;
-        rb.linearVelocity = new Vector2(targetSpeed, rb.linearVelocity.y);
+
+        float platformX = 0f;
+        if (isGrounded)
+        {
+            // Raycast down to check if we're standing on a moving platform
+            RaycastHit2D hit = Physics2D.Raycast(
+                groundCheck.position,
+                Vector2.down,
+                groundCheckRadius + 0.2f,
+                groundLayer
+            );
+            if (hit.collider != null)
+            {
+                MovingPlatform platform = hit.collider.GetComponent<MovingPlatform>();
+                if (platform != null)
+                    platformX = platform.PlatformVelocity.x;
+            }
+        }
+
+        rb.linearVelocity = new Vector2(targetSpeed + platformX, rb.linearVelocity.y);
     }
 
     private void PollJumpInput()
