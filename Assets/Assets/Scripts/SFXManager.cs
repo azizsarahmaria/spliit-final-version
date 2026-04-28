@@ -27,8 +27,6 @@ public class SFXManager : MonoBehaviour
     public AudioClip Deathsound;
 
 
-
-
     public AudioSource audioSource;
 
     private void Awake()

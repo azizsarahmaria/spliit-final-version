@@ -4591,10 +4591,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f56675ea2a724b428d4413556f29e63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SFXManager
-  shootingSound: {fileID: 0}
+  footstepssound: {fileID: 8300000, guid: 4d6b5fe7aaae27c4f843ea1986a6d057, type: 3}
   jumpSound: {fileID: 0}
+  slidesound: {fileID: 0}
+  landingsound: {fileID: 0}
   gettingHitSound: {fileID: 0}
   blinklesound: {fileID: 8300000, guid: 2e2a871d0d9e7db4eab5b67fe2ae22a0, type: 3}
+  spikesound: {fileID: 0}
+  deathsound: {fileID: 0}
+  runningsound: {fileID: 0}
+  jumpsound: {fileID: 0}
+  slideSound: {fileID: 0}
+  Landingsound: {fileID: 0}
+  gettinghitSound: {fileID: 0}
+  enemysound: {fileID: 0}
+  dashsound: {fileID: 0}
+  enemyhitsound: {fileID: 0}
+  Deathsound: {fileID: 0}
   audioSource: {fileID: 1125537736}
 --- !u!4 &1125537735
 Transform:

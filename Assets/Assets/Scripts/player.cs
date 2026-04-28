@@ -316,6 +316,7 @@ public class player : MonoBehaviour
         if (anim == null || rb == null) return;
 
         anim.SetBool("isWalking", Mathf.Abs(moveInput.x) > 0.01f && isGrounded && !isSliding);
+
         anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isSliding", isSliding);
         anim.SetBool("isDashing", isDashing);

@@ -263,6 +263,8 @@ public class Anger : MonoBehaviour
     private void UpdateAnimations()
     {
         anim.SetBool("isWalking", MoveInput.x != 0 && isGrounded && !isSliding);
+
+        SFXManager.Instance.Playfootstepssound();
         anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isSliding", isSliding);
         anim.SetBool("isDashing", isDashing);
