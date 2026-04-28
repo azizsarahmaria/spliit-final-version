@@ -90,7 +90,7 @@ public class PlayerHealth : MonoBehaviour
         isInvulnerable = true;
         for (int i = 0; i < flashCycles; i++)
         {
-            spriteRenderer.color = Color.white;
+            spriteRenderer.color = Color.red;
             yield return new WaitForSeconds(flashSpeed);
             spriteRenderer.color = Color.white;
             yield return new WaitForSeconds(flashSpeed);
