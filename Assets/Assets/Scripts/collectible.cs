@@ -9,6 +9,7 @@ public class collectible : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             ScoreManager.instance.AddScore(scoreValue);
+            SFXManager.Instance.Playblinklesound();
             Destroy(gameObject);
         }
     }

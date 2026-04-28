@@ -7,6 +7,7 @@ public class SFXManager : MonoBehaviour
     public AudioClip shootingSound;
     public AudioClip jumpSound;
     public AudioClip gettingHitSound;
+    public AudioClip blinklesound;
 
     public AudioSource audioSource;
 
@@ -25,6 +26,10 @@ public class SFXManager : MonoBehaviour
         audioSource = this.GetComponent<AudioSource>();
     }
 
+    public void Playblinklesound()
+    {
+        audioSource.PlayOneShot(blinklesound);
+    }
     public void PlayShootingSound()
     {
         audioSource.volume = 0.5f;
