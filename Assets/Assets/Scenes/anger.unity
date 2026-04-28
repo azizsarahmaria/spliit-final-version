@@ -1621,9 +1621,10 @@ GameObject:
   - component: {fileID: 1341208237}
   - component: {fileID: 1341208238}
   - component: {fileID: 1341208239}
+  - component: {fileID: 1341208240}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Spike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1735,6 +1736,24 @@ CapsuleCollider2D:
   m_Offset: {x: 0.34809017, y: -0.1755588}
   m_Size: {x: 1.0867538, y: 1.4925847}
   m_Direction: 0
+--- !u!114 &1341208240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341208234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb643d2b58938e84a847d6fc7d7cf6e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  maxHealth: 3
+  currentHealth: 0
+  flashSpeed: 0.08
+  flashCycles: 4
+  knockbackForce: 7
+  knockbackDuration: 0.2
 --- !u!1 &1360650401
 GameObject:
   m_ObjectHideFlags: 0
