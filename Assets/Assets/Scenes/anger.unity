@@ -1663,14 +1663,14 @@ MonoBehaviour:
   edgeCheckOffset: 0.4
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   maxHealth: 2
-  attackRange: 0.6
+  attackRange: 1
   attackDamage: 1
   attackCooldown: 1.2
   playerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   anim: {fileID: 401151412}
 --- !u!50 &1341208238
 Rigidbody2D:
@@ -2558,7 +2558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1caa63e24a8fc4441825134176a97b7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::player
-  playercollider: {fileID: 0}
+  playercollider: {fileID: 1699441441}
   groundCheck: {fileID: 773189990}
   groundLayer:
     serializedVersion: 2
@@ -2578,10 +2578,10 @@ MonoBehaviour:
   slideSpeed: 10
   slideDuration: 0.4
   slideCooldown: 0.8
-  slideHeight: 0
-  slideOffset: {x: 0, y: 0}
-  normalHeight: 0
-  normalOffset: {x: 0, y: 0}
+  slideHeight: 1.3
+  slideOffset: {x: -1.8760765, y: -1.0842624}
+  normalHeight: 2.6445844
+  normalOffset: {x: -1.8760765, y: -0.41197017}
   dashSpeed: 25
   dashDuration: 0.3
   dashCooldown: 1

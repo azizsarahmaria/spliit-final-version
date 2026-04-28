@@ -2,6 +2,8 @@
 
 public class Enemy : MonoBehaviour
 {
+    private const string PLAYER_TAG = "Player";
+
     [Header("Patrol Settings")]
     public float moveSpeed = 2f;
     public float patrolDistance = 4f;
@@ -15,7 +17,7 @@ public class Enemy : MonoBehaviour
     public int maxHealth = 2;
 
     [Header("Attack Settings")]
-    public float attackRange = 1.5f;       // ← increased, checks full radius around enemy
+    public float attackRange = 1.5f;
     public int attackDamage = 1;
     public float attackCooldown = 1.2f;
     public LayerMask playerLayer;
@@ -36,6 +38,8 @@ public class Enemy : MonoBehaviour
     private float attackTimer = 0f;
     private float flipCooldown = 0f;
     private const float FLIP_COOLDOWN_TIME = 0.4f;
+    private Transform playerTarget;
+    private Collider2D playerTargetCollider;
 
     private const string ANIM_WALK = "isWalking";
     private const string ANIM_ATTACK = "attack";
@@ -47,6 +51,7 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         originalScale = transform.localScale;
         currentHealth = maxHealth;
+        CachePlayerTarget();
 
         // ← NEW: delay startPos assignment by one frame so physics
         //   settles before we lock in the patrol origin
@@ -116,12 +121,7 @@ public class Enemy : MonoBehaviour
     {
         if (attackTimer > 0f) return;
 
-        // ← NEW: check full circle around enemy, not just in front
-        Collider2D hit = Physics2D.OverlapCircle(
-            transform.position,
-            attackRange,
-            playerLayer
-        );
+        Collider2D hit = FindPlayerInRange();
 
         if (hit != null)
         {
@@ -138,6 +138,44 @@ public class Enemy : MonoBehaviour
 
             StartCoroutine(AttackRoutine(hit));
         }
+    }
+
+    Collider2D FindPlayerInRange()
+    {
+        CachePlayerTarget();
+        if (playerTarget == null) return null;
+
+        float distanceToPlayer = GetDistanceToPlayer();
+        if (distanceToPlayer > attackRange) return null;
+
+        return playerTargetCollider;
+    }
+
+    void CachePlayerTarget()
+    {
+        if (playerTarget != null && playerTargetCollider != null) return;
+
+        GameObject playerObject = GameObject.FindGameObjectWithTag(PLAYER_TAG);
+        if (playerObject == null) return;
+
+        playerTarget = playerObject.transform;
+        playerTargetCollider = playerObject.GetComponent<Collider2D>();
+
+        if (playerTargetCollider == null)
+            playerTargetCollider = playerObject.GetComponentInChildren<Collider2D>();
+    }
+
+    float GetDistanceToPlayer()
+    {
+        if (playerTarget == null) return float.MaxValue;
+
+        if (playerTargetCollider != null)
+        {
+            Vector2 closestPoint = playerTargetCollider.ClosestPoint(transform.position);
+            return Vector2.Distance(transform.position, closestPoint);
+        }
+
+        return Vector2.Distance(transform.position, playerTarget.position);
     }
 
     // ← NEW: coroutine so patrol freezes for the duration of the attack
@@ -159,8 +197,18 @@ public class Enemy : MonoBehaviour
         if (hit != null)
         {
             PlayerHealth player = hit.GetComponent<PlayerHealth>();
+            if (player == null)
+                player = hit.GetComponentInParent<PlayerHealth>();
+
             if (player != null)
                 player.TakeDamage(attackDamage, transform.position);
+
+            AngerHealth anger = hit.GetComponent<AngerHealth>();
+            if (anger == null)
+                anger = hit.GetComponentInParent<AngerHealth>();
+
+            if (anger != null)
+                anger.TakeDamage(attackDamage, transform.position);
         }
 
         // Wait for rest of attack animation to finish
@@ -172,17 +220,23 @@ public class Enemy : MonoBehaviour
             anim.SetBool(ANIM_WALK, true);
     }
 
+
     // ── Dash Damage ───────────────────────────────────────────
     public void TakeDashDamage()
     {
-        if (isDead || isHurt) return;
+        if (isDead) return;
 
+        StopAllCoroutines();
         currentHealth--;
 
         if (currentHealth <= 0)
+        {
             Die();
+        }
         else
+        {
             StartCoroutine(HurtRoutine());
+        }
     }
 
     System.Collections.IEnumerator HurtRoutine()
@@ -207,7 +261,10 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
+        StopAllCoroutines();
         isDead = true;
+        isHurt = false;
+        isAttacking = false;
         rb.linearVelocity = Vector2.zero;
         rb.bodyType = RigidbodyType2D.Kinematic;
 
@@ -217,6 +274,8 @@ public class Enemy : MonoBehaviour
         if (anim != null)
         {
             anim.SetBool(ANIM_WALK, false);
+            anim.ResetTrigger(ANIM_HURT);
+            anim.ResetTrigger(ANIM_ATTACK);
             anim.SetTrigger(ANIM_DEATH);
         }
 
