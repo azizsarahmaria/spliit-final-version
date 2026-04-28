@@ -68,6 +68,11 @@ public class PlayerHealth : MonoBehaviour
         yield return new WaitForSeconds(knockbackDuration);
     }
 
+    public void TakeDamage(int damage, Vector2 sourcePosition)
+    {
+        if (isInvulnerable) return;
+        ApplyHit(sourcePosition);
+    }
     private IEnumerator HitFlashRoutine()
     {
         if (spriteRenderer == null) yield break;
