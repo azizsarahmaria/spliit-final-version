@@ -11,6 +11,8 @@ public class AngerHealth : MonoBehaviour
     [Header("Flash Settings")]
     [SerializeField] private float flashSpeed = 0.08f;
     [SerializeField] private int flashCycles = 4;
+    [SerializeField] private Material flashMaterial;
+    private Material normalMaterial;
 
     [Header("Knockback Settings")]
     [SerializeField] private float knockbackForce = 7f;
@@ -28,7 +30,10 @@ public class AngerHealth : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerController = GetComponent<player>();
         if (spriteRenderer != null)
+        {
             originalColor = spriteRenderer.color;
+            normalMaterial = spriteRenderer.material;
+        }
 
         currentHealth = maxHealth;
         HealthUI.instance.UpdateHearts(currentHealth, maxHealth);
@@ -91,13 +96,14 @@ public class AngerHealth : MonoBehaviour
 
         for (int i = 0; i < flashCycles; i++)
         {
-            spriteRenderer.color = Color.red;           // flash ON
+            spriteRenderer.material = flashMaterial;
             yield return new WaitForSeconds(flashSpeed);
-            spriteRenderer.color = originalColor;         // flash OFF ← fix
+            spriteRenderer.material = normalMaterial;
             yield return new WaitForSeconds(flashSpeed);
         }
 
-        spriteRenderer.color = originalColor;
+        spriteRenderer.material = normalMaterial;
         isInvulnerable = false;
+   
     }
 }

@@ -1752,6 +1752,7 @@ MonoBehaviour:
   currentHealth: 0
   flashSpeed: 0.08
   flashCycles: 4
+  flashMaterial: {fileID: 0}
   knockbackForce: 7
   knockbackDuration: 0.2
 --- !u!1 &1360650401
@@ -2638,6 +2639,7 @@ MonoBehaviour:
   currentHealth: 0
   flashSpeed: 0.08
   flashCycles: 4
+  flashMaterial: {fileID: 2100000, guid: 4ea74f143aac85f498cca8452d8aad5e, type: 2}
   knockbackForce: 7
   knockbackDuration: 0.2
 --- !u!1 &1839673622
