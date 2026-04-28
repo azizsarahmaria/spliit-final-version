@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections; // Required for the Dash Coroutine
 
@@ -90,11 +90,11 @@ public class player : MonoBehaviour
 
     void Update()
     {
-        // If we are dashing, we skip normal movement logic
+        UpdateAnimations(); // ← Now runs every frame, including during a dash
+
         if (isDashing) return;
 
         HandleSlideTimers();
-        UpdateAnimations();
         Flip();
 
         if (jumpBufferTimer > 0) jumpBufferTimer -= Time.deltaTime;
