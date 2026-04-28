@@ -53,9 +53,11 @@ public class Enemy : MonoBehaviour
         currentHealth = maxHealth;
         CachePlayerTarget();
 
-        // ← NEW: delay startPos assignment by one frame so physics
-        //   settles before we lock in the patrol origin
-        StartCoroutine(InitStartPos());
+        // Set startPos immediately — no coroutine needed
+        startPos = transform.position;
+
+        if (anim != null)
+            anim.SetBool(ANIM_WALK, true);
     }
 
     System.Collections.IEnumerator InitStartPos()
@@ -285,6 +287,9 @@ public class Enemy : MonoBehaviour
     // ── Gizmos ────────────────────────────────────────────────
     private void OnDrawGizmosSelected()
     {
+        // Use transform.position in editor, startPos at runtime
+        Vector2 origin = Application.isPlaying ? startPos : (Vector2)transform.position;
+
         // Edge check ray
         Gizmos.color = Color.red;
         Vector2 edgeCheckPos = new Vector2(
@@ -293,8 +298,16 @@ public class Enemy : MonoBehaviour
         );
         Gizmos.DrawLine(edgeCheckPos, edgeCheckPos + Vector2.down * groundCheckDistance);
 
-        // Attack range — now a full circle
+        // Attack range
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, attackRange);
+
+        // Patrol bounds
+        Gizmos.color = Color.green;
+        Vector3 leftBound = new Vector3(origin.x - patrolDistance, transform.position.y, 0);
+        Vector3 rightBound = new Vector3(origin.x + patrolDistance, transform.position.y, 0);
+        Gizmos.DrawLine(leftBound, rightBound);
+        Gizmos.DrawWireSphere(leftBound, 0.2f);
+        Gizmos.DrawWireSphere(rightBound, 0.2f);
     }
 }

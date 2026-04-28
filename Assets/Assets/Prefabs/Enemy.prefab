@@ -163,9 +163,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   moveSpeed: 2
-  patrolDistance: 12
-  groundCheckDistance: 0.5
-  edgeCheckOffset: 0.4
+  patrolDistance: 8
+  groundCheckDistance: 1.12
+  edgeCheckOffset: 1.05
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
