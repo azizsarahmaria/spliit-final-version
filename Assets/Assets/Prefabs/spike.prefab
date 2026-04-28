@@ -206,10 +206,15 @@ MonoBehaviour:
   moveSpeed: 3
   patrolDistance: 6
   groundCheckDistance: 0.75
-  edgeCheckOffset: 0.9
+  edgeCheckOffset: 0.82
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  mushroomLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  wallRayLength: 0.9
+  wallRaySpread: 0.3
   anim: {fileID: 8360276124672080924}
 --- !u!61 &8500547467881111366
 BoxCollider2D:
