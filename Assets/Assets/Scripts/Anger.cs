@@ -149,20 +149,19 @@ public class Anger : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!isDashing) return;
-        if (collision.collider == lastDashHitEnemy) return;
-
-        // Look for the new health script
-        EnemyHealth enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
-        if (enemyHealth == null) enemyHealth = collision.gameObject.GetComponentInParent<EnemyHealth>();
-
-        if (enemyHealth != null)
+        if (collision.gameObject.CompareTag("Player"))
         {
-            lastDashHitEnemy = collision.collider;
-            enemyHealth.HandleDashHit();
+            Anger player = collision.gameObject.GetComponent<Anger>();
+
+            // IF THE PLAYER IS DASHING, DO NOTHING.
+            if (player != null && player.isDashing)
+            {
+                return; // This exits the function so no damage/hurt happens
+            }
+
+            // Normal collision logic (like the enemy attacking the player) goes here...
         }
     }
-
     private void HandleMovement()
     {
         float targetSpeed = isSliding ? facingDirection * slideSpeed : moveInput.x * speed;
