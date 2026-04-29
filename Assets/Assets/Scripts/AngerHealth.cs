@@ -17,32 +17,42 @@ public class AngerHealth : MonoBehaviour
     [SerializeField] private float flashSpeed = 0.08f;
     [SerializeField] private int flashCycles = 4;
     [SerializeField] private Material flashMaterial;
-    private Material normalMaterial;
+    private Material[] normalMaterials;
 
     [Header("Knockback Settings")]
     [SerializeField] private float knockbackForce = 7f;
     [SerializeField] private float knockbackDuration = 0.2f;
 
-    private SpriteRenderer spriteRenderer;
+    private SpriteRenderer[] spriteRenderers;
+    private SpriteRenderer[] flashOverlayRenderers;
     private Rigidbody2D rb;
     private Animator animator;
     private Collider2D[] colliders;
-    private Color originalColor;
     private bool isInvulnerable = false;
     private bool isDead = false;
     private player playerController;
 
     void Start()
     {
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
         colliders = GetComponents<Collider2D>();
         playerController = GetComponent<player>();
-        if (spriteRenderer != null)
+
+        if (spriteRenderers != null && spriteRenderers.Length > 0)
         {
-            originalColor = spriteRenderer.color;
-            normalMaterial = spriteRenderer.material;
+            normalMaterials = new Material[spriteRenderers.Length];
+            flashOverlayRenderers = new SpriteRenderer[spriteRenderers.Length];
+
+            for (int i = 0; i < spriteRenderers.Length; i++)
+            {
+                if (spriteRenderers[i] == null)
+                    continue;
+
+                normalMaterials[i] = spriteRenderers[i].material;
+                flashOverlayRenderers[i] = CreateFlashOverlay(spriteRenderers[i], i);
+            }
         }
 
         currentHealth = maxHealth;
@@ -103,20 +113,75 @@ public class AngerHealth : MonoBehaviour
     }
     private IEnumerator HitFlashRoutine()
     {
-        if (spriteRenderer == null) yield break;
+        if (spriteRenderers == null || spriteRenderers.Length == 0) yield break;
         isInvulnerable = true;
 
         for (int i = 0; i < flashCycles; i++)
         {
-            spriteRenderer.material = flashMaterial;
+            ShowFlashOverlays();
             yield return new WaitForSeconds(flashSpeed);
-            spriteRenderer.material = normalMaterial;
+            HideFlashOverlays();
             yield return new WaitForSeconds(flashSpeed);
         }
 
-        spriteRenderer.material = normalMaterial;
+        HideFlashOverlays();
         isInvulnerable = false;
    
+    }
+
+    private SpriteRenderer CreateFlashOverlay(SpriteRenderer sourceRenderer, int index)
+    {
+        GameObject overlayObject = new GameObject(sourceRenderer.gameObject.name + "_FlashOverlay");
+        overlayObject.hideFlags = HideFlags.HideAndDontSave;
+        overlayObject.transform.SetParent(sourceRenderer.transform, false);
+        overlayObject.transform.localPosition = Vector3.zero;
+        overlayObject.transform.localRotation = Quaternion.identity;
+        overlayObject.transform.localScale = Vector3.one;
+
+        SpriteRenderer overlayRenderer = overlayObject.AddComponent<SpriteRenderer>();
+        overlayRenderer.enabled = false;
+        overlayRenderer.material = flashMaterial != null ? flashMaterial : sourceRenderer.material;
+        overlayRenderer.color = Color.white;
+        overlayRenderer.maskInteraction = sourceRenderer.maskInteraction;
+        overlayRenderer.sortingLayerID = sourceRenderer.sortingLayerID;
+        overlayRenderer.sortingOrder = sourceRenderer.sortingOrder + 1 + index;
+
+        return overlayRenderer;
+    }
+
+    private void ShowFlashOverlays()
+    {
+        for (int i = 0; i < spriteRenderers.Length; i++)
+        {
+            SpriteRenderer sourceRenderer = spriteRenderers[i];
+            SpriteRenderer overlayRenderer = flashOverlayRenderers != null && i < flashOverlayRenderers.Length
+                ? flashOverlayRenderers[i]
+                : null;
+
+            if (sourceRenderer == null || overlayRenderer == null)
+                continue;
+
+            overlayRenderer.sprite = sourceRenderer.sprite;
+            overlayRenderer.drawMode = sourceRenderer.drawMode;
+            overlayRenderer.size = sourceRenderer.size;
+            overlayRenderer.flipX = sourceRenderer.flipX;
+            overlayRenderer.flipY = sourceRenderer.flipY;
+            overlayRenderer.transform.localPosition = Vector3.zero;
+            overlayRenderer.transform.localRotation = Quaternion.identity;
+            overlayRenderer.transform.localScale = Vector3.one;
+            overlayRenderer.enabled = true;
+        }
+    }
+
+    private void HideFlashOverlays()
+    {
+        if (flashOverlayRenderers == null) return;
+
+        for (int i = 0; i < flashOverlayRenderers.Length; i++)
+        {
+            if (flashOverlayRenderers[i] != null)
+                flashOverlayRenderers[i].enabled = false;
+        }
     }
 
     private IEnumerator DeathRoutine()
