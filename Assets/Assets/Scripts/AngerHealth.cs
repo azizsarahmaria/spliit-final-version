@@ -189,6 +189,14 @@ public class AngerHealth : MonoBehaviour
         isDead = true;
         isInvulnerable = true;
 
+        // --- ADD THESE LINES TO DISABLE MOVEMENT ---
+        player movementScript = GetComponent<player>();
+        if (movementScript != null)
+        {
+            movementScript.enabled = false;
+        }
+        // -------------------------------------------
+
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
