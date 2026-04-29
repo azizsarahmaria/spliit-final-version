@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour
 {
@@ -28,6 +28,7 @@ public class MovingPlatform : MonoBehaviour
             return;
         }
 
+        rb.position = pointA.position; // ← snap platform to start
         target = pointB.position;
     }
 
@@ -35,12 +36,12 @@ public class MovingPlatform : MonoBehaviour
     {
         Vector2 newPos = Vector2.MoveTowards(rb.position, target, speed * Time.fixedDeltaTime);
 
-        // Track velocity BEFORE moving
         PlatformVelocity = (newPos - rb.position) / Time.fixedDeltaTime;
 
         rb.MovePosition(newPos);
 
-        if (Vector2.Distance(rb.position, target) < 0.05f)
+        // ✅ Use newPos — rb.position is still the old value here
+        if (Vector2.Distance(newPos, target) < 0.05f)
         {
             movingToB = !movingToB;
             target = movingToB ? pointB.position : pointA.position;
