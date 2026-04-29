@@ -3,8 +3,8 @@
 public class MovingPlatform : MonoBehaviour
 {
     [Header("Waypoints")]
-    public Transform pointA;
-    public Transform pointB;
+    public Transform A;
+    public Transform B;
 
     [Header("Settings")]
     public float speed = 2f;
@@ -21,15 +21,15 @@ public class MovingPlatform : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.useFullKinematicContacts = true;
 
-        if (pointA == null || pointB == null)
+        if (A == null || B == null)
         {
             Debug.LogError("MovingPlatform: PointA or PointB not assigned!", this);
             enabled = false;
             return;
         }
 
-        rb.position = pointA.position; // ← snap platform to start
-        target = pointB.position;
+        rb.position = A.position; // ← snap platform to start
+        target = B.position;
     }
 
     void FixedUpdate()
@@ -44,7 +44,7 @@ public class MovingPlatform : MonoBehaviour
         if (Vector2.Distance(newPos, target) < 0.05f)
         {
             movingToB = !movingToB;
-            target = movingToB ? pointB.position : pointA.position;
+            target = movingToB ? B.position : A.position;
         }
     }
 }
