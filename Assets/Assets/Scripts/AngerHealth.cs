@@ -210,4 +210,5 @@ public class AngerHealth : MonoBehaviour
         yield return new WaitForSeconds(deathAnimationDuration);
         SceneManager.LoadScene(1);
     }
+
 }
