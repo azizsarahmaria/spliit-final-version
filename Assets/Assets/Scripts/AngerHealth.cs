@@ -30,7 +30,7 @@ public class AngerHealth : MonoBehaviour
     private Collider2D[] colliders;
     private bool isInvulnerable = false;
     private bool isDead = false;
-    private player playerController;
+    private Anger angerController;
 
     void Start()
     {
@@ -38,7 +38,7 @@ public class AngerHealth : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
         colliders = GetComponents<Collider2D>();
-        playerController = GetComponent<player>();
+        angerController = GetComponent<Anger>();
 
         if (spriteRenderers != null && spriteRenderers.Length > 0)
         {
@@ -100,7 +100,7 @@ public class AngerHealth : MonoBehaviour
     public void TakeDamage(int damage, Vector2 sourcePosition)
     {
         if (isInvulnerable || isDead) return;
-        if (playerController != null && playerController.IsDashing) return;
+        if (angerController != null && angerController.IsDashing) return;
         ApplyHit(sourcePosition);
     }
 
@@ -109,7 +109,7 @@ public class AngerHealth : MonoBehaviour
         if (other == null) return false;
         if (!other.CompareTag("Enemy") && !other.CompareTag("Spike")) return false;
 
-        return playerController != null && playerController.IsDashing;
+        return angerController != null && angerController.IsDashing;
     }
     private IEnumerator HitFlashRoutine()
     {

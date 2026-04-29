@@ -31,6 +31,7 @@ public class Enemy : MonoBehaviour
     private Vector3 originalScale;
 
     private int currentHealth;
+    private int dashHitsTaken = 0;
     private bool isDead = false;
     private bool isHurt = false;
     private bool isAttacking = false;      // ← NEW: freeze patrol during attack
@@ -229,9 +230,10 @@ public class Enemy : MonoBehaviour
         if (isDead) return;
 
         StopAllCoroutines();
-        currentHealth--;
+        dashHitsTaken++;
+        currentHealth = Mathf.Max(0, currentHealth - 1);
 
-        if (currentHealth <= 0)
+        if (dashHitsTaken >= 2 || currentHealth <= 0)
         {
             Die();
         }
