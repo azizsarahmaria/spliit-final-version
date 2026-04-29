@@ -2474,7 +2474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6263517541027883004, guid: 04ccfdc8160d0a04bb0c7618b4157f17, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.9067507
+      value: -2.9067502
       objectReference: {fileID: 0}
     - target: {fileID: 6263517541027883004, guid: 04ccfdc8160d0a04bb0c7618b4157f17, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4591,7 +4591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f56675ea2a724b428d4413556f29e63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SFXManager
-  footstepssound: {fileID: 8300000, guid: 4d6b5fe7aaae27c4f843ea1986a6d057, type: 3}
+  footstepssound: {fileID: 0}
   jumpSound: {fileID: 0}
   slidesound: {fileID: 0}
   landingsound: {fileID: 0}
