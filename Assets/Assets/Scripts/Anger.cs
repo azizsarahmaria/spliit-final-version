@@ -152,14 +152,15 @@ public class Anger : MonoBehaviour
         if (!isDashing) return;
         if (collision.collider == lastDashHitEnemy) return;
 
-        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
-        if (enemy == null)
-            enemy = collision.gameObject.GetComponentInParent<Enemy>();
+        // Look for the new health script
+        EnemyHealth enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
+        if (enemyHealth == null) enemyHealth = collision.gameObject.GetComponentInParent<EnemyHealth>();
 
-        if (enemy == null) return;
-
-        lastDashHitEnemy = collision.collider;
-        enemy.TakeDashDamage();
+        if (enemyHealth != null)
+        {
+            lastDashHitEnemy = collision.collider;
+            enemyHealth.HandleDashHit();
+        }
     }
 
     private void HandleMovement()

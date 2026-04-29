@@ -277,15 +277,18 @@ public class Enemy : MonoBehaviour
 
         if (anim != null)
         {
+            // Force the walking bool to false so it doesn't try to stay in patrol
             anim.SetBool(ANIM_WALK, false);
+
+            // Clear these to make sure 'die' is the priority
             anim.ResetTrigger(ANIM_HURT);
             anim.ResetTrigger(ANIM_ATTACK);
+
             anim.SetTrigger(ANIM_DEATH);
         }
 
         Destroy(gameObject, 1.2f);
     }
-
     // ── Gizmos ────────────────────────────────────────────────
     private void OnDrawGizmosSelected()
     {
