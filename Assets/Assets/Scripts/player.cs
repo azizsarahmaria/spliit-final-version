@@ -28,6 +28,11 @@ public class player : MonoBehaviour
     public bool isGrounded;
     public float groundCheckRadius = 0.2f;
 
+    [Header("Variable Jump (HOLD)")]
+    public float jumpHoldForce = 20f;
+    public float maxJumpHoldTime = 0.2f;
+    private float jumpHoldTimer;
+
     [Header("Gravity Settings")]
     public float normalGravity = 3f;
     public float jumpGravity = 2.5f;
@@ -81,27 +86,6 @@ public class player : MonoBehaviour
 
         if (playercollider == null)
             playercollider = GetComponent<CapsuleCollider2D>();
-
-        if (playercollider != null)
-        {
-            if (normalHeight <= 0f)
-                normalHeight = playercollider.size.y;
-
-            if (normalOffset == Vector2.zero)
-                normalOffset = playercollider.offset;
-
-            if (slideHeight <= 0f)
-                slideHeight = Mathf.Max(1f, normalHeight * 0.5f);
-
-            if (slideOffset == Vector2.zero)
-            {
-                float offsetShift = (normalHeight - slideHeight) * 0.5f;
-                slideOffset = new Vector2(normalOffset.x, normalOffset.y - offsetShift);
-            }
-
-            playercollider.size = new Vector2(playercollider.size.x, normalHeight);
-            playercollider.offset = normalOffset;
-        }
     }
 
     void Update()
@@ -125,6 +109,7 @@ public class player : MonoBehaviour
 
         CheckGrounded();
         HandleJumpLogic();
+        ApplyJumpHold(); // ⭐ NEW
         ApplyVariableGravity();
         HandleMovement();
     }
@@ -162,44 +147,10 @@ public class player : MonoBehaviour
         canDash = true;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (!isDashing) return;
-        if (collision.collider == lastDashHitEnemy) return;
-
-        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
-        if (enemy == null)
-            enemy = collision.gameObject.GetComponentInParent<Enemy>();
-
-        if (enemy == null) return;
-
-        lastDashHitEnemy = collision.collider;
-        enemy.TakeDashDamage();
-    }
-
     private void HandleMovement()
     {
         float targetSpeed = isSliding ? facingDirection * slideSpeed : moveInput.x * speed;
-
-        float platformX = 0f;
-        if (isGrounded && groundCheck != null)
-        {
-            RaycastHit2D hit = Physics2D.Raycast(
-                groundCheck.position,
-                Vector2.down,
-                groundCheckRadius + 0.2f,
-                groundLayer
-            );
-
-            if (hit.collider != null)
-            {
-                MovingPlatform platform = hit.collider.GetComponent<MovingPlatform>();
-                if (platform != null)
-                    platformX = platform.PlatformVelocity.x;
-            }
-        }
-
-        rb.linearVelocity = new Vector2(targetSpeed + platformX, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(targetSpeed, rb.linearVelocity.y);
     }
 
     private void PollJumpInput()
@@ -238,9 +189,7 @@ public class player : MonoBehaviour
         {
             jumpsRemaining = maxJumps;
             canVariableJump = false;
-
-            if (!isDashing)
-                canDash = true;
+            canDash = true;
         }
     }
 
@@ -252,14 +201,28 @@ public class player : MonoBehaviour
 
     private void ExecuteJump(float force)
     {
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, force);
-        jumpBufferTimer = 0f;
-        canVariableJump = true;
-        jumpsRemaining--;
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
 
-        if (!isJumpHeld)
+        // ⭐ Initial strong jump
+        rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+
+        // ⭐ Enable hold jump
+        jumpHoldTimer = maxJumpHoldTime;
+        canVariableJump = true;
+
+        jumpBufferTimer = 0f;
+        jumpsRemaining--;
+    }
+
+    private void ApplyJumpHold()
+    {
+        if (isJumpHeld && canVariableJump && jumpHoldTimer > 0f)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
+            rb.AddForce(Vector2.up * jumpHoldForce, ForceMode2D.Force);
+            jumpHoldTimer -= Time.fixedDeltaTime;
+        }
+        else
+        {
             canVariableJump = false;
         }
     }
@@ -276,21 +239,19 @@ public class player : MonoBehaviour
 
     private void StartSlide()
     {
-        if (playercollider == null) return;
-
         isSliding = true;
         canSlide = false;
         slideTimer = slideDuration;
+
         playercollider.size = new Vector2(playercollider.size.x, slideHeight);
         playercollider.offset = slideOffset;
     }
 
     private void StopSlide()
     {
-        if (playercollider == null) return;
-
         isSliding = false;
         slideCooldownTimer = slideCooldown;
+
         playercollider.size = new Vector2(playercollider.size.x, normalHeight);
         playercollider.offset = normalOffset;
     }
@@ -316,21 +277,10 @@ public class player : MonoBehaviour
         if (anim == null || rb == null) return;
 
         anim.SetBool("isWalking", Mathf.Abs(moveInput.x) > 0.01f && isGrounded && !isSliding);
-
         anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isSliding", isSliding);
         anim.SetBool("isDashing", isDashing);
         anim.SetFloat("yVelocity", rb.linearVelocity.y);
-    }
-
-    public void NotifyMushroomBounce()
-    {
-        Debug.Log("Player bounced on mushroom!");
-    }
-
-    public void DisableVariableJump()
-    {
-        canVariableJump = false;
     }
 
     private void Flip()

@@ -33,7 +33,7 @@ public class BouncyMushroom : MonoBehaviour
 
                     playerScript.isGrounded = false;
                     playerScript.jumpsRemaining = 1;
-                    playerScript.DisableVariableJump();
+                    //playerScript.DisableVariableJump();
 
                     if (mushroomAnim != null)
                         mushroomAnim.SetTrigger(mushroomTrigger);
