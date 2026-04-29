@@ -4,9 +4,14 @@ using UnityEngine.SceneManagement;
 
 public class AngerHealth : MonoBehaviour
 {
+    private const string IsDeadParameter = "isDead";
+
     [Header("Health Settings")]
     public int maxHealth = 3;
     public int currentHealth;
+
+    [Header("Death Settings")]
+    [SerializeField] private float deathAnimationDuration = 1f;
 
     [Header("Flash Settings")]
     [SerializeField] private float flashSpeed = 0.08f;
@@ -20,14 +25,19 @@ public class AngerHealth : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
+    private Animator animator;
+    private Collider2D[] colliders;
     private Color originalColor;
     private bool isInvulnerable = false;
+    private bool isDead = false;
     private player playerController;
 
     void Start()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponentInChildren<Animator>();
+        colliders = GetComponents<Collider2D>();
         playerController = GetComponent<player>();
         if (spriteRenderer != null)
         {
@@ -53,12 +63,14 @@ public class AngerHealth : MonoBehaviour
 
     private void ApplyHit(Vector2 hazardPosition)
     {
+        if (isDead) return;
+
         currentHealth--;
         HealthUI.instance.UpdateHearts(currentHealth, maxHealth);
 
         if (currentHealth <= 0)
         {
-            SceneManager.LoadScene(1);
+            StartCoroutine(DeathRoutine());
             return;
         }
 
@@ -77,7 +89,7 @@ public class AngerHealth : MonoBehaviour
 
     public void TakeDamage(int damage, Vector2 sourcePosition)
     {
-        if (isInvulnerable) return;
+        if (isInvulnerable || isDead) return;
         if (playerController != null && playerController.IsDashing) return;
         ApplyHit(sourcePosition);
     }
@@ -105,5 +117,32 @@ public class AngerHealth : MonoBehaviour
         spriteRenderer.material = normalMaterial;
         isInvulnerable = false;
    
+    }
+
+    private IEnumerator DeathRoutine()
+    {
+        isDead = true;
+        isInvulnerable = true;
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        if (colliders != null)
+        {
+            foreach (Collider2D hitbox in colliders)
+            {
+                if (hitbox != null)
+                    hitbox.enabled = false;
+            }
+        }
+
+        if (animator != null)
+            animator.SetBool(IsDeadParameter, true);
+
+        yield return new WaitForSeconds(deathAnimationDuration);
+        SceneManager.LoadScene(1);
     }
 }
