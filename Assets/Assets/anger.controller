@@ -80,6 +80,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 3
     m_ConditionEvent: yVelocity
     m_EventTreshold: 0.1
+  - m_ConditionMode: 2
+    m_ConditionEvent: isSliding
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3905358560275050653}
   m_Solo: 0
@@ -156,7 +159,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 738370933662286087}
-    m_Position: {x: 100, y: 220, z: 0}
+    m_Position: {x: 90, y: 180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3905358560275050653}
     m_Position: {x: 870, y: 30, z: 0}
@@ -165,16 +168,16 @@ AnimatorStateMachine:
     m_Position: {x: 660, y: 180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 582327911754918347}
-    m_Position: {x: -170, y: 180, z: 0}
+    m_Position: {x: -170, y: 90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1163472271978460102}
-    m_Position: {x: 350, y: 410, z: 0}
+    m_Position: {x: 260, y: 430, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1724632266412262066}
     m_Position: {x: 510, y: 340, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5956311973005398628}
-    m_Position: {x: 180, y: -170, z: 0}
+    m_Position: {x: 50, y: -180, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -9202142242432034446}
@@ -192,31 +195,6 @@ AnimatorStateMachine:
   m_ExitPosition: {x: 1030, y: 210, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 738370933662286087}
---- !u!1101 &-4019238004429698350
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: isSliding
-    m_EventTreshold: 0
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 738370933662286087}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 0
-  serializedVersion: 3
-  m_TransitionDuration: 0
-  m_TransitionOffset: 0
-  m_ExitTime: 0.5
-  m_HasExitTime: 0
-  m_HasFixedDuration: 1
-  m_InterruptionSource: 0
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
 --- !u!1102 &-3905358560275050653
 AnimatorState:
   serializedVersion: 6
@@ -464,9 +442,7 @@ AnimatorState:
   m_Name: slide
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions:
-  - {fileID: -4019238004429698350}
-  - {fileID: 2367661204258830893}
+  m_Transitions: []
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -490,17 +466,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: isDead
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isGrounded
-    m_EventTreshold: 0
-  - m_ConditionMode: 4
-    m_ConditionEvent: yVelocity
-    m_EventTreshold: -0.1
-  - m_ConditionMode: 2
-    m_ConditionEvent: isDashing
+  - m_ConditionMode: 1
+    m_ConditionEvent: isFalling
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -9154154243418000003}
@@ -516,31 +483,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 0
---- !u!1101 &2367661204258830893
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: isSliding
-    m_EventTreshold: 0
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 582327911754918347}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 0
-  serializedVersion: 3
-  m_TransitionDuration: 0
-  m_TransitionOffset: 0
-  m_ExitTime: 0.5
-  m_HasExitTime: 0
-  m_HasFixedDuration: 1
-  m_InterruptionSource: 0
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
 --- !u!1101 &3184865834690427842
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -579,9 +521,6 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 2
     m_ConditionEvent: isDead
-    m_EventTreshold: 0
-  - m_ConditionMode: 1
-    m_ConditionEvent: isSliding
     m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: isGrounded
