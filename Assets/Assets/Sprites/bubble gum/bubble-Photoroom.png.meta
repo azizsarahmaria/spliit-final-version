@@ -1,0 +1,563 @@
+fileFormatVersion: 2
+guid: 7b24bf3ff80dfad4c8060804f26a35d1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3353224484022868683
+    second: bubble-Photoroom_0
+  - first:
+      213: 6490180974080012330
+    second: bubble-Photoroom_1
+  - first:
+      213: -5587615563718604950
+    second: bubble-Photoroom_2
+  - first:
+      213: 220920403968725809
+    second: bubble-Photoroom_3
+  - first:
+      213: 3657509224147451202
+    second: bubble-Photoroom_4
+  - first:
+      213: 5866144385245872944
+    second: bubble-Photoroom_5
+  - first:
+      213: -124750861592611183
+    second: bubble-Photoroom_6
+  - first:
+      213: 7920338841569685384
+    second: bubble-Photoroom_7
+  - first:
+      213: -3454936454120954630
+    second: bubble-Photoroom_8
+  - first:
+      213: -1158287344130692801
+    second: bubble-Photoroom_9
+  - first:
+      213: -1890600790443803749
+    second: bubble-Photoroom_10
+  - first:
+      213: -3699889735219825733
+    second: bubble-Photoroom_11
+  - first:
+      213: -1222504217487098274
+    second: bubble-Photoroom_12
+  - first:
+      213: 5738529723693309348
+    second: bubble-Photoroom_13
+  - first:
+      213: 5544635732331719951
+    second: bubble-Photoroom_14
+  - first:
+      213: 5605514667574917883
+    second: bubble-Photoroom_15
+  - first:
+      213: -7328454883862101432
+    second: bubble-Photoroom_16
+  - first:
+      213: -6024307450455662179
+    second: bubble-Photoroom_17
+  - first:
+      213: -2191311411872049120
+    second: bubble-Photoroom_18
+  - first:
+      213: -5665950823206820285
+    second: bubble-Photoroom_19
+  - first:
+      213: -6526172685040887494
+    second: bubble-Photoroom_20
+  - first:
+      213: 6235718040877001879
+    second: bubble-Photoroom_21
+  - first:
+      213: 8784407587403445254
+    second: bubble-Photoroom_22
+  - first:
+      213: 3083138628414330434
+    second: bubble-Photoroom_23
+  - first:
+      213: 4541441146084196934
+    second: bubble-Photoroom_24
+  - first:
+      213: -8768090448602574115
+    second: bubble-Photoroom_25
+  - first:
+      213: 6535637146206952813
+    second: bubble-Photoroom_26
+  - first:
+      213: 4099569637133740168
+    second: bubble-Photoroom_27
+  - first:
+      213: -1118672318353886077
+    second: bubble-Photoroom_28
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: bubble-Photoroom_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 668
+        width: 235
+        height: 292
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bca535ee6eb098e20800000000000000
+      internalID: 3353224484022868683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bubble-Photoroom_1
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 668
+        width: 144
+        height: 246
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a20b900a531c11a50800000000000000
+      internalID: 6490180974080012330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bubble-Photoroom_2
+      rect:
+        serializedVersion: 2
+        x: 539
+        y: 666
+        width: 196
+        height: 195
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a67cb1fcf3dc472b0800000000000000
+      internalID: -5587615563718604950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bubble-Photoroom_4
+      rect:
+        serializedVersion: 2
+        x: 777
+        y: 668
+        width: 192
+        height: 246
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24df504d24512c230800000000000000
+      internalID: 3657509224147451202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bubble-Photoroom_5
+      rect:
+        serializedVersion: 2
+        x: 1021
+        y: 664
+        width: 168
+        height: 246
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0338bbbfc3bb86150800000000000000
+      internalID: 5866144385245872944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bubble-Photoroom_11
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 371
+        width: 181
+        height: 244
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb3bb1083e957acc0800000000000000
+      internalID: -3699889735219825733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bubble-Photoroom_12
+      rect:
+        serializedVersion: 2
+        x: 316
+        y: 371
+        width: 185
+        height: 244
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5eb34c24eac80fe0800000000000000
+      internalID: -1222504217487098274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bubble-Photoroom_14
+      rect:
+        serializedVersion: 2
+        x: 546
+        y: 372
+        width: 176
+        height: 241
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0de19262d082fc40800000000000000
+      internalID: 5544635732331719951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bubble-Photoroom_16
+      rect:
+        serializedVersion: 2
+        x: 792
+        y: 372
+        width: 141
+        height: 241
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8424ce66c191c4a90800000000000000
+      internalID: -7328454883862101432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bubble-Photoroom_17
+      rect:
+        serializedVersion: 2
+        x: 1033
+        y: 372
+        width: 142
+        height: 241
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d91e9ddba4c556ca0800000000000000
+      internalID: -6024307450455662179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bubble-Photoroom_22
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 104
+        width: 154
+        height: 237
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 604bd61b82c78e970800000000000000
+      internalID: 8784407587403445254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bubble-Photoroom_23
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 92
+        width: 137
+        height: 249
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 246dbe35f3289ca20800000000000000
+      internalID: 3083138628414330434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bubble-Photoroom_24
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 94
+        width: 136
+        height: 247
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64201b829a0760f30800000000000000
+      internalID: 4541441146084196934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bubble-Photoroom_25
+      rect:
+        serializedVersion: 2
+        x: 797
+        y: 92
+        width: 153
+        height: 249
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd25c8c313c715680800000000000000
+      internalID: -8768090448602574115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bubble-Photoroom_26
+      rect:
+        serializedVersion: 2
+        x: 1036
+        y: 92
+        width: 183
+        height: 249
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6d53807b5f33ba50800000000000000
+      internalID: 6535637146206952813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 8f195e5845819ca46aa0d68b9e8c4260
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      bubble-Photoroom_0: 3353224484022868683
+      bubble-Photoroom_1: 6490180974080012330
+      bubble-Photoroom_10: -1890600790443803749
+      bubble-Photoroom_11: -3699889735219825733
+      bubble-Photoroom_12: -1222504217487098274
+      bubble-Photoroom_13: 5738529723693309348
+      bubble-Photoroom_14: 5544635732331719951
+      bubble-Photoroom_15: 5605514667574917883
+      bubble-Photoroom_16: -7328454883862101432
+      bubble-Photoroom_17: -6024307450455662179
+      bubble-Photoroom_18: -2191311411872049120
+      bubble-Photoroom_19: -5665950823206820285
+      bubble-Photoroom_2: -5587615563718604950
+      bubble-Photoroom_20: -6526172685040887494
+      bubble-Photoroom_21: 6235718040877001879
+      bubble-Photoroom_22: 8784407587403445254
+      bubble-Photoroom_23: 3083138628414330434
+      bubble-Photoroom_24: 4541441146084196934
+      bubble-Photoroom_25: -8768090448602574115
+      bubble-Photoroom_26: 6535637146206952813
+      bubble-Photoroom_27: 4099569637133740168
+      bubble-Photoroom_28: -1118672318353886077
+      bubble-Photoroom_3: 220920403968725809
+      bubble-Photoroom_4: 3657509224147451202
+      bubble-Photoroom_5: 5866144385245872944
+      bubble-Photoroom_6: -124750861592611183
+      bubble-Photoroom_7: 7920338841569685384
+      bubble-Photoroom_8: -3454936454120954630
+      bubble-Photoroom_9: -1158287344130692801
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -61,6 +62,7 @@ public class player : MonoBehaviour
     private float slideTimer;
     private float slideCooldownTimer;
     private MovingPlatform currentPlatform;
+    private readonly HashSet<Collider2D> groundedColliders = new HashSet<Collider2D>();
 
     [Header("Dash Settings")]
     public float dashSpeed = 25f;
@@ -186,9 +188,12 @@ public class player : MonoBehaviour
 
     private void CheckGrounded()
     {
-        if (groundCheck == null) return;
+        bool groundedByOverlap = false;
 
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        if (groundCheck != null)
+            groundedByOverlap = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
+        isGrounded = groundedByOverlap || groundedColliders.Count > 0;
 
         if (isGrounded && rb.linearVelocity.y <= 0.1f)
         {
@@ -283,6 +288,8 @@ public class player : MonoBehaviour
 
         anim.SetBool("isWalking", Mathf.Abs(moveInput.x) > 0.01f && isGrounded && !isSliding);
         anim.SetBool("isGrounded", isGrounded);
+        anim.SetBool("isJumping", !isGrounded && rb.linearVelocity.y > 0.1f);
+        anim.SetBool("isFalling", !isGrounded && rb.linearVelocity.y < -0.1f);
         anim.SetBool("isSliding", isSliding);
         anim.SetBool("isDashing", isDashing);
         anim.SetFloat("yVelocity", rb.linearVelocity.y);
@@ -306,15 +313,54 @@ public class player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        // Only attach if landing on top (hitting from above)
-        if (col.contacts[0].normal.y > 0.5f)
+        UpdateGroundedCollision(col);
+
+        if (IsStandingOnCollision(col))
+            currentPlatform = col.gameObject.GetComponent<MovingPlatform>();
+    }
+
+    private void OnCollisionStay2D(Collision2D col)
+    {
+        UpdateGroundedCollision(col);
+
+        if (currentPlatform == null && IsStandingOnCollision(col))
             currentPlatform = col.gameObject.GetComponent<MovingPlatform>();
     }
 
     private void OnCollisionExit2D(Collision2D col)
     {
-        if (col.gameObject.GetComponent<MovingPlatform>() != null)
+        groundedColliders.Remove(col.collider);
+
+        if (currentPlatform != null && col.gameObject.GetComponent<MovingPlatform>() == currentPlatform)
             currentPlatform = null;
+    }
+
+    private void UpdateGroundedCollision(Collision2D col)
+    {
+        if (!IsGroundSurface(col.collider))
+            return;
+
+        if (IsStandingOnCollision(col))
+            groundedColliders.Add(col.collider);
+        else
+            groundedColliders.Remove(col.collider);
+    }
+
+    private bool IsStandingOnCollision(Collision2D col)
+    {
+        for (int i = 0; i < col.contactCount; i++)
+        {
+            if (col.GetContact(i).normal.y > 0.5f)
+                return true;
+        }
+
+        return false;
+    }
+
+    private bool IsGroundSurface(Collider2D col)
+    {
+        bool layerMatches = groundLayer.value != 0 && (groundLayer.value & (1 << col.gameObject.layer)) != 0;
+        return layerMatches || col.CompareTag("Ground") || col.GetComponent<MovingPlatform>() != null;
     }
 
     private void OnDrawGizmosSelected()
