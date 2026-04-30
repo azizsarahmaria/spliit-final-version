@@ -264,18 +264,19 @@ public class Anger : MonoBehaviour
     {
         if (anim == null || rb == null) return;
 
-        // Check spelling! Make sure the parameter in the Animator window
-        // is spelled EXACTLY "isGrounded" to match this line.
-        bool isFalling = !isGrounded && rb.linearVelocity.y < -0.1f && !isSliding && !isDashing;
-
+        // Send the basic states
         anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isWalking", Mathf.Abs(moveInput.x) > 0.01f && isGrounded && !isSliding);
         anim.SetBool("isSliding", isSliding);
         anim.SetBool("isDashing", isDashing);
 
-        // We will use this float to drive Jump and Fall states
+        // Use yVelocity to drive the Jump/Fall transitions
         anim.SetFloat("yVelocity", rb.linearVelocity.y);
-        anim.SetBool("isFalling", isFalling);
+
+        // Keep isFalling if you want a specific boolean, 
+        // but we can also do this with just yVelocity in the Animator.
+        bool falling = !isGrounded && rb.linearVelocity.y < -0.1f;
+        anim.SetBool("isFalling", falling);
     }
 
     public void NotifyMushroomBounce()
