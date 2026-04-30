@@ -277,13 +277,15 @@ public class Anger : MonoBehaviour
     {
         if (anim == null || rb == null) return;
 
+        bool isFalling = !isGrounded && rb.linearVelocity.y < -0.1f && !isSliding && !isDashing;
+
         anim.SetBool("isWalking", Mathf.Abs(moveInput.x) > 0.01f && isGrounded && !isSliding);
         anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isSliding", isSliding);
         anim.SetBool("isDashing", isDashing);
         anim.SetFloat("yVelocity", rb.linearVelocity.y);
+        anim.SetBool("isFalling", isFalling); // <-- add this
     }
-
     public void NotifyMushroomBounce()
     {
         Debug.Log("Player bounced on mushroom!");

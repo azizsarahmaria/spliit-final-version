@@ -1,35 +1,48 @@
 using UnityEngine;
+using System.Collections;
 
 public class collectible : MonoBehaviour
 {
     public int scoreValue = 10;
-    public GameObject collectParticlePrefab; // drag your particle prefab here
+    public GameObject collectParticleEffect; // back to GameObject — just drag particle object here
+
+    private bool collected = false;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        Debug.Log("Trigger hit by: " + other.name + " | Tag: " + other.tag);
+
+        if (other.CompareTag("Player") && !collected)
         {
+            collected = true;
+
             if (ScoreManager.instance != null)
                 ScoreManager.instance.AddScore(scoreValue);
-            else
-                Debug.LogWarning("ScoreManager instance is missing from the scene!");
 
             if (SFXManager.Instance != null)
                 SFXManager.Instance.Playblinklesound();
-            else
-                Debug.LogWarning("SFXManager instance is missing from the scene!");
 
-            // Spawn and play particle effect before destroying
-            if (collectParticlePrefab != null)
-            {
-                GameObject particles = Instantiate(collectParticlePrefab, transform.position, Quaternion.identity);
-                ParticleSystem ps = particles.GetComponent<ParticleSystem>();
-                if (ps != null) ps.Play();
-            }
-            else
-                Debug.LogWarning("No particle prefab assigned on collectible!");
-
-            Destroy(gameObject);
+            StartCoroutine(CollectRoutine());
         }
+    }
+
+    private IEnumerator CollectRoutine()
+    {
+        // Get SpriteRenderer from children too
+        SpriteRenderer sr = GetComponentInChildren<SpriteRenderer>();
+        if (sr != null) sr.enabled = false;
+
+        GetComponent<Collider2D>().enabled = false;
+
+        if (collectParticleEffect != null)
+        {
+            collectParticleEffect.transform.SetParent(null);
+            ParticleSystem ps = collectParticleEffect.GetComponent<ParticleSystem>();
+            ps.Play();
+            yield return new WaitForSeconds(ps.main.duration);
+            Destroy(collectParticleEffect);
+        }
+
+        Destroy(gameObject);
     }
 }
