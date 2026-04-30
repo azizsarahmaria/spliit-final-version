@@ -28,6 +28,11 @@ public class Anger : MonoBehaviour
     public bool isGrounded;
     public float groundCheckRadius = 0.2f;
 
+    [Header("Variable Jump (HOLD)")]
+    public float jumpHoldForce = 20f;
+    public float maxJumpHoldTime = 0.2f;
+    private float jumpHoldTimer;
+
     [Header("Gravity Settings")]
     public float normalGravity = 3f;
     public float jumpGravity = 2.5f;
@@ -55,6 +60,7 @@ public class Anger : MonoBehaviour
     private bool canSlide = true;
     private float slideTimer;
     private float slideCooldownTimer;
+    private MovingPlatform currentPlatform;
 
     [Header("Dash Settings")]
     public float dashSpeed = 25f;
@@ -62,6 +68,8 @@ public class Anger : MonoBehaviour
     public float dashCooldown = 1f;
     private bool isDashing;
     private bool canDash = true;
+
+    private Collider2D lastDashHitEnemy;
 
     public bool IsDashing => isDashing;
 
@@ -77,15 +85,8 @@ public class Anger : MonoBehaviour
         maxJumps = enableDoubleJump ? 2 : 1;
         jumpsRemaining = maxJumps;
 
-        if (playercollider != null)
-        {
-            playercollider.size = new Vector2(playercollider.size.x, normalHeight);
-            playercollider.offset = normalOffset;
-        }
-        else
-        {
-            Debug.LogError("Drag your CapsuleCollider2D into the Playercollider slot in the Inspector!");
-        }
+        if (playercollider == null)
+            playercollider = GetComponent<CapsuleCollider2D>();
     }
 
     void Update()
@@ -109,6 +110,7 @@ public class Anger : MonoBehaviour
 
         CheckGrounded();
         HandleJumpLogic();
+        ApplyJumpHold(); // ⭐ NEW
         ApplyVariableGravity();
         HandleMovement();
     }
@@ -131,6 +133,7 @@ public class Anger : MonoBehaviour
     {
         canDash = false;
         isDashing = true;
+        lastDashHitEnemy = null;
 
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
@@ -147,8 +150,12 @@ public class Anger : MonoBehaviour
 
     private void HandleMovement()
     {
+        float platformVelX = currentPlatform != null ? currentPlatform.PlatformVelocity.x : 0f;
+        float platformVelY = currentPlatform != null ? currentPlatform.PlatformVelocity.y : 0f;
+
         float targetSpeed = isSliding ? facingDirection * slideSpeed : moveInput.x * speed;
-        rb.linearVelocity = new Vector2(targetSpeed, rb.linearVelocity.y);
+
+        rb.linearVelocity = new Vector2(targetSpeed + platformVelX, rb.linearVelocity.y + platformVelY);
     }
 
     private void PollJumpInput()
@@ -162,7 +169,6 @@ public class Anger : MonoBehaviour
             isJumpHeld = true;
             jumpBufferTimer = jumpBufferTime;
 
-            // Double jump — only when airborne and jumps remain
             if (!isGrounded && jumpsRemaining > 0)
                 ExecuteJump(doubleJumpForce);
         }
@@ -170,7 +176,6 @@ public class Anger : MonoBehaviour
         {
             isJumpHeld = false;
 
-            // Jump cut — release early for a shorter jump
             if (rb.linearVelocity.y > 0f && canVariableJump)
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
@@ -189,30 +194,40 @@ public class Anger : MonoBehaviour
         {
             jumpsRemaining = maxJumps;
             canVariableJump = false;
-
-            if (!isDashing)
-                canDash = true;
+            canDash = true;
         }
     }
 
     private void HandleJumpLogic()
     {
-        // Grounded jump via buffer
         if (jumpBufferTimer > 0f && isGrounded)
             ExecuteJump(jumpForce);
     }
 
     private void ExecuteJump(float force)
     {
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, force);
-        jumpBufferTimer = 0f;
-        canVariableJump = true;
-        jumpsRemaining--;
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
 
-        // If player tapped (not held), immediately cut the jump
-        if (!isJumpHeld)
+        // ⭐ Initial strong jump
+        rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+
+        // ⭐ Enable hold jump
+        jumpHoldTimer = maxJumpHoldTime;
+        canVariableJump = true;
+
+        jumpBufferTimer = 0f;
+        jumpsRemaining--;
+    }
+
+    private void ApplyJumpHold()
+    {
+        if (isJumpHeld && canVariableJump && jumpHoldTimer > 0f)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
+            rb.AddForce(Vector2.up * jumpHoldForce, ForceMode2D.Force);
+            jumpHoldTimer -= Time.fixedDeltaTime;
+        }
+        else
+        {
             canVariableJump = false;
         }
     }
@@ -232,6 +247,7 @@ public class Anger : MonoBehaviour
         isSliding = true;
         canSlide = false;
         slideTimer = slideDuration;
+
         playercollider.size = new Vector2(playercollider.size.x, slideHeight);
         playercollider.offset = slideOffset;
     }
@@ -240,6 +256,7 @@ public class Anger : MonoBehaviour
     {
         isSliding = false;
         slideCooldownTimer = slideCooldown;
+
         playercollider.size = new Vector2(playercollider.size.x, normalHeight);
         playercollider.offset = normalOffset;
     }
@@ -260,31 +277,18 @@ public class Anger : MonoBehaviour
         }
     }
 
+    // ... [KEEP ALL YOUR EXISTING VARIABLES AND MOVEMENT CODE THE SAME] ...
+
     private void UpdateAnimations()
     {
         if (anim == null || rb == null) return;
 
-        // Send the basic states
-        anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isWalking", Mathf.Abs(moveInput.x) > 0.01f && isGrounded && !isSliding);
+        anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isSliding", isSliding);
         anim.SetBool("isDashing", isDashing);
-
-        // Use yVelocity to drive the Jump/Fall transitions
         anim.SetFloat("yVelocity", rb.linearVelocity.y);
-
-        // Keep isFalling if you want a specific boolean, 
-        // but we can also do this with just yVelocity in the Animator.
-        bool falling = !isGrounded && rb.linearVelocity.y < -0.1f;
-        anim.SetBool("isFalling", falling);
     }
-
-    public void NotifyMushroomBounce()
-    {
-        Debug.Log("Player bounced on mushroom!");
-    }
-
-    public void DisableVariableJump() => canVariableJump = false;
 
     private void Flip()
     {
@@ -300,6 +304,44 @@ public class Anger : MonoBehaviour
             facingDirection = -1;
             spriteRenderer.flipX = true;
         }
+    }
+
+    // --- ⭐ NEW DASH HIT LOGIC ---
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        CheckDashHit(col);
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        // Only attach to moving platforms if landing on top
+        if (col.gameObject.GetComponent<MovingPlatform>() != null && col.contacts[0].normal.y > 0.5f)
+        {
+            currentPlatform = col.gameObject.GetComponent<MovingPlatform>();
+        }
+
+        CheckDashHit(col.collider);
+    }
+
+    private void CheckDashHit(Collider2D col)
+    {
+        // If we are dashing, and we hit an enemy, and it's not the exact same enemy we already hit this dash...
+        if (isDashing && col.CompareTag("Enemy") && col != lastDashHitEnemy)
+        {
+            lastDashHitEnemy = col; // Remember this enemy so we don't hit it 10 times in one dash
+
+            EnemyHealth eHealth = col.GetComponent<EnemyHealth>();
+            if (eHealth != null)
+            {
+                eHealth.HandleDashHit();
+            }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D col)
+    {
+        if (col.gameObject.GetComponent<MovingPlatform>() != null)
+            currentPlatform = null;
     }
 
     private void OnDrawGizmosSelected()

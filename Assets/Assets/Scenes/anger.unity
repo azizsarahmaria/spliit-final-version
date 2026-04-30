@@ -5049,7 +5049,7 @@ GameObject:
   - component: {fileID: 191235200}
   - component: {fileID: 191235201}
   - component: {fileID: 191235202}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: anger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6377,7 +6377,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 773189990}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Groundcheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36738,11 +36738,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1699441437}
   - component: {fileID: 1699441435}
-  - component: {fileID: 1699441440}
   - component: {fileID: 1699441439}
   - component: {fileID: 1699441441}
   - component: {fileID: 1699441443}
-  m_Layer: 0
+  - component: {fileID: 1699441444}
+  m_Layer: 8
   m_Name: Anger
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -36823,47 +36823,6 @@ MonoBehaviour:
   m_DefaultActionMap: 
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &1699441440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699441433}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1caa63e24a8fc4441825134176a97b7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::player
-  playercollider: {fileID: 1699441441}
-  groundCheck: {fileID: 773189990}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  speed: 18
-  jumpForce: 11
-  doubleJumpForce: 4.5
-  jumpCutMultiplier: 0.6
-  isGrounded: 0
-  groundCheckRadius: 0.2
-  jumpHoldForce: 20
-  maxJumpHoldTime: 0.2
-  normalGravity: 4
-  jumpGravity: 1
-  fallGravity: 10
-  jumpBufferTime: 0.15
-  enableDoubleJump: 0
-  jumpsRemaining: 0
-  slideSpeed: 20
-  slideDuration: 0.4
-  slideCooldown: 0.8
-  slideHeight: 1.3
-  slideOffset: {x: -1.8760765, y: -1.0842624}
-  normalHeight: 2.6445844
-  normalOffset: {x: -1.8760765, y: -0.41197017}
-  dashSpeed: 25
-  dashDuration: 0.3
-  dashCooldown: 1
 --- !u!70 &1699441441
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -36921,6 +36880,47 @@ MonoBehaviour:
   flashMaterial: {fileID: 2100000, guid: 4ea74f143aac85f498cca8452d8aad5e, type: 2}
   knockbackForce: 7
   knockbackDuration: 0.2
+--- !u!114 &1699441444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699441433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41ccc5268d9d2ba4dbab2b267ca37f8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Anger
+  playercollider: {fileID: 1699441441}
+  groundCheck: {fileID: 773189990}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  speed: 18
+  jumpForce: 11
+  doubleJumpForce: 12
+  jumpCutMultiplier: 0.6
+  isGrounded: 0
+  groundCheckRadius: 0.2
+  jumpHoldForce: 20
+  maxJumpHoldTime: 0.2
+  normalGravity: 4
+  jumpGravity: 1
+  fallGravity: 10
+  jumpBufferTime: 0.15
+  enableDoubleJump: 0
+  jumpsRemaining: 0
+  slideSpeed: 15
+  slideDuration: 0.4
+  slideCooldown: 0.6
+  slideHeight: 1.5
+  slideOffset: {x: -1.876076, y: -1.5}
+  normalHeight: 2.97
+  normalOffset: {x: -1.876076, y: -0.4119702}
+  dashSpeed: 25
+  dashDuration: 0.3
+  dashCooldown: 1
 --- !u!224 &1732919822 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7837822402796361068, guid: 369fd7dcb3ccfb641800dc7258a209e9, type: 3}
@@ -37689,7 +37689,7 @@ RectTransform:
   m_GameObject: {fileID: 2140574470}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 345152179}

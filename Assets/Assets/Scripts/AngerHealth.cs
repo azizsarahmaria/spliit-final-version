@@ -56,18 +56,22 @@ public class AngerHealth : MonoBehaviour
         }
 
         currentHealth = maxHealth;
-        HealthUI.instance.UpdateHearts(currentHealth, maxHealth);
+        if (HealthUI.instance != null)
+            HealthUI.instance.UpdateHearts(currentHealth, maxHealth);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if ((other.CompareTag("Spike") || other.CompareTag("Enemy")) && !isInvulnerable && !ShouldIgnoreHit(other))
+        // ONLY Spikes deal damage by touching. 
+        // We REMOVE the Enemy check here.
+        if (other.CompareTag("Spike") && !isInvulnerable && !ShouldIgnoreHit(other))
             ApplyHit(other.transform.position);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if ((collision.gameObject.CompareTag("Spike") || collision.gameObject.CompareTag("Enemy")) && !isInvulnerable && !ShouldIgnoreHit(collision.collider))
+        // ONLY Spikes deal damage by touching.
+        if (collision.gameObject.CompareTag("Spike") && !isInvulnerable && !ShouldIgnoreHit(collision.collider))
             ApplyHit(collision.transform.position);
     }
 
@@ -76,7 +80,8 @@ public class AngerHealth : MonoBehaviour
         if (isDead) return;
 
         currentHealth--;
-        HealthUI.instance.UpdateHearts(currentHealth, maxHealth);
+        if (HealthUI.instance != null)
+            HealthUI.instance.UpdateHearts(currentHealth, maxHealth);
 
         if (currentHealth <= 0)
         {
@@ -86,15 +91,6 @@ public class AngerHealth : MonoBehaviour
 
         StartCoroutine(HitFlashRoutine());
         StartCoroutine(KnockbackRoutine(hazardPosition));
-    }
-
-    private IEnumerator KnockbackRoutine(Vector2 hazardPosition)
-    {
-        if (rb == null) yield break;
-        Vector2 moveDirection = (transform.position - (Vector3)hazardPosition).normalized;
-        rb.linearVelocity = Vector2.zero;
-        rb.AddForce(moveDirection * knockbackForce, ForceMode2D.Impulse);
-        yield return new WaitForSeconds(knockbackDuration);
     }
 
     public void TakeDamage(int damage, Vector2 sourcePosition)
@@ -111,6 +107,19 @@ public class AngerHealth : MonoBehaviour
 
         return angerController != null && angerController.IsDashing;
     }
+
+    // ⭐ FIX: Added missing KnockbackRoutine
+    private IEnumerator KnockbackRoutine(Vector2 hazardPosition)
+    {
+        if (rb == null) yield break;
+
+        Vector2 moveDirection = (transform.position - (Vector3)hazardPosition).normalized;
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(new Vector2(moveDirection.x, 0.5f) * knockbackForce, ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(knockbackDuration);
+    }
+
     private IEnumerator HitFlashRoutine()
     {
         if (spriteRenderers == null || spriteRenderers.Length == 0) yield break;
@@ -126,7 +135,6 @@ public class AngerHealth : MonoBehaviour
 
         HideFlashOverlays();
         isInvulnerable = false;
-   
     }
 
     private SpriteRenderer CreateFlashOverlay(SpriteRenderer sourceRenderer, int index)
@@ -166,9 +174,6 @@ public class AngerHealth : MonoBehaviour
             overlayRenderer.size = sourceRenderer.size;
             overlayRenderer.flipX = sourceRenderer.flipX;
             overlayRenderer.flipY = sourceRenderer.flipY;
-            overlayRenderer.transform.localPosition = Vector3.zero;
-            overlayRenderer.transform.localRotation = Quaternion.identity;
-            overlayRenderer.transform.localScale = Vector3.one;
             overlayRenderer.enabled = true;
         }
     }
@@ -189,18 +194,17 @@ public class AngerHealth : MonoBehaviour
         isDead = true;
         isInvulnerable = true;
 
-        // --- ADD THESE LINES TO DISABLE MOVEMENT ---
-        player movementScript = GetComponent<player>();
+        // ⭐ FIX: Changed 'player' to 'Anger' to match your script name
+        Anger movementScript = GetComponent<Anger>();
         if (movementScript != null)
         {
             movementScript.enabled = false;
         }
-        // -------------------------------------------
 
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
-            rb.bodyType = RigidbodyType2D.Kinematic;
+            rb.bodyType = RigidbodyType2D.Static;
         }
 
         if (colliders != null)
@@ -216,7 +220,6 @@ public class AngerHealth : MonoBehaviour
             animator.SetBool(IsDeadParameter, true);
 
         yield return new WaitForSeconds(deathAnimationDuration);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
 }
