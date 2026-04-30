@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 4493973855402143010}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Spike
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -162,21 +162,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee7795a318dde6e418426f59d205fadd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  moveSpeed: 2
-  patrolDistance: 8
-  groundCheckDistance: 0.9
-  edgeCheckOffset: 1.05
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  maxHealth: 2
-  attackRange: 2
-  attackDamage: 1
-  attackCooldown: 1.2
+  patrolDistance: 8.28
+  moveSpeed: 5
+  attackRange: 1.08
+  attackCooldown: 1.5
+  hitDelay: 0.2
+  attackHitboxRadius: 1.2
   playerLayer:
     serializedVersion: 2
-    m_Bits: 1
-  anim: {fileID: 5595385700319936895}
+    m_Bits: 256
 --- !u!50 &7888527410589746806
 Rigidbody2D:
   serializedVersion: 5
