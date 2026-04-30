@@ -60,6 +60,7 @@ public class player : MonoBehaviour
     private bool canSlide = true;
     private float slideTimer;
     private float slideCooldownTimer;
+    private MovingPlatform currentPlatform;
 
     [Header("Dash Settings")]
     public float dashSpeed = 25f;
@@ -149,8 +150,12 @@ public class player : MonoBehaviour
 
     private void HandleMovement()
     {
+        float platformVelX = currentPlatform != null ? currentPlatform.PlatformVelocity.x : 0f;
+        float platformVelY = currentPlatform != null ? currentPlatform.PlatformVelocity.y : 0f;
+
         float targetSpeed = isSliding ? facingDirection * slideSpeed : moveInput.x * speed;
-        rb.linearVelocity = new Vector2(targetSpeed, rb.linearVelocity.y);
+
+        rb.linearVelocity = new Vector2(targetSpeed + platformVelX, rb.linearVelocity.y + platformVelY);
     }
 
     private void PollJumpInput()
@@ -297,6 +302,19 @@ public class player : MonoBehaviour
             facingDirection = -1;
             spriteRenderer.flipX = true;
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        // Only attach if landing on top (hitting from above)
+        if (col.contacts[0].normal.y > 0.5f)
+            currentPlatform = col.gameObject.GetComponent<MovingPlatform>();
+    }
+
+    private void OnCollisionExit2D(Collision2D col)
+    {
+        if (col.gameObject.GetComponent<MovingPlatform>() != null)
+            currentPlatform = null;
     }
 
     private void OnDrawGizmosSelected()
