@@ -4,7 +4,7 @@ using System.Collections;
 public class collectible : MonoBehaviour
 {
     public int scoreValue = 10;
-    public GameObject collectParticleEffect; // back to GameObject — just drag particle object here
+    public GameObject collectParticleEffect;
 
     private bool collected = false;
 
@@ -28,7 +28,6 @@ public class collectible : MonoBehaviour
 
     private IEnumerator CollectRoutine()
     {
-        // Get SpriteRenderer from children too
         SpriteRenderer sr = GetComponentInChildren<SpriteRenderer>();
         if (sr != null) sr.enabled = false;
 
@@ -38,9 +37,20 @@ public class collectible : MonoBehaviour
         {
             collectParticleEffect.transform.SetParent(null);
             ParticleSystem ps = collectParticleEffect.GetComponent<ParticleSystem>();
-            ps.Play();
-            yield return new WaitForSeconds(ps.main.duration);
-            Destroy(collectParticleEffect);
+
+            if (ps != null)
+            {
+                var main = ps.main;
+                main.loop = false;
+
+                ps.Play();
+                yield return new WaitForSeconds(ps.main.duration + ps.main.startLifetime.constantMax);
+                Destroy(collectParticleEffect);
+            }
+            else
+            {
+                Destroy(collectParticleEffect);
+            }
         }
 
         Destroy(gameObject);
