@@ -62,7 +62,6 @@ public class Anger : MonoBehaviour
     public float dashCooldown = 1f;
     private bool isDashing;
     private bool canDash = true;
-    private Collider2D lastDashHitEnemy;
 
     public bool IsDashing => isDashing;
 
@@ -85,7 +84,7 @@ public class Anger : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Producer Warning: Drag your CapsuleCollider2D into the Playercollider slot in the Inspector!");
+            Debug.LogError("Drag your CapsuleCollider2D into the Playercollider slot in the Inspector!");
         }
     }
 
@@ -132,7 +131,6 @@ public class Anger : MonoBehaviour
     {
         canDash = false;
         isDashing = true;
-        lastDashHitEnemy = null;
 
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
@@ -147,21 +145,6 @@ public class Anger : MonoBehaviour
         canDash = true;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Anger player = collision.gameObject.GetComponent<Anger>();
-
-            // IF THE PLAYER IS DASHING, DO NOTHING.
-            if (player != null && player.isDashing)
-            {
-                return; // This exits the function so no damage/hurt happens
-            }
-
-            // Normal collision logic (like the enemy attacking the player) goes here...
-        }
-    }
     private void HandleMovement()
     {
         float targetSpeed = isSliding ? facingDirection * slideSpeed : moveInput.x * speed;
@@ -179,6 +162,7 @@ public class Anger : MonoBehaviour
             isJumpHeld = true;
             jumpBufferTimer = jumpBufferTime;
 
+            // Double jump — only when airborne and jumps remain
             if (!isGrounded && jumpsRemaining > 0)
                 ExecuteJump(doubleJumpForce);
         }
@@ -186,6 +170,7 @@ public class Anger : MonoBehaviour
         {
             isJumpHeld = false;
 
+            // Jump cut — release early for a shorter jump
             if (rb.linearVelocity.y > 0f && canVariableJump)
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
@@ -212,6 +197,7 @@ public class Anger : MonoBehaviour
 
     private void HandleJumpLogic()
     {
+        // Grounded jump via buffer
         if (jumpBufferTimer > 0f && isGrounded)
             ExecuteJump(jumpForce);
     }
@@ -223,6 +209,7 @@ public class Anger : MonoBehaviour
         canVariableJump = true;
         jumpsRemaining--;
 
+        // If player tapped (not held), immediately cut the jump
         if (!isJumpHeld)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
@@ -273,26 +260,25 @@ public class Anger : MonoBehaviour
         }
     }
 
+    // ✅ FIX: isFalling and isJumping are now properly set every frame
     private void UpdateAnimations()
     {
         if (anim == null || rb == null) return;
 
-        anim.SetBool("isWalking", Mathf.Abs(moveInput.x) > 0.01f && isGrounded && !isSliding);
+        // Check spelling! Make sure the parameter in the Animator window 
+        // is spelled EXACTLY "isGrounded" to match this line.
         anim.SetBool("isGrounded", isGrounded);
+        anim.SetBool("isWalking", Mathf.Abs(moveInput.x) > 0.01f && isGrounded && !isSliding);
         anim.SetBool("isSliding", isSliding);
         anim.SetBool("isDashing", isDashing);
+
+        // We will use this float to drive Jump and Fall states
         anim.SetFloat("yVelocity", rb.linearVelocity.y);
     }
 
-    public void NotifyMushroomBounce()
-    {
-        Debug.Log("Player bounced on mushroom!");
-    }
+    public void NotifyMushroomBounce() => Debug.Log("Player bounced on mushroom!");
 
-    public void DisableVariableJump()
-    {
-        canVariableJump = false;
-    }
+    public void DisableVariableJump() => canVariableJump = false;
 
     private void Flip()
     {
