@@ -260,13 +260,14 @@ public class Anger : MonoBehaviour
         }
     }
 
-    // ✅ FIX: isFalling and isJumping are now properly set every frame
     private void UpdateAnimations()
     {
         if (anim == null || rb == null) return;
 
-        // Check spelling! Make sure the parameter in the Animator window 
+        // Check spelling! Make sure the parameter in the Animator window
         // is spelled EXACTLY "isGrounded" to match this line.
+        bool isFalling = !isGrounded && rb.linearVelocity.y < -0.1f && !isSliding && !isDashing;
+
         anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isWalking", Mathf.Abs(moveInput.x) > 0.01f && isGrounded && !isSliding);
         anim.SetBool("isSliding", isSliding);
@@ -274,9 +275,13 @@ public class Anger : MonoBehaviour
 
         // We will use this float to drive Jump and Fall states
         anim.SetFloat("yVelocity", rb.linearVelocity.y);
+        anim.SetBool("isFalling", isFalling);
     }
 
-    public void NotifyMushroomBounce() => Debug.Log("Player bounced on mushroom!");
+    public void NotifyMushroomBounce()
+    {
+        Debug.Log("Player bounced on mushroom!");
+    }
 
     public void DisableVariableJump() => canVariableJump = false;
 
