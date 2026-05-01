@@ -70,8 +70,10 @@ public class player : MonoBehaviour
     public float dashCooldown = 1f;
     private bool isDashing;
     private bool canDash = true;
-
     private Collider2D lastDashHitEnemy;
+
+    [Header("Respawn Logic")]
+    private bool isDead = false;
 
     public bool IsDashing => isDashing;
 
@@ -89,10 +91,18 @@ public class player : MonoBehaviour
 
         if (playercollider == null)
             playercollider = GetComponent<CapsuleCollider2D>();
+
+        // Set initial spawn point to start position if nothing is saved
+        if (GameManager.instance != null && GameManager.instance.lastCheckpointPos == Vector2.zero)
+        {
+            GameManager.instance.lastCheckpointPos = transform.position;
+        }
     }
 
     void Update()
     {
+        if (isDead) return; // Stop inputs if dead
+
         UpdateAnimations();
 
         if (isDashing) return;
@@ -108,14 +118,49 @@ public class player : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isDashing) return;
+        if (isDashing || isDead) return;
 
         CheckGrounded();
         HandleJumpLogic();
-        ApplyJumpHold(); // ⭐ NEW
+        ApplyJumpHold();
         ApplyVariableGravity();
         HandleMovement();
     }
+
+    // --- RESPAWN LOGIC ---
+    public void Die()
+    {
+        if (isDead) return;
+
+        isDead = true;
+        rb.linearVelocity = Vector2.zero;
+        // Optionally play death animation here
+
+        Invoke(nameof(Respawn), 1f); // Wait 1 second before reviving
+    }
+
+    void Respawn()
+    {
+        isDead = false;
+
+        if (GameManager.instance != null)
+        {
+            transform.position = GameManager.instance.lastCheckpointPos;
+        }
+
+        rb.linearVelocity = Vector2.zero;
+        jumpsRemaining = maxJumps;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // Call Die if player touches a spike or enemy tagged "Hazard"
+        if (other.CompareTag("Hazard"))
+        {
+            Die();
+        }
+    }
+    // --- END RESPAWN LOGIC ---
 
     public void OnMove(InputValue value) => moveInput = value.Get<Vector2>();
 
@@ -212,11 +257,8 @@ public class player : MonoBehaviour
     private void ExecuteJump(float force)
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
-
-        // ⭐ Initial strong jump
         rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
 
-        // ⭐ Enable hold jump
         jumpHoldTimer = maxJumpHoldTime;
         canVariableJump = true;
 
@@ -353,7 +395,6 @@ public class player : MonoBehaviour
             if (col.GetContact(i).normal.y > 0.5f)
                 return true;
         }
-
         return false;
     }
 

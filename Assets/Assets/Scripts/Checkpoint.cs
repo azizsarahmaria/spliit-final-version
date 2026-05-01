@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BubblegumCheckpoint : MonoBehaviour
+public class BubblegumMachine : MonoBehaviour
 {
     private Animator anim;
     private bool isUsed = false;
@@ -12,23 +12,26 @@ public class BubblegumCheckpoint : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Check if the object touching us is the Player
         if (other.CompareTag("Player") && !isUsed)
         {
-            DispenseGum();
+            Activate();
         }
     }
 
-    void DispenseGum()
+    void Activate()
     {
-        isUsed = true; // Prevents the player from triggering it multiple times
+        isUsed = true;
+        if (anim != null) anim.SetTrigger("isActivated");
 
-        if (anim != null)
+        if (GameManager.instance != null)
         {
-            anim.SetTrigger("isActivated");
-        }
+            // Save Position
+            GameManager.instance.lastCheckpointPos = transform.position;
 
-        // Add your logic here (e.g., saving the player's position, adding score)
-        Debug.Log("Bubblegum Dispensed!");
+            // OPTIONAL: Refill lives when reaching a checkpoint
+            GameManager.instance.playerLives = GameManager.instance.maxLives;
+
+            Debug.Log("Checkpoint Saved & Lives Refilled!");
+        }
     }
 }
