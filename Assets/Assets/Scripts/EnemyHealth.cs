@@ -3,11 +3,10 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     [Header("Settings")]
-    public int maxDashHits = 2;
+    public int maxDashHits = 1;
     private int currentDashHits = 0;
     private bool isDead = false;
 
-    // Public getter so the Enemy.cs script knows when to stop patrolling
     public bool IsDead => isDead;
 
     private Animator anim;
@@ -30,22 +29,20 @@ public class EnemyHealth : MonoBehaviour
         currentDashHits++;
         Debug.Log("Dash hits taken: " + currentDashHits);
 
-        if (currentDashHits == 1)
-        {
-            PlayHurt();
-        }
-        else if (currentDashHits >= maxDashHits)
+        if (currentDashHits >= maxDashHits)
         {
             PlayDeath();
+        }
+        else
+        {
+            PlayHurt();
         }
     }
 
     void PlayHurt()
     {
         if (anim != null)
-        {
             anim.SetTrigger("hurt");
-        }
     }
 
     void PlayDeath()
@@ -57,13 +54,11 @@ public class EnemyHealth : MonoBehaviour
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
-            rb.bodyType = RigidbodyType2D.Static; // Freezes it completely
+            rb.bodyType = RigidbodyType2D.Static;
         }
 
         if (enemyCollider != null)
-        {
-            enemyCollider.enabled = false; // Player won't hit it anymore
-        }
+            enemyCollider.enabled = false;
 
         if (anim != null)
         {
