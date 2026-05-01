@@ -134,19 +134,23 @@ public class player : MonoBehaviour
 
         isDead = true;
         rb.linearVelocity = Vector2.zero;
-        // Optionally play death animation here
 
-        Invoke(nameof(Respawn), 1f); // Wait 1 second before reviving
+        // Tell the GameManager a life was lost — it decides what happens next
+        if (GameManager.instance != null)
+            GameManager.instance.PlayerDied();
+
+        // Only respawn locally if there are still lives left
+        // (if lives hit 0, GameManager reloads the scene instead)
+        if (GameManager.instance == null || GameManager.instance.playerLives > 0)
+            Invoke(nameof(Respawn), 1f);
     }
 
     void Respawn()
     {
         isDead = false;
 
-        if (GameManager.instance != null)
-        {
+        if (GameManager.instance != null && GameManager.instance.lastCheckpointPos != Vector2.zero)
             transform.position = GameManager.instance.lastCheckpointPos;
-        }
 
         rb.linearVelocity = Vector2.zero;
         jumpsRemaining = maxJumps;
