@@ -164,6 +164,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   patrolDistance: 8.28
   moveSpeed: 5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  wallCheckDistance: 0.5
+  groundCheckDistance: 1.51
+  groundCheckOffset: {x: 0.5, y: 0}
   attackRange: 1.08
   attackCooldown: 1.5
   hitDelay: 0.2

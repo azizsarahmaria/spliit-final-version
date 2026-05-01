@@ -52,9 +52,8 @@ public class Anger : MonoBehaviour
     public float slideDuration = 0.4f;
     public float slideCooldown = 0.6f;
     public float slideHeight = 1.5f;
-    public Vector2 slideOffset = new Vector2(0f, -0.88f);
     public float normalHeight = 2.97f;
-    public Vector2 normalOffset = new Vector2(0f, -0.14f);
+    public Vector2 normalOffset = new Vector2(-1.876f, -0.412f);
 
     private bool isSliding;
     private bool canSlide = true;
@@ -87,6 +86,10 @@ public class Anger : MonoBehaviour
 
         if (playercollider == null)
             playercollider = GetComponent<CapsuleCollider2D>();
+
+        // Snapshot the actual editor-set values so the slide math is always correct
+        normalHeight = playercollider.size.y;
+        normalOffset = playercollider.offset;
     }
 
     void Update()
@@ -110,7 +113,7 @@ public class Anger : MonoBehaviour
 
         CheckGrounded();
         HandleJumpLogic();
-        ApplyJumpHold(); // ⭐ NEW
+        ApplyJumpHold();
         ApplyVariableGravity();
         HandleMovement();
     }
@@ -207,11 +210,8 @@ public class Anger : MonoBehaviour
     private void ExecuteJump(float force)
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
-
-        // ⭐ Initial strong jump
         rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
 
-        // ⭐ Enable hold jump
         jumpHoldTimer = maxJumpHoldTime;
         canVariableJump = true;
 
@@ -242,23 +242,73 @@ public class Anger : MonoBehaviour
             rb.gravityScale = normalGravity;
     }
 
+    // -------------------------------------------------------------------------
+    // SLIDE — bullet-proof version
+    //
+    // The trick: lock the world-space BOTTOM of the collider before changing
+    // size, then push the rigidbody up/down by however much it drifted after.
+    // This works regardless of pivot, scale, parent transforms, or anything.
+    // -------------------------------------------------------------------------
+
     private void StartSlide()
     {
         isSliding = true;
         canSlide = false;
         slideTimer = slideDuration;
 
-        playercollider.size = new Vector2(playercollider.size.x, slideHeight);
-        playercollider.offset = slideOffset;
+        ResizeColliderKeepingBottom(slideHeight);
     }
 
     private void StopSlide()
     {
+        // Don't stand up if a ceiling would clip us — keep crouched
+        if (!CanStandUp()) return;
+
+        ResizeColliderKeepingBottom(normalHeight);
+
         isSliding = false;
         slideCooldownTimer = slideCooldown;
+    }
 
-        playercollider.size = new Vector2(playercollider.size.x, normalHeight);
-        playercollider.offset = normalOffset;
+    /// <summary>
+    /// Changes the capsule height while pinning its world-space bottom in place.
+    /// </summary>
+    private void ResizeColliderKeepingBottom(float newHeight)
+    {
+        // 1. Force physics state to be current, then read the world bottom
+        Physics2D.SyncTransforms();
+        float bottomBefore = playercollider.bounds.min.y;
+
+        // 2. Apply new size + the offset that *should* keep the bottom in place
+        float heightDiff = normalHeight - newHeight;
+        playercollider.size = new Vector2(playercollider.size.x, newHeight);
+        playercollider.offset = new Vector2(normalOffset.x, normalOffset.y - heightDiff * 0.5f);
+
+        // 3. Re-sync, measure the actual new bottom, correct any drift
+        Physics2D.SyncTransforms();
+        float bottomAfter = playercollider.bounds.min.y;
+        float drift = bottomBefore - bottomAfter;
+
+        if (Mathf.Abs(drift) > 0.0001f)
+        {
+            rb.position = new Vector2(rb.position.x, rb.position.y + drift);
+            Physics2D.SyncTransforms();
+        }
+    }
+
+    /// <summary>
+    /// Checks whether the area above the slide collider is clear enough to
+    /// stand up. Uses an OverlapBox covering the exact extra height.
+    /// </summary>
+    private bool CanStandUp()
+    {
+        Bounds b = playercollider.bounds;
+        float heightDiff = (normalHeight - slideHeight) * playercollider.transform.lossyScale.y;
+
+        Vector2 boxCenter = new Vector2(b.center.x, b.max.y + heightDiff * 0.5f);
+        Vector2 boxSize = new Vector2(b.size.x * 0.85f, heightDiff * 0.95f);
+
+        return !Physics2D.OverlapBox(boxCenter, boxSize, 0f, groundLayer);
     }
 
     private void HandleSlideTimers()
@@ -277,17 +327,18 @@ public class Anger : MonoBehaviour
         }
     }
 
-    // ... [KEEP ALL YOUR EXISTING VARIABLES AND MOVEMENT CODE THE SAME] ...
-
     private void UpdateAnimations()
     {
         if (anim == null || rb == null) return;
+
+        bool isFalling = !isGrounded && rb.linearVelocity.y < -0.1f && !isSliding && !isDashing;
 
         anim.SetBool("isWalking", Mathf.Abs(moveInput.x) > 0.01f && isGrounded && !isSliding);
         anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isSliding", isSliding);
         anim.SetBool("isDashing", isDashing);
         anim.SetFloat("yVelocity", rb.linearVelocity.y);
+        anim.SetBool("isFalling", isFalling);
     }
 
     private void Flip()
@@ -306,7 +357,6 @@ public class Anger : MonoBehaviour
         }
     }
 
-    // --- ⭐ NEW DASH HIT LOGIC ---
     private void OnTriggerEnter2D(Collider2D col)
     {
         CheckDashHit(col);
@@ -314,7 +364,6 @@ public class Anger : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        // Only attach to moving platforms if landing on top
         if (col.gameObject.GetComponent<MovingPlatform>() != null && col.contacts[0].normal.y > 0.5f)
         {
             currentPlatform = col.gameObject.GetComponent<MovingPlatform>();
@@ -325,16 +374,13 @@ public class Anger : MonoBehaviour
 
     private void CheckDashHit(Collider2D col)
     {
-        // If we are dashing, and we hit an enemy, and it's not the exact same enemy we already hit this dash...
         if (isDashing && col.CompareTag("Enemy") && col != lastDashHitEnemy)
         {
-            lastDashHitEnemy = col; // Remember this enemy so we don't hit it 10 times in one dash
+            lastDashHitEnemy = col;
 
             EnemyHealth eHealth = col.GetComponent<EnemyHealth>();
             if (eHealth != null)
-            {
                 eHealth.HandleDashHit();
-            }
         }
     }
 

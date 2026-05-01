@@ -8,6 +8,12 @@ public class Enemy : MonoBehaviour
     private Vector3 startPosition;
     private int direction = 1;
 
+    [Header("Detection Settings")]
+    public LayerMask groundLayer;
+    public float wallCheckDistance = 0.5f;
+    public float groundCheckDistance = 1.0f;
+    public Vector2 groundCheckOffset = new Vector2(0.5f, 0f);
+
     [Header("Combat Settings")]
     public float attackRange = 1.5f;
     public float attackCooldown = 2f;
@@ -23,7 +29,7 @@ public class Enemy : MonoBehaviour
     public LayerMask playerLayer;
     private Rigidbody2D rb;
     private Animator anim;
-    private EnemyHealth healthScript; // Link to your health script
+    private EnemyHealth healthScript;
 
     void Start()
     {
@@ -41,7 +47,6 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        // If the health script says we are dead, stop moving entirely.
         if (healthScript != null && healthScript.IsDead) return;
 
         CheckForPlayer();
@@ -54,16 +59,24 @@ public class Enemy : MonoBehaviour
 
     private void Patrol()
     {
-        float currentDist = transform.position.x - startPosition.x;
+        // 1. Calculate ray origins
+        Vector2 rayDir = direction == 1 ? Vector2.right : Vector2.left;
+        Vector2 wallOrigin = (Vector2)transform.position;
+        Vector2 groundOrigin = (Vector2)transform.position + new Vector2(groundCheckOffset.x * direction, groundCheckOffset.y);
 
-        if (direction > 0 && currentDist >= patrolDistance)
+        // 2. Check for Walls
+        RaycastHit2D wallHit = Physics2D.Raycast(wallOrigin, rayDir, wallCheckDistance, groundLayer);
+
+        // 3. Check for Ledges (Ground Check)
+        RaycastHit2D groundHit = Physics2D.Raycast(groundOrigin, Vector2.down, groundCheckDistance, groundLayer);
+
+        // Turn around if we hit a wall OR if there is no ground ahead
+        float currentDist = transform.position.x - startPosition.x;
+        bool outOfPatrolRange = (direction > 0 && currentDist >= patrolDistance) || (direction < 0 && currentDist <= -patrolDistance);
+
+        if (wallHit.collider != null || groundHit.collider == null || outOfPatrolRange)
         {
-            direction = -1;
-            Flip();
-        }
-        else if (direction < 0 && currentDist <= -patrolDistance)
-        {
-            direction = 1;
+            direction *= -1;
             Flip();
         }
 
@@ -82,6 +95,7 @@ public class Enemy : MonoBehaviour
 
         if (hit.collider != null && hit.collider.CompareTag("Player"))
         {
+            // Update direction to face player if they are behind us but within range
             float playerDir = hit.collider.transform.position.x - transform.position.x;
             int newDir = playerDir > 0 ? 1 : -1;
 
@@ -106,10 +120,7 @@ public class Enemy : MonoBehaviour
 
         yield return new WaitForSeconds(hitDelay);
 
-        // ⭐ FIX: Offset the hitZone based on the direction the enemy is facing
         Vector2 hitZone = (Vector2)transform.position + new Vector2(direction * attackRange, 0);
-
-        // Check for the player in that forward-facing circle
         Collider2D playerHit = Physics2D.OverlapCircle(hitZone, attackHitboxRadius, playerLayer);
 
         if (playerHit != null && playerHit.CompareTag("Player"))
@@ -134,16 +145,22 @@ public class Enemy : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        // Patrol range
         Gizmos.color = Color.yellow;
         Vector3 center = Application.isPlaying ? startPosition : transform.position;
         Gizmos.DrawLine(center + Vector3.left * patrolDistance, center + Vector3.right * patrolDistance);
 
-        Gizmos.color = Color.red;
+        // Wall check visualization
+        Gizmos.color = Color.cyan;
         Vector2 rayDir = direction == 1 ? Vector2.right : Vector2.left;
-        Vector2 rayOrigin = (Vector2)transform.position + (rayDir * 0.5f);
-        Gizmos.DrawRay(rayOrigin, rayDir * attackRange);
+        Gizmos.DrawRay(transform.position, rayDir * wallCheckDistance);
 
-        // ⭐ FIX: Update Gizmo to match the new hitZone logic
+        // Ground check visualization
+        Gizmos.color = Color.green;
+        Vector2 groundOrigin = (Vector2)transform.position + new Vector2(groundCheckOffset.x * direction, groundCheckOffset.y);
+        Gizmos.DrawRay(groundOrigin, Vector2.down * groundCheckDistance);
+
+        // Attack hitbox
         Gizmos.color = new Color(1, 0, 0, 0.4f);
         Vector2 hitZone = (Vector2)transform.position + new Vector2(direction * attackRange, 0);
         Gizmos.DrawSphere(hitZone, attackHitboxRadius);
