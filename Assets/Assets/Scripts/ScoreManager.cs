@@ -38,6 +38,7 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int amount)
     {
         score += amount;
+        Debug.Log("Score is now: " + score + " | scoreText is: " + scoreText);
         RefreshScoreUI();
     }
 

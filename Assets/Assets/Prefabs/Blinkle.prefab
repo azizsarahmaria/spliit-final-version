@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::collectible
   scoreValue: 10
-  collectParticleEffect: {fileID: 3176963090860345318, guid: 785ef995ba2487140bf1ba93e5b51858, type: 3}
+  collectParticleEffect: {fileID: 1991335815750229521, guid: 785ef995ba2487140bf1ba93e5b51858, type: 3}
 --- !u!58 &3693839043443922993
 CircleCollider2D:
   m_ObjectHideFlags: 0
