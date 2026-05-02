@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BubblegumMachine : MonoBehaviour
 {
@@ -13,9 +13,7 @@ public class BubblegumMachine : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player") && !isUsed)
-        {
             Activate();
-        }
     }
 
     void Activate()
@@ -25,12 +23,11 @@ public class BubblegumMachine : MonoBehaviour
 
         if (GameManager.instance != null)
         {
-            // Save Position
-            GameManager.instance.lastCheckpointPos = transform.position;
+            // ── use SetCheckpoint so the flag is properly set ──
+            GameManager.instance.SetCheckpoint(transform.position);
 
-            // OPTIONAL: Refill lives when reaching a checkpoint
+            // Refill lives when reaching a checkpoint
             GameManager.instance.playerLives = GameManager.instance.maxLives;
-
             Debug.Log("Checkpoint Saved & Lives Refilled!");
         }
     }

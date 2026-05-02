@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -92,16 +92,13 @@ public class player : MonoBehaviour
         if (playercollider == null)
             playercollider = GetComponent<CapsuleCollider2D>();
 
-        // Set initial spawn point to start position if nothing is saved
         if (GameManager.instance != null && GameManager.instance.lastCheckpointPos == Vector2.zero)
-        {
             GameManager.instance.lastCheckpointPos = transform.position;
-        }
     }
 
     void Update()
     {
-        if (isDead) return; // Stop inputs if dead
+        if (isDead) return;
 
         UpdateAnimations();
 
@@ -135,36 +132,38 @@ public class player : MonoBehaviour
         isDead = true;
         rb.linearVelocity = Vector2.zero;
 
-        // Tell the GameManager a life was lost � it decides what happens next
         if (GameManager.instance != null)
             GameManager.instance.PlayerDied();
 
-        // Only respawn locally if there are still lives left
-        // (if lives hit 0, GameManager reloads the scene instead)
         if (GameManager.instance == null || GameManager.instance.playerLives > 0)
-            Invoke(nameof(Respawn), 1f);
+            Invoke(nameof(RespawnAtCheckpoint), 1f);
     }
 
-    void Respawn()
+    // ── Called by GameManager after scene reload — public + takes a position ──
+    public void Respawn(Vector2 position)
     {
         isDead = false;
-
-        if (GameManager.instance != null && GameManager.instance.lastCheckpointPos != Vector2.zero)
-            transform.position = GameManager.instance.lastCheckpointPos;
-
+        transform.position = position;
         rb.linearVelocity = Vector2.zero;
         jumpsRemaining = maxJumps;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    // ── Called locally after death when no scene reload (lives remaining) ──
+    private void RespawnAtCheckpoint()
     {
-        // Call Die if player touches a spike or enemy tagged "Hazard"
-        if (other.CompareTag("Hazard"))
-        {
-            Die();
-        }
+        Vector2 pos = (GameManager.instance != null && GameManager.instance.lastCheckpointPos != Vector2.zero)
+            ? GameManager.instance.lastCheckpointPos
+            : transform.position;
+
+        Respawn(pos);
     }
     // --- END RESPAWN LOGIC ---
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Hazard"))
+            Die();
+    }
 
     public void OnMove(InputValue value) => moveInput = value.Get<Vector2>();
 
@@ -383,8 +382,7 @@ public class player : MonoBehaviour
 
     private void UpdateGroundedCollision(Collision2D col)
     {
-        if (!IsGroundSurface(col.collider))
-            return;
+        if (!IsGroundSurface(col.collider)) return;
 
         if (IsStandingOnCollision(col))
             groundedColliders.Add(col.collider);
