@@ -9,7 +9,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isActivated
+    m_ConditionEvent: Dispense
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 9031009113976730312}
@@ -34,7 +34,7 @@ AnimatorController:
   m_Name: bubblegum
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: isActivated
+  - m_Name: Dispense
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -91,7 +91,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 9031009113976730312}
-    m_Position: {x: 320, y: 50, z: 0}
+    m_Position: {x: 340, y: 60, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3596531487220746754}
     m_Position: {x: 345, y: 135, z: 0}
@@ -101,8 +101,8 @@ AnimatorStateMachine:
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_EntryPosition: {x: 50, y: 140, z: 0}
+  m_ExitPosition: {x: 590, y: 140, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 3596531487220746754}
 --- !u!1102 &9031009113976730312

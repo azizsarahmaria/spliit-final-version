@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class AngerHealth : MonoBehaviour
 {
@@ -47,9 +46,7 @@ public class AngerHealth : MonoBehaviour
 
             for (int i = 0; i < spriteRenderers.Length; i++)
             {
-                if (spriteRenderers[i] == null)
-                    continue;
-
+                if (spriteRenderers[i] == null) continue;
                 normalMaterials[i] = spriteRenderers[i].material;
                 flashOverlayRenderers[i] = CreateFlashOverlay(spriteRenderers[i], i);
             }
@@ -62,15 +59,12 @@ public class AngerHealth : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // ONLY Spikes deal damage by touching. 
-        // We REMOVE the Enemy check here.
         if (other.CompareTag("Spike") && !isInvulnerable && !ShouldIgnoreHit(other))
             ApplyHit(other.transform.position);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // ONLY Spikes deal damage by touching.
         if (collision.gameObject.CompareTag("Spike") && !isInvulnerable && !ShouldIgnoreHit(collision.collider))
             ApplyHit(collision.transform.position);
     }
@@ -104,19 +98,15 @@ public class AngerHealth : MonoBehaviour
     {
         if (other == null) return false;
         if (!other.CompareTag("Enemy") && !other.CompareTag("Spike")) return false;
-
         return angerController != null && angerController.IsDashing;
     }
 
-    // ⭐ FIX: Added missing KnockbackRoutine
     private IEnumerator KnockbackRoutine(Vector2 hazardPosition)
     {
         if (rb == null) yield break;
-
         Vector2 moveDirection = (transform.position - (Vector3)hazardPosition).normalized;
         rb.linearVelocity = Vector2.zero;
         rb.AddForce(new Vector2(moveDirection.x, 0.5f) * knockbackForce, ForceMode2D.Impulse);
-
         yield return new WaitForSeconds(knockbackDuration);
     }
 
@@ -135,6 +125,43 @@ public class AngerHealth : MonoBehaviour
 
         HideFlashOverlays();
         isInvulnerable = false;
+    }
+
+    private IEnumerator DeathRoutine()
+    {
+        isDead = true;
+        isInvulnerable = true;
+
+        Anger movementScript = GetComponent<Anger>();
+        if (movementScript != null)
+            movementScript.enabled = false;
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.bodyType = RigidbodyType2D.Static;
+        }
+
+        if (colliders != null)
+            foreach (Collider2D hitbox in colliders)
+                if (hitbox != null) hitbox.enabled = false;
+
+        if (animator != null)
+            animator.SetBool(IsDeadParameter, true);
+
+        yield return new WaitForSeconds(deathAnimationDuration);
+
+        // Wait for the full death animation to finish before reloading
+        if (animator != null)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            float remainingTime = stateInfo.length * (1f - stateInfo.normalizedTime);
+            if (remainingTime > 0f)
+                yield return new WaitForSeconds(remainingTime);
+        }
+
+        if (GameManager.instance != null)
+            GameManager.instance.PlayerDied();
     }
 
     private SpriteRenderer CreateFlashOverlay(SpriteRenderer sourceRenderer, int index)
@@ -163,11 +190,9 @@ public class AngerHealth : MonoBehaviour
         {
             SpriteRenderer sourceRenderer = spriteRenderers[i];
             SpriteRenderer overlayRenderer = flashOverlayRenderers != null && i < flashOverlayRenderers.Length
-                ? flashOverlayRenderers[i]
-                : null;
+                ? flashOverlayRenderers[i] : null;
 
-            if (sourceRenderer == null || overlayRenderer == null)
-                continue;
+            if (sourceRenderer == null || overlayRenderer == null) continue;
 
             overlayRenderer.sprite = sourceRenderer.sprite;
             overlayRenderer.drawMode = sourceRenderer.drawMode;
@@ -181,45 +206,8 @@ public class AngerHealth : MonoBehaviour
     private void HideFlashOverlays()
     {
         if (flashOverlayRenderers == null) return;
-
         for (int i = 0; i < flashOverlayRenderers.Length; i++)
-        {
             if (flashOverlayRenderers[i] != null)
                 flashOverlayRenderers[i].enabled = false;
-        }
-    }
-
-    private IEnumerator DeathRoutine()
-    {
-        isDead = true;
-        isInvulnerable = true;
-
-        // ⭐ FIX: Changed 'player' to 'Anger' to match your script name
-        Anger movementScript = GetComponent<Anger>();
-        if (movementScript != null)
-        {
-            movementScript.enabled = false;
-        }
-
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector2.zero;
-            rb.bodyType = RigidbodyType2D.Static;
-        }
-
-        if (colliders != null)
-        {
-            foreach (Collider2D hitbox in colliders)
-            {
-                if (hitbox != null)
-                    hitbox.enabled = false;
-            }
-        }
-
-        if (animator != null)
-            animator.SetBool(IsDeadParameter, true);
-
-        yield return new WaitForSeconds(deathAnimationDuration);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

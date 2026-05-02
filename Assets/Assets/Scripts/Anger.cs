@@ -67,8 +67,10 @@ public class Anger : MonoBehaviour
     public float dashCooldown = 1f;
     private bool isDashing;
     private bool canDash = true;
-
     private Collider2D lastDashHitEnemy;
+
+    [Header("Respawn Logic")]
+    private bool isDead = false;
 
     public bool IsDashing => isDashing;
 
@@ -87,15 +89,25 @@ public class Anger : MonoBehaviour
         if (playercollider == null)
             playercollider = GetComponent<CapsuleCollider2D>();
 
-        // Snapshot the actual editor-set values so the slide math is always correct
         normalHeight = playercollider.size.y;
         normalOffset = playercollider.offset;
+
+        // After scene reload, lastCheckpointPos is already set — move there
+        // On first load, it's zero — store our starting position as default
+        if (GameManager.instance != null)
+        {
+            if (GameManager.instance.lastCheckpointPos != Vector2.zero)
+                Respawn(GameManager.instance.lastCheckpointPos);
+            else
+                GameManager.instance.lastCheckpointPos = transform.position;
+        }
     }
 
     void Update()
     {
-        UpdateAnimations();
+        if (isDead) return;
 
+        UpdateAnimations();
         if (isDashing) return;
 
         HandleSlideTimers();
@@ -109,13 +121,27 @@ public class Anger : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isDashing) return;
+        if (isDashing || isDead) return;
 
         CheckGrounded();
         HandleJumpLogic();
         ApplyJumpHold();
         ApplyVariableGravity();
         HandleMovement();
+    }
+
+    // Called by GameManager after scene reload
+    public void Respawn(Vector2 position)
+    {
+        isDead = false;
+        transform.position = position;
+        rb.linearVelocity = Vector2.zero;
+        jumpsRemaining = maxJumps;
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        CheckDashHit(col);
     }
 
     public void OnMove(InputValue value) => moveInput = value.Get<Vector2>();
@@ -157,7 +183,6 @@ public class Anger : MonoBehaviour
         float platformVelY = currentPlatform != null ? currentPlatform.PlatformVelocity.y : 0f;
 
         float targetSpeed = isSliding ? facingDirection * slideSpeed : moveInput.x * speed;
-
         rb.linearVelocity = new Vector2(targetSpeed + platformVelX, rb.linearVelocity.y + platformVelY);
     }
 
@@ -214,7 +239,6 @@ public class Anger : MonoBehaviour
 
         jumpHoldTimer = maxJumpHoldTime;
         canVariableJump = true;
-
         jumpBufferTimer = 0f;
         jumpsRemaining--;
     }
@@ -242,49 +266,31 @@ public class Anger : MonoBehaviour
             rb.gravityScale = normalGravity;
     }
 
-    // -------------------------------------------------------------------------
-    // SLIDE — bullet-proof version
-    //
-    // The trick: lock the world-space BOTTOM of the collider before changing
-    // size, then push the rigidbody up/down by however much it drifted after.
-    // This works regardless of pivot, scale, parent transforms, or anything.
-    // -------------------------------------------------------------------------
-
     private void StartSlide()
     {
         isSliding = true;
         canSlide = false;
         slideTimer = slideDuration;
-
         ResizeColliderKeepingBottom(slideHeight);
     }
 
     private void StopSlide()
     {
-        // Don't stand up if a ceiling would clip us — keep crouched
         if (!CanStandUp()) return;
-
         ResizeColliderKeepingBottom(normalHeight);
-
         isSliding = false;
         slideCooldownTimer = slideCooldown;
     }
 
-    /// <summary>
-    /// Changes the capsule height while pinning its world-space bottom in place.
-    /// </summary>
     private void ResizeColliderKeepingBottom(float newHeight)
     {
-        // 1. Force physics state to be current, then read the world bottom
         Physics2D.SyncTransforms();
         float bottomBefore = playercollider.bounds.min.y;
 
-        // 2. Apply new size + the offset that *should* keep the bottom in place
         float heightDiff = normalHeight - newHeight;
         playercollider.size = new Vector2(playercollider.size.x, newHeight);
         playercollider.offset = new Vector2(normalOffset.x, normalOffset.y - heightDiff * 0.5f);
 
-        // 3. Re-sync, measure the actual new bottom, correct any drift
         Physics2D.SyncTransforms();
         float bottomAfter = playercollider.bounds.min.y;
         float drift = bottomBefore - bottomAfter;
@@ -296,18 +302,12 @@ public class Anger : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Checks whether the area above the slide collider is clear enough to
-    /// stand up. Uses an OverlapBox covering the exact extra height.
-    /// </summary>
     private bool CanStandUp()
     {
         Bounds b = playercollider.bounds;
         float heightDiff = (normalHeight - slideHeight) * playercollider.transform.lossyScale.y;
-
         Vector2 boxCenter = new Vector2(b.center.x, b.max.y + heightDiff * 0.5f);
         Vector2 boxSize = new Vector2(b.size.x * 0.85f, heightDiff * 0.95f);
-
         return !Physics2D.OverlapBox(boxCenter, boxSize, 0f, groundLayer);
     }
 
@@ -316,14 +316,12 @@ public class Anger : MonoBehaviour
         if (isSliding)
         {
             slideTimer -= Time.deltaTime;
-            if (slideTimer <= 0f)
-                StopSlide();
+            if (slideTimer <= 0f) StopSlide();
         }
         else if (!canSlide)
         {
             slideCooldownTimer -= Time.deltaTime;
-            if (slideCooldownTimer <= 0f)
-                canSlide = true;
+            if (slideCooldownTimer <= 0f) canSlide = true;
         }
     }
 
@@ -345,29 +343,14 @@ public class Anger : MonoBehaviour
     {
         if (isSliding || isDashing) return;
 
-        if (moveInput.x > 0.1f)
-        {
-            facingDirection = 1;
-            spriteRenderer.flipX = false;
-        }
-        else if (moveInput.x < -0.1f)
-        {
-            facingDirection = -1;
-            spriteRenderer.flipX = true;
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D col)
-    {
-        CheckDashHit(col);
+        if (moveInput.x > 0.1f) { facingDirection = 1; spriteRenderer.flipX = false; }
+        else if (moveInput.x < -0.1f) { facingDirection = -1; spriteRenderer.flipX = true; }
     }
 
     private void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.GetComponent<MovingPlatform>() != null && col.contacts[0].normal.y > 0.5f)
-        {
             currentPlatform = col.gameObject.GetComponent<MovingPlatform>();
-        }
 
         CheckDashHit(col.collider);
     }
@@ -377,10 +360,8 @@ public class Anger : MonoBehaviour
         if (isDashing && col.CompareTag("Enemy") && col != lastDashHitEnemy)
         {
             lastDashHitEnemy = col;
-
             EnemyHealth eHealth = col.GetComponent<EnemyHealth>();
-            if (eHealth != null)
-                eHealth.HandleDashHit();
+            if (eHealth != null) eHealth.HandleDashHit();
         }
     }
 

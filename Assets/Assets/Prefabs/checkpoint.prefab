@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6016263390763893275}
   - component: {fileID: 6304615990586977723}
   - component: {fileID: 3967473311373814932}
+  - component: {fileID: 3922531732642493471}
   m_Layer: 0
   m_Name: bubblegum
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 1036800514941055349}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 27.93, y: -1.04, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.16, y: 0.16, z: 0.16}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -169,11 +170,25 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1036800514941055349}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d4365f558fb49604bb6e6602b5d18bc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+--- !u!114 &3922531732642493471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036800514941055349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9c5dc323c9c0c4081b96e6f0b9108e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BubbleGumMachine
+  animator: {fileID: 6016263390763893275}
+  dispenseCooldown: 2
 --- !u!1 &1123701754446097919
 GameObject:
   m_ObjectHideFlags: 0
