@@ -10,6 +10,7 @@ TagManager:
   - MovingPlatform
   - Enemy
   - Mushroom
+  - Hazard
   layers:
   - Default
   - TransparentFX
