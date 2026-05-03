@@ -69,8 +69,13 @@ public class Anger : MonoBehaviour
     private bool canDash = true;
     private Collider2D lastDashHitEnemy;
 
+    [SerializeField] private GameObject dashFireEffect;
+    [SerializeField] private Animator fireEffectAnimator;
+
     [Header("Respawn Logic")]
     private bool isDead = false;
+
+
 
     public bool IsDashing => isDashing;
 
@@ -158,11 +163,25 @@ public class Anger : MonoBehaviour
             StartCoroutine(PerformDash());
     }
 
+    // REPLACE WITH THIS:
     private IEnumerator PerformDash()
     {
         canDash = false;
         isDashing = true;
         lastDashHitEnemy = null;
+
+        // --- Fire effect ON ---
+        if (dashFireEffect != null)
+        {
+            dashFireEffect.SetActive(true);
+
+            // Mirror fire effect the same way the player flips
+            SpriteRenderer fireSprite = dashFireEffect.GetComponent<SpriteRenderer>();
+            if (fireSprite != null)
+                fireSprite.flipX = facingDirection == -1;
+
+            fireEffectAnimator.SetTrigger("PlayFire");
+        }
 
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
@@ -173,10 +192,13 @@ public class Anger : MonoBehaviour
         rb.gravityScale = originalGravity;
         isDashing = false;
 
+        // --- Fire effect OFF ---
+        if (dashFireEffect != null)
+            dashFireEffect.SetActive(false);
+
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
     }
-
     private void HandleMovement()
     {
         float platformVelX = currentPlatform != null ? currentPlatform.PlatformVelocity.x : 0f;
