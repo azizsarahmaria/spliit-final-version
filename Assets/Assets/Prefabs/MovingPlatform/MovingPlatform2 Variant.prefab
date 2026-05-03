@@ -13,6 +13,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -7773179665144677571, guid: 1e41f4397dbe57a45a3a5025d2357cd6, type: 3}
     - target: {fileID: 2614342271899587924, guid: d5ca6c7ebecdd584aac63e9657e0a752, type: 3}
+      propertyPath: speed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2614342271899587924, guid: d5ca6c7ebecdd584aac63e9657e0a752, type: 3}
       propertyPath: pointA
       value: 
       objectReference: {fileID: 0}
