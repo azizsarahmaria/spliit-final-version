@@ -162,23 +162,26 @@ public class Anger : MonoBehaviour
         if (value.isPressed && canDash && !isSliding)
             StartCoroutine(PerformDash());
     }
-
-    // REPLACE WITH THIS:
     private IEnumerator PerformDash()
     {
         canDash = false;
         isDashing = true;
         lastDashHitEnemy = null;
 
-        // --- Fire effect ON ---
         if (dashFireEffect != null)
         {
             dashFireEffect.SetActive(true);
 
-            // Mirror fire effect the same way the player flips
-            SpriteRenderer fireSprite = dashFireEffect.GetComponent<SpriteRenderer>();
-            if (fireSprite != null)
-                fireSprite.flipX = facingDirection == -1;
+            // MANUALLY SYNC FIRE FLIP
+            // Get the sprite renderer on the fire effect child
+            SpriteRenderer fireSR = dashFireEffect.GetComponent<SpriteRenderer>();
+            if (fireSR != null) fireSR.flipX = spriteRenderer.flipX;
+
+            // MANUALLY SYNC FIRE POSITION
+            // If the fire is offset (e.g. behind the player), move it to the other side
+            Vector3 firePos = dashFireEffect.transform.localPosition;
+            firePos.x = Mathf.Abs(firePos.x) * (facingDirection == 1 ? -1 : 1);
+            dashFireEffect.transform.localPosition = firePos;
 
             fireEffectAnimator.SetTrigger("PlayFire");
         }
@@ -192,7 +195,6 @@ public class Anger : MonoBehaviour
         rb.gravityScale = originalGravity;
         isDashing = false;
 
-        // --- Fire effect OFF ---
         if (dashFireEffect != null)
             dashFireEffect.SetActive(false);
 
@@ -365,8 +367,16 @@ public class Anger : MonoBehaviour
     {
         if (isSliding || isDashing) return;
 
-        if (moveInput.x > 0.1f) { facingDirection = 1; spriteRenderer.flipX = false; }
-        else if (moveInput.x < -0.1f) { facingDirection = -1; spriteRenderer.flipX = true; }
+        if (moveInput.x > 0.1f)
+        {
+            facingDirection = 1;
+            spriteRenderer.flipX = false;
+        }
+        else if (moveInput.x < -0.1f)
+        {
+            facingDirection = -1;
+            spriteRenderer.flipX = true;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D col)
