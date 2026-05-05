@@ -26,17 +26,21 @@ public class CharacterSwitcher : MonoBehaviour
 
     void SwitchCharacter()
     {
-        if (activeCharacter == 1)
-        {
-            character1.SetActive(false);
-            character2.SetActive(true);
-            activeCharacter = 2;
-        }
-        else
-        {
-            character1.SetActive(true);
-            character2.SetActive(false);
-            activeCharacter = 1;
-        }
+        GameObject current = activeCharacter == 1 ? character1 : character2;
+        GameObject next = activeCharacter == 1 ? character2 : character1;
+
+        // Sync transform
+        next.transform.position = current.transform.position;
+        next.transform.rotation = current.transform.rotation;
+
+        // Sync Rigidbody2D velocity (optional but recommended)
+        Rigidbody2D rbCurrent = current.GetComponent<Rigidbody2D>();
+        Rigidbody2D rbNext = next.GetComponent<Rigidbody2D>();
+        if (rbCurrent != null && rbNext != null)
+            rbNext.linearVelocity = rbCurrent.linearVelocity;
+
+        current.SetActive(false);
+        next.SetActive(true);
+        activeCharacter = activeCharacter == 1 ? 2 : 1;
     }
 }
