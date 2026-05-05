@@ -13,10 +13,11 @@ public class BubblegumMachine : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player") && !isUsed)
-
+        {
             SFXManager.Instance.Playbubblegum();
 
             Activate();
+        }
     }
 
 

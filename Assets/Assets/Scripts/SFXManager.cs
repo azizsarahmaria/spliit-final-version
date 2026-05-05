@@ -15,6 +15,7 @@ public class SFXManager : MonoBehaviour
     public AudioClip spikesound;
     public AudioClip bubblegum;
     public AudioClip deathsound;
+    public AudioClip mushroomjump;
 
     [Header("Anger Level Sounds")]
     public AudioClip runningsound;
@@ -44,12 +45,18 @@ public class SFXManager : MonoBehaviour
     {
         audioSource = this.GetComponent<AudioSource>();
     }
+
+
 //JOY
     public void Playblinklesound()
     {
         audioSource.PlayOneShot(blinklesound);
     }
 
+    public void Playmushroomjump()
+    {
+        audioSource.PlayOneShot(mushroomjump);
+    }
     public void Playbubblegum()
     {
         audioSource.PlayOneShot(bubblegum);

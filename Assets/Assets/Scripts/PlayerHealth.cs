@@ -53,7 +53,9 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            SceneManager.LoadScene(0);
+            // Let player.cs handle death + checkpoint respawn
+            if (playerController != null)
+                playerController.Die();
             return;
         }
 

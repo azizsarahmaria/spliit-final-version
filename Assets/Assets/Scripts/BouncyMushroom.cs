@@ -37,7 +37,8 @@ public class BouncyMushroom : MonoBehaviour
 
                     if (mushroomAnim != null)
                         mushroomAnim.SetTrigger(mushroomTrigger);
-                }
+
+                    SFXManager.Instance.Playmushroomjump();                }
             }
         }
     }
