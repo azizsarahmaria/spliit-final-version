@@ -20,6 +20,12 @@ public class UIManagerScript : MonoBehaviour
         Instance = this;
     }
 
+    public void PauseGame()
+    {
+        pauseMenuUI.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
     public void ShowLosescreen()
     {
         Losescreen.SetActive(true);
