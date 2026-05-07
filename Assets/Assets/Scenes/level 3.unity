@@ -326,6 +326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   character1: {fileID: 2008577586}
   character2: {fileID: 1068518449}
+  virtualCamera: {fileID: 0}
 --- !u!4 &27305663
 Transform:
   m_ObjectHideFlags: 0
@@ -9302,6 +9303,14 @@ PrefabInstance:
     - target: {fileID: 19813250021629816, guid: bef894af048d2b540ade4926235c64fa, type: 3}
       propertyPath: m_Name
       value: Canvas 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 462086895636292765, guid: bef894af048d2b540ade4926235c64fa, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 4641899399639894922, guid: c7d63210e28e7494dbb474b8539f1eab, type: 3}
+    - target: {fileID: 1399580427746885765, guid: bef894af048d2b540ade4926235c64fa, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1677017828366295246, guid: bef894af048d2b540ade4926235c64fa, type: 3}
       propertyPath: m_Pivot.x
