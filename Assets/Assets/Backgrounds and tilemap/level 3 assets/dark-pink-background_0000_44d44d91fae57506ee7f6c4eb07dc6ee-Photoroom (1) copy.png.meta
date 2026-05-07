@@ -1,0 +1,453 @@
+fileFormatVersion: 2
+guid: b0b6a2c3561f53443a309d4596c9cc45
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -642764747541832915
+    second: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+      (1) copy_0
+  - first:
+      213: -8908857192001629658
+    second: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+      (1) copy_1
+  - first:
+      213: 1337411344076582169
+    second: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+      (1) copy_2
+  - first:
+      213: 4394164741807433250
+    second: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+      (1) copy_3
+  - first:
+      213: 7339959782632054667
+    second: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+      (1) copy_4
+  - first:
+      213: 3595526656195866693
+    second: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+      (1) copy_5
+  - first:
+      213: 1795169291458620311
+    second: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+      (1) copy_6
+  - first:
+      213: -6247390890754838981
+    second: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+      (1) copy_7
+  - first:
+      213: 8768703522316909915
+    second: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+      (1) copy_8
+  - first:
+      213: -1111409372559821627
+    second: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+      (1) copy_9
+  - first:
+      213: -304385963666082533
+    second: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+      (1) copy_10
+  - first:
+      213: -1808817046685624365
+    second: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+      (1) copy_11
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+        (1) copy_0
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 110
+        width: 83
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2b10ac1ed07417f0800000000000000
+      internalID: -642764747541832915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+        (1) copy_1
+      rect:
+        serializedVersion: 2
+        x: 124
+        y: 82
+        width: 90
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6221f04c5916d5480800000000000000
+      internalID: -8908857192001629658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+        (1) copy_2
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 88
+        width: 30
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91d234218807f8210800000000000000
+      internalID: 1337411344076582169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+        (1) copy_3
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 88
+        width: 30
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2266af72d853bfc30800000000000000
+      internalID: 4394164741807433250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+        (1) copy_4
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 88
+        width: 14
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8fdf659886ccd560800000000000000
+      internalID: 7339959782632054667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+        (1) copy_5
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 71
+        width: 14
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 540b003a170e5e130800000000000000
+      internalID: 3595526656195866693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+        (1) copy_6
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 71
+        width: 20
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79ba41995f8b9e810800000000000000
+      internalID: 1795169291458620311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+        (1) copy_7
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 49
+        width: 67
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3eeb8fb51fcc49a0800000000000000
+      internalID: -6247390890754838981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+        (1) copy_8
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 38
+        width: 50
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5d7a6c1561b0b970800000000000000
+      internalID: 8768703522316909915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+        (1) copy_9
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 46
+        width: 75
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c4388c601b7390f0800000000000000
+      internalID: -1111409372559821627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+        (1) copy_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 115
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b157119249a96cbf0800000000000000
+      internalID: -304385963666082533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom
+        (1) copy_11
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 10
+        width: 99
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d7d1a4ca7ac5e6e0800000000000000
+      internalID: -1808817046685624365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom (1) copy_0: -642764747541832915
+      dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom (1) copy_1: -8908857192001629658
+      dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom (1) copy_10: -304385963666082533
+      dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom (1) copy_11: -1808817046685624365
+      dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom (1) copy_2: 1337411344076582169
+      dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom (1) copy_3: 4394164741807433250
+      dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom (1) copy_4: 7339959782632054667
+      dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom (1) copy_5: 3595526656195866693
+      dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom (1) copy_6: 1795169291458620311
+      dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom (1) copy_7: -6247390890754838981
+      dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom (1) copy_8: 8768703522316909915
+      dark-pink-background_0000_44d44d91fae57506ee7f6c4eb07dc6ee-Photoroom (1) copy_9: -1111409372559821627
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
