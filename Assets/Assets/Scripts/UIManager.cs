@@ -8,6 +8,7 @@ public class UIManagerScript : MonoBehaviour
     public GameObject pauseMenuUI; // Reference to the pause menu UI GameObject
     public GameObject Losescreen;
     public GameObject Winscreen;
+    public bool isPaused = false;
 
     public static UIManagerScript Instance;
 
@@ -24,6 +25,7 @@ public class UIManagerScript : MonoBehaviour
     {
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
+        isPaused = true;
     }
 
     public void ShowLosescreen()
@@ -40,12 +42,15 @@ public class UIManagerScript : MonoBehaviour
     public void ResumeGame()
     {
         Time.timeScale = 1f; // Resume the game by setting time scale back to 1
+        pauseMenuUI.SetActive(false);
+        isPaused = false;
     }
 
     public void RestartGame()
     {
         Time.timeScale = 1f;        // Ensure the game is running before restarting
         SceneManager.LoadScene("level1");  //SceneManager.GetActiveScene().buildIndex
+        isPaused = false;
     }
 
     public void LoadLevel(int index)
@@ -63,7 +68,10 @@ public class UIManagerScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            PauseGame();
+            if (isPaused)
+                ResumeGame();
+            else
+                PauseGame();
         }
     }
 

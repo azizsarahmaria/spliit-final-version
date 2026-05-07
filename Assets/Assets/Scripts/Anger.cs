@@ -175,7 +175,9 @@ public class Anger : MonoBehaviour
             // MANUALLY SYNC FIRE FLIP
             // Get the sprite renderer on the fire effect child
             SpriteRenderer fireSR = dashFireEffect.GetComponent<SpriteRenderer>();
-            if (fireSR != null) fireSR.flipX = spriteRenderer.flipX;
+            //if (fireSR != null) fireSR.flipX = spriteRenderer.flipX;
+            dashFireEffect.transform.localScale *= (moveInput.x > 0 ? -1 : 1);
+            Debug.Log(moveInput.x);
 
             // MANUALLY SYNC FIRE POSITION
             // If the fire is offset (e.g. behind the player), move it to the other side

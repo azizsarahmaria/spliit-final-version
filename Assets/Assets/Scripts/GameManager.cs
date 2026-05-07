@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     private bool isFirstLoad = true;
     private bool checkpointEverSet = false;
 
+
     void Awake()
     {
         if (instance == null)

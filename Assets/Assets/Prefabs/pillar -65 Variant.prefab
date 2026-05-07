@@ -200,6 +200,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: pillar -65 Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 9185584113994413203, guid: d840c63c6ef7b104ebc9387fab86b688, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
