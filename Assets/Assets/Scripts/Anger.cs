@@ -162,27 +162,33 @@ public class Anger : MonoBehaviour
         if (value.isPressed && canDash && !isSliding)
             StartCoroutine(PerformDash());
     }
+
     private IEnumerator PerformDash()
     {
         canDash = false;
         isDashing = true;
         lastDashHitEnemy = null;
 
+        // Derive direction from live moveInput, fall back to facingDirection if not holding a direction.
+        // This avoids a race where OnMove updates moveInput but Flip() hasn't run yet this frame.
+        int dashDir = moveInput.x < -0.1f ? -1 : (moveInput.x > 0.1f ? 1 : facingDirection);
+
         if (dashFireEffect != null)
         {
             dashFireEffect.SetActive(true);
 
-            // MANUALLY SYNC FIRE FLIP
-            // Get the sprite renderer on the fire effect child
+            // Flip SpriteRenderer (animator only animates Sprite frames, not flipX)
             SpriteRenderer fireSR = dashFireEffect.GetComponent<SpriteRenderer>();
-            //if (fireSR != null) fireSR.flipX = spriteRenderer.flipX;
-            dashFireEffect.transform.localScale *= (moveInput.x > 0 ? -1 : 1);
-            Debug.Log(moveInput.x);
+            if (fireSR != null) fireSR.flipX = (dashDir == -1);
 
-            // MANUALLY SYNC FIRE POSITION
-            // If the fire is offset (e.g. behind the player), move it to the other side
+            // Also flip localScale as a belt-and-suspenders backup
+            Vector3 fireScale = dashFireEffect.transform.localScale;
+            fireScale.x = Mathf.Abs(fireScale.x) * dashDir;
+            dashFireEffect.transform.localScale = fireScale;
+
+            // Position fire on the correct side of the player
             Vector3 firePos = dashFireEffect.transform.localPosition;
-            firePos.x = Mathf.Abs(firePos.x) * (facingDirection == 1 ? -1 : 1);
+            firePos.x = Mathf.Abs(firePos.x) * (dashDir == 1 ? -1 : 1);
             dashFireEffect.transform.localPosition = firePos;
 
             fireEffectAnimator.SetTrigger("PlayFire");
@@ -190,7 +196,7 @@ public class Anger : MonoBehaviour
 
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
-        rb.linearVelocity = new Vector2(facingDirection * dashSpeed, 0f);
+        rb.linearVelocity = new Vector2(dashDir * dashSpeed, 0f);
 
         yield return new WaitForSeconds(dashDuration);
 
@@ -203,6 +209,7 @@ public class Anger : MonoBehaviour
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
     }
+
     private void HandleMovement()
     {
         float platformVelX = currentPlatform != null ? currentPlatform.PlatformVelocity.x : 0f;
