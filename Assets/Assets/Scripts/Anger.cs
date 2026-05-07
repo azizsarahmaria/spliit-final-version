@@ -97,6 +97,13 @@ public class Anger : MonoBehaviour
         normalHeight = playercollider.size.y;
         normalOffset = playercollider.offset;
 
+        // Make sure flipX is OFF on the fire effect so it doesn't fight the localScale flip.
+        if (dashFireEffect != null)
+        {
+            SpriteRenderer fireSR = dashFireEffect.GetComponent<SpriteRenderer>();
+            if (fireSR != null) fireSR.flipX = false;
+        }
+
         // After scene reload, lastCheckpointPos is already set — move there
         // On first load, it's zero — store our starting position as default
         if (GameManager.instance != null)
@@ -170,18 +177,13 @@ public class Anger : MonoBehaviour
         lastDashHitEnemy = null;
 
         // Derive direction from live moveInput, fall back to facingDirection if not holding a direction.
-        // This avoids a race where OnMove updates moveInput but Flip() hasn't run yet this frame.
         int dashDir = moveInput.x < -0.1f ? -1 : (moveInput.x > 0.1f ? 1 : facingDirection);
 
         if (dashFireEffect != null)
         {
             dashFireEffect.SetActive(true);
 
-            // Flip SpriteRenderer (animator only animates Sprite frames, not flipX)
-            SpriteRenderer fireSR = dashFireEffect.GetComponent<SpriteRenderer>();
-            if (fireSR != null) fireSR.flipX = (dashDir == -1);
-
-            // Also flip localScale as a belt-and-suspenders backup
+            // Flip ONLY via localScale. Do NOT also set flipX — two flips cancel each other.
             Vector3 fireScale = dashFireEffect.transform.localScale;
             fireScale.x = Mathf.Abs(fireScale.x) * dashDir;
             dashFireEffect.transform.localScale = fireScale;
