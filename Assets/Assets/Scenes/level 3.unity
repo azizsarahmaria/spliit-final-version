@@ -2801,7 +2801,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 683538737353846891, guid: 1418276227159cf4396f05385e97acd0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1325738144}
   m_SourcePrefab: {fileID: 100100000, guid: 1418276227159cf4396f05385e97acd0, type: 3}
 --- !u!1001 &753726645
 PrefabInstance:
@@ -5243,6 +5246,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 145038971775090459, guid: 3934500d03f896541a3eda8cb2a81699, type: 3}
   m_PrefabInstance: {fileID: 1324721875}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1325738143 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 683538737353846891, guid: 1418276227159cf4396f05385e97acd0, type: 3}
+  m_PrefabInstance: {fileID: 750935779}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1325738144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325738143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 391c81e36ca5e9a43a1ba85a4c0849da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraSwitcher
 --- !u!1001 &1335921653
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5261,11 +5281,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6263517541027883004, guid: 04ccfdc8160d0a04bb0c7618b4157f17, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -13.683903
+      value: -23.46786
       objectReference: {fileID: 0}
     - target: {fileID: 6263517541027883004, guid: 04ccfdc8160d0a04bb0c7618b4157f17, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.529199
+      value: 11.733049
       objectReference: {fileID: 0}
     - target: {fileID: 6844340931090351424, guid: 04ccfdc8160d0a04bb0c7618b4157f17, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5309,11 +5329,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6848127370785526321, guid: 04ccfdc8160d0a04bb0c7618b4157f17, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -346.38535
+      value: -13.077562
       objectReference: {fileID: 0}
     - target: {fileID: 6848127370785526321, guid: 04ccfdc8160d0a04bb0c7618b4157f17, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.698142
+      value: 10.556568
       objectReference: {fileID: 0}
     - target: {fileID: 6848127370785526321, guid: 04ccfdc8160d0a04bb0c7618b4157f17, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5421,7 +5441,7 @@ PrefabInstance:
       objectReference: {fileID: 596180314}
     - target: {fileID: 8981024546211562835, guid: 04ccfdc8160d0a04bb0c7618b4157f17, type: 3}
       propertyPath: orthographic size
-      value: 9.642858
+      value: 6.75
       objectReference: {fileID: 0}
     - target: {fileID: 8981024546211562835, guid: 04ccfdc8160d0a04bb0c7618b4157f17, type: 3}
       propertyPath: m_NormalizedViewPortRect.y

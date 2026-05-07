@@ -1,0 +1,291 @@
+fileFormatVersion: 2
+guid: c7d63210e28e7494dbb474b8539f1eab
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2673267863156790788
+    second: Screenshot 2026-05-07 192147-Photoroom_0
+  - first:
+      213: -5865177503390440026
+    second: Screenshot 2026-05-07 192147-Photoroom_1
+  - first:
+      213: 8464571715893942483
+    second: Screenshot 2026-05-07 192147-Photoroom_2
+  - first:
+      213: 4641899399639894922
+    second: Screenshot 2026-05-07 192147-Photoroom_3
+  - first:
+      213: 5038561840383362848
+    second: Screenshot 2026-05-07 192147-Photoroom_4
+  - first:
+      213: -4403779968041404075
+    second: Screenshot 2026-05-07 192147-Photoroom_5
+  - first:
+      213: 6648344476812045354
+    second: Screenshot 2026-05-07 192147-Photoroom_6
+  - first:
+      213: 634734381003151568
+    second: Screenshot 2026-05-07 192147-Photoroom_7
+  - first:
+      213: 2396354549423050387
+    second: Screenshot 2026-05-07 192147-Photoroom_8
+  - first:
+      213: 716968877471703178
+    second: Screenshot 2026-05-07 192147-Photoroom_9
+  - first:
+      213: 4812768578681066455
+    second: Screenshot 2026-05-07 192147-Photoroom_10
+  - first:
+      213: 4605277913896013585
+    second: Screenshot 2026-05-07 192147-Photoroom_11
+  - first:
+      213: 8511261102026201436
+    second: Screenshot 2026-05-07 192147-Photoroom_12
+  - first:
+      213: -7787715412243230500
+    second: Screenshot 2026-05-07 192147-Photoroom_13
+  - first:
+      213: 4353129114477306898
+    second: Screenshot 2026-05-07 192147-Photoroom_14
+  - first:
+      213: 8906196946873304195
+    second: Screenshot 2026-05-07 192147-Photoroom_15
+  - first:
+      213: 5877055047383435182
+    second: Screenshot 2026-05-07 192147-Photoroom_16
+  - first:
+      213: -8133111103165653248
+    second: Screenshot 2026-05-07 192147-Photoroom_17
+  - first:
+      213: 7712199678236824079
+    second: Screenshot 2026-05-07 192147-Photoroom_18
+  - first:
+      213: 7372118374642431704
+    second: Screenshot 2026-05-07 192147-Photoroom_19
+  - first:
+      213: -4835715549238126680
+    second: Screenshot 2026-05-07 192147-Photoroom_20
+  - first:
+      213: -7783073205433250944
+    second: Screenshot 2026-05-07 192147-Photoroom_21
+  - first:
+      213: -4739941043161637837
+    second: Screenshot 2026-05-07 192147-Photoroom_22
+  - first:
+      213: 2436679006356283952
+    second: Screenshot 2026-05-07 192147-Photoroom_23
+  - first:
+      213: -549893275181571165
+    second: Screenshot 2026-05-07 192147-Photoroom_24
+  - first:
+      213: -637531383797540621
+    second: Screenshot 2026-05-07 192147-Photoroom_25
+  - first:
+      213: -8449785163313280885
+    second: Screenshot 2026-05-07 192147-Photoroom_26
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 1
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Screenshot 2026-05-07 192147-Photoroom_3
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 42
+        width: 94
+        height: 273
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8b82aef8e65b6040800000000000000
+      internalID: 4641899399639894922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Screenshot 2026-05-07 192147-Photoroom_4
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 14
+        width: 72
+        height: 318
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02783e26c419ce540800000000000000
+      internalID: 5038561840383362848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Screenshot 2026-05-07 192147-Photoroom_6
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 6
+        width: 74
+        height: 309
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2cefc4c31aa34c50800000000000000
+      internalID: 6648344476812045354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 1dbc3a98c14d5bf44900282f7ed5f88b
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Screenshot 2026-05-07 192147-Photoroom_0: 2673267863156790788
+      Screenshot 2026-05-07 192147-Photoroom_1: -5865177503390440026
+      Screenshot 2026-05-07 192147-Photoroom_10: 4812768578681066455
+      Screenshot 2026-05-07 192147-Photoroom_11: 4605277913896013585
+      Screenshot 2026-05-07 192147-Photoroom_12: 8511261102026201436
+      Screenshot 2026-05-07 192147-Photoroom_13: -7787715412243230500
+      Screenshot 2026-05-07 192147-Photoroom_14: 4353129114477306898
+      Screenshot 2026-05-07 192147-Photoroom_15: 8906196946873304195
+      Screenshot 2026-05-07 192147-Photoroom_16: 5877055047383435182
+      Screenshot 2026-05-07 192147-Photoroom_17: -8133111103165653248
+      Screenshot 2026-05-07 192147-Photoroom_18: 7712199678236824079
+      Screenshot 2026-05-07 192147-Photoroom_19: 7372118374642431704
+      Screenshot 2026-05-07 192147-Photoroom_2: 8464571715893942483
+      Screenshot 2026-05-07 192147-Photoroom_20: -4835715549238126680
+      Screenshot 2026-05-07 192147-Photoroom_21: -7783073205433250944
+      Screenshot 2026-05-07 192147-Photoroom_22: -4739941043161637837
+      Screenshot 2026-05-07 192147-Photoroom_23: 2436679006356283952
+      Screenshot 2026-05-07 192147-Photoroom_24: -549893275181571165
+      Screenshot 2026-05-07 192147-Photoroom_25: -637531383797540621
+      Screenshot 2026-05-07 192147-Photoroom_26: -8449785163313280885
+      Screenshot 2026-05-07 192147-Photoroom_3: 4641899399639894922
+      Screenshot 2026-05-07 192147-Photoroom_4: 5038561840383362848
+      Screenshot 2026-05-07 192147-Photoroom_5: -4403779968041404075
+      Screenshot 2026-05-07 192147-Photoroom_6: 6648344476812045354
+      Screenshot 2026-05-07 192147-Photoroom_7: 634734381003151568
+      Screenshot 2026-05-07 192147-Photoroom_8: 2396354549423050387
+      Screenshot 2026-05-07 192147-Photoroom_9: 716968877471703178
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
