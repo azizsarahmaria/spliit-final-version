@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3405295744507565957}
   m_Layer: 0
   m_Name: Joy
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,9 +27,9 @@ Transform:
   m_GameObject: {fileID: 1814276620971119451}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.5483112, y: 3.5483112, z: 3.5483112}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: -0.46, y: 0.59, z: 0}
+  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6518601505319140663}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -127,6 +127,8 @@ GameObject:
   - component: {fileID: 3939079865538791843}
   - component: {fileID: 2306163503976586243}
   - component: {fileID: 7301205827172322652}
+  - component: {fileID: 8663131402889589259}
+  - component: {fileID: 7080723627214884803}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -143,11 +145,12 @@ Transform:
   m_GameObject: {fileID: 6290047995834696174}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.66, y: -3.86, z: 0}
+  m_LocalPosition: {x: 0.4, y: -8.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1200549942379114027}
+  - {fileID: 2493169555431158471}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3926363557670626314
@@ -163,12 +166,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::player
   playercollider: {fileID: 2306163503976586243}
-  jumpForce: 12.4
-  speed: 5
-  facingDirection: 1
-  slideSpeed: 10
+  groundCheck: {fileID: 2493169555431158471}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 72
+  speed: 14
+  jumpForce: 16
+  doubleJumpForce: 14
+  jumpCutMultiplier: 0.4
+  isGrounded: 0
+  groundCheckRadius: 0.2
+  jumpHoldForce: 20
+  maxJumpHoldTime: 0.2
+  normalGravity: 5
+  jumpGravity: 2
+  fallGravity: 7
+  jumpBufferTime: 0.05
+  enableDoubleJump: 1
+  jumpsRemaining: 0
+  slideSpeed: 20
   slideDuration: 0.4
-  slideCooldown: 0.8
+  slideCooldown: 0.3
   slideHeight: 1.5
   slideOffset: {x: 0, y: -0.88}
   normalHeight: 2.97
@@ -234,8 +252,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.003829956, y: -0.13562119}
-  m_Size: {x: 0.60343695, y: 2.9718173}
+  m_Offset: {x: -0.42549437, y: 0.44645905}
+  m_Size: {x: 0.58510363, y: 4.1359773}
   m_Direction: 0
 --- !u!114 &7301205827172322652
 MonoBehaviour:
@@ -249,7 +267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
-  m_Actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_Actions: {fileID: -944628639613478452, guid: 920758427fc65324d87c6d6ef247fb0d, type: 3}
   m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
@@ -264,6 +282,73 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: 
+  m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &8663131402889589259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290047995834696174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5b79406b665fe54593a357d5909079d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  maxHealth: 3
+  currentHealth: 0
+  flashSpeed: 0.08
+  flashCycles: 4
+  knockbackForce: 7
+  knockbackDuration: 0.2
+--- !u!114 &7080723627214884803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290047995834696174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5b79406b665fe54593a357d5909079d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  maxHealth: 3
+  currentHealth: 0
+  flashSpeed: 0.08
+  flashCycles: 2
+  knockbackForce: 12
+  knockbackDuration: 0.2
+--- !u!1 &8073232141483419875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2493169555431158471}
+  m_Layer: 0
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2493169555431158471
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073232141483419875}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.5, y: -1.64, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6518601505319140663}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

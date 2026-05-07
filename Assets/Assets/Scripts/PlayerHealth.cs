@@ -36,13 +36,13 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if ((other.CompareTag("Spike") || other.CompareTag("Enemy")) && !isInvulnerable && !ShouldIgnoreHit(other))
+        if ((other.CompareTag("Spike") || other.CompareTag("Enemy")) && !isInvulnerable)
             ApplyHit(other.transform.position);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if ((collision.gameObject.CompareTag("Spike") || collision.gameObject.CompareTag("Enemy")) && !isInvulnerable && !ShouldIgnoreHit(collision.collider))
+        if ((collision.gameObject.CompareTag("Spike") || collision.gameObject.CompareTag("Enemy")) && !isInvulnerable)
             ApplyHit(collision.transform.position);
     }
 
@@ -53,7 +53,6 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            // Let player.cs handle death + checkpoint respawn
             if (playerController != null)
                 playerController.Die();
             return;
@@ -75,17 +74,9 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int damage, Vector2 sourcePosition)
     {
         if (isInvulnerable) return;
-        if (playerController != null && playerController.IsDashing) return;
         ApplyHit(sourcePosition);
     }
 
-    private bool ShouldIgnoreHit(Collider2D other)
-    {
-        if (other == null) return false;
-        if (!other.CompareTag("Enemy") && !other.CompareTag("Spike")) return false;
-
-        return playerController != null && playerController.IsDashing;
-    }
     private IEnumerator HitFlashRoutine()
     {
         if (spriteRenderer == null) yield break;

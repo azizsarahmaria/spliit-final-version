@@ -64,18 +64,8 @@ public class player : MonoBehaviour
     private MovingPlatform currentPlatform;
     private readonly HashSet<Collider2D> groundedColliders = new HashSet<Collider2D>();
 
-    [Header("Dash Settings")]
-    public float dashSpeed = 25f;
-    public float dashDuration = 0.2f;
-    public float dashCooldown = 1f;
-    private bool isDashing;
-    private bool canDash = true;
-    private Collider2D lastDashHitEnemy;
-
     [Header("Respawn Logic")]
     private bool isDead = false;
-
-    public bool IsDashing => isDashing;
 
     void Start()
     {
@@ -101,9 +91,6 @@ public class player : MonoBehaviour
         if (isDead) return;
 
         UpdateAnimations();
-
-        if (isDashing) return;
-
         HandleSlideTimers();
         Flip();
 
@@ -115,7 +102,7 @@ public class player : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isDashing || isDead) return;
+        if (isDead) return;
 
         CheckGrounded();
         HandleJumpLogic();
@@ -139,7 +126,6 @@ public class player : MonoBehaviour
             Invoke(nameof(RespawnAtCheckpoint), 1f);
     }
 
-    // ── Called by GameManager after scene reload — public + takes a position ──
     public void Respawn(Vector2 position)
     {
         isDead = false;
@@ -148,7 +134,6 @@ public class player : MonoBehaviour
         jumpsRemaining = maxJumps;
     }
 
-    // ── Called locally after death when no scene reload (lives remaining) ──
     private void RespawnAtCheckpoint()
     {
         Vector2 pos = (GameManager.instance != null && GameManager.instance.lastCheckpointPos != Vector2.zero)
@@ -171,31 +156,6 @@ public class player : MonoBehaviour
     {
         if (value.isPressed && canSlide && !isSliding && isGrounded && Mathf.Abs(moveInput.x) > 0.01f)
             StartSlide();
-    }
-
-    public void OnDash(InputValue value)
-    {
-        if (value.isPressed && canDash && !isSliding)
-            StartCoroutine(PerformDash());
-    }
-
-    private IEnumerator PerformDash()
-    {
-        canDash = false;
-        isDashing = true;
-        lastDashHitEnemy = null;
-
-        float originalGravity = rb.gravityScale;
-        rb.gravityScale = 0f;
-        rb.linearVelocity = new Vector2(facingDirection * dashSpeed, 0f);
-
-        yield return new WaitForSeconds(dashDuration);
-
-        rb.gravityScale = originalGravity;
-        isDashing = false;
-
-        yield return new WaitForSeconds(dashCooldown);
-        canDash = true;
     }
 
     private void HandleMovement()
@@ -247,7 +207,6 @@ public class player : MonoBehaviour
         {
             jumpsRemaining = maxJumps;
             canVariableJump = false;
-            canDash = true;
         }
     }
 
@@ -336,13 +295,12 @@ public class player : MonoBehaviour
         anim.SetBool("isJumping", !isGrounded && rb.linearVelocity.y > 0.1f);
         anim.SetBool("isFalling", !isGrounded && rb.linearVelocity.y < -0.1f);
         anim.SetBool("isSliding", isSliding);
-        anim.SetBool("isDashing", isDashing);
         anim.SetFloat("yVelocity", rb.linearVelocity.y);
     }
 
     private void Flip()
     {
-        if (isSliding || isDashing) return;
+        if (isSliding) return;
 
         if (moveInput.x > 0.1f)
         {
