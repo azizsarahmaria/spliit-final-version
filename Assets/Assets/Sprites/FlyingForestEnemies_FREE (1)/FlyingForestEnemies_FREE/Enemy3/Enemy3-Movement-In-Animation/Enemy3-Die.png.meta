@@ -1,0 +1,701 @@
+fileFormatVersion: 2
+guid: 5e9535df00a29284c92104350d23ff61
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2972036191842016592
+    second: Enemy3-Die_0
+  - first:
+      213: -159471237804162671
+    second: Enemy3-Die_1
+  - first:
+      213: -7271908975891209729
+    second: Enemy3-Die_2
+  - first:
+      213: 6582403810663315581
+    second: Enemy3-Die_3
+  - first:
+      213: -4233480742366209014
+    second: Enemy3-Die_4
+  - first:
+      213: -4104085121918862432
+    second: Enemy3-Die_5
+  - first:
+      213: 2194431486516726683
+    second: Enemy3-Die_6
+  - first:
+      213: 6578289606886903594
+    second: Enemy3-Die_7
+  - first:
+      213: 4495158783311054929
+    second: Enemy3-Die_8
+  - first:
+      213: 3013106740965844416
+    second: Enemy3-Die_9
+  - first:
+      213: -2939310452358904614
+    second: Enemy3-Die_10
+  - first:
+      213: -7698739107275621989
+    second: Enemy3-Die_11
+  - first:
+      213: 7164601772064196678
+    second: Enemy3-Die_12
+  - first:
+      213: 3408891426301796182
+    second: Enemy3-Die_13
+  - first:
+      213: 1153381017663961975
+    second: Enemy3-Die_14
+  - first:
+      213: 5150658302090646717
+    second: Enemy3-Die_15
+  - first:
+      213: -3012442119957255600
+    second: Enemy3-Die_16
+  - first:
+      213: 4339944327612879585
+    second: Enemy3-Die_17
+  - first:
+      213: -8797068181711134152
+    second: Enemy3-Die_18
+  - first:
+      213: 2115770690344236900
+    second: Enemy3-Die_19
+  - first:
+      213: 1291130238646272762
+    second: Enemy3-Die_20
+  - first:
+      213: 1628644410123361574
+    second: Enemy3-Die_21
+  - first:
+      213: -1768149229200685205
+    second: Enemy3-Die_22
+  - first:
+      213: 9076715064295181232
+    second: Enemy3-Die_23
+  - first:
+      213: -655509917987538867
+    second: Enemy3-Die_24
+  - first:
+      213: 1299518158781609373
+    second: Enemy3-Die_25
+  - first:
+      213: -1314205383524535499
+    second: Enemy3-Die_26
+  - first:
+      213: -6392498101780756578
+    second: Enemy3-Die_27
+  - first:
+      213: 5785179071258548934
+    second: Enemy3-Die_28
+  - first:
+      213: -1446911466899368380
+    second: Enemy3-Die_29
+  - first:
+      213: 3482835095664444641
+    second: Enemy3-Die_30
+  - first:
+      213: 8583866900899135933
+    second: Enemy3-Die_31
+  - first:
+      213: -7559465039586383130
+    second: Enemy3-Die_32
+  - first:
+      213: 8080532241963273501
+    second: Enemy3-Die_33
+  - first:
+      213: 6194601154565674828
+    second: Enemy3-Die_34
+  - first:
+      213: 4215731163153831983
+    second: Enemy3-Die_35
+  - first:
+      213: 5545976062224533242
+    second: Enemy3-Die_36
+  - first:
+      213: -8113586616164209056
+    second: Enemy3-Die_37
+  - first:
+      213: 2586803595054750331
+    second: Enemy3-Die_38
+  - first:
+      213: 2303568163690090351
+    second: Enemy3-Die_39
+  - first:
+      213: 3208348337413445461
+    second: Enemy3-Die_40
+  - first:
+      213: -7335703763139852203
+    second: Enemy3-Die_41
+  - first:
+      213: 8341940983803048083
+    second: Enemy3-Die_42
+  - first:
+      213: -8449456897293999444
+    second: Enemy3-Die_43
+  - first:
+      213: -2713971215820153462
+    second: Enemy3-Die_44
+  - first:
+      213: -762913654323211830
+    second: Enemy3-Die_45
+  - first:
+      213: -1925726483491964220
+    second: Enemy3-Die_46
+  - first:
+      213: -8734995482329770828
+    second: Enemy3-Die_47
+  - first:
+      213: -4066299292104154904
+    second: Enemy3-Die_48
+  - first:
+      213: 2613102239677133242
+    second: Enemy3-Die_49
+  - first:
+      213: -2006805581527582338
+    second: Enemy3-Die_50
+  - first:
+      213: 1458277070157374567
+    second: Enemy3-Die_51
+  - first:
+      213: 6929709610784197837
+    second: Enemy3-Die_52
+  - first:
+      213: 700373535909643369
+    second: Enemy3-Die_53
+  - first:
+      213: -5274295097204266808
+    second: Enemy3-Die_54
+  - first:
+      213: -8012076108860706011
+    second: Enemy3-Die_55
+  - first:
+      213: 4841062207073559320
+    second: Enemy3-Die_56
+  - first:
+      213: -1899025085360914061
+    second: Enemy3-Die_57
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Enemy3-Die_0
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 6
+        width: 43
+        height: 55
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b2e6ad74d431c6d0800000000000000
+      internalID: -2972036191842016592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy3-Die_1
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 7
+        width: 41
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1918ace01c179cdf0800000000000000
+      internalID: -159471237804162671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy3-Die_2
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 7
+        width: 41
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff1a70d805df41b90800000000000000
+      internalID: -7271908975891209729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy3-Die_3
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 3
+        width: 45
+        height: 59
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d78b3c60465695b50800000000000000
+      internalID: 6582403810663315581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy3-Die_4
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 3
+        width: 45
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0c1ecbd1b7af35c0800000000000000
+      internalID: -4233480742366209014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy3-Die_5
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 3
+        width: 45
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ab7f04735c5b07c0800000000000000
+      internalID: -4104085121918862432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy3-Die_6
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 3
+        width: 45
+        height: 59
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9b03c57fcf247e10800000000000000
+      internalID: 2194431486516726683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy3-Die_16
+      rect:
+        serializedVersion: 2
+        x: 707
+        y: 0
+        width: 62
+        height: 61
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05ae58d3ad7a136d0800000000000000
+      internalID: -3012442119957255600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy3-Die_18
+      rect:
+        serializedVersion: 2
+        x: 789
+        y: 25
+        width: 36
+        height: 35
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 832673cf8198ae580800000000000000
+      internalID: -8797068181711134152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy3-Die_21
+      rect:
+        serializedVersion: 2
+        x: 916
+        y: 34
+        width: 27
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62d14da467b1a9610800000000000000
+      internalID: 1628644410123361574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy3-Die_22
+      rect:
+        serializedVersion: 2
+        x: 988
+        y: 44
+        width: 6
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b67cc93e4a54677e0800000000000000
+      internalID: -1768149229200685205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy3-Die_23
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 11
+        width: 51
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0bb40cea248f6fd70800000000000000
+      internalID: 9076715064295181232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy3-Die_25
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 3
+        width: 59
+        height: 59
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d95f85951e0d80210800000000000000
+      internalID: 1299518158781609373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy3-Die_27
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 1
+        width: 63
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e97cff768d84947a0800000000000000
+      internalID: -6392498101780756578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy3-Die_29
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 0
+        width: 67
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 446160adfa98bebe0800000000000000
+      internalID: -1446911466899368380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Enemy3-Die_31
+      rect:
+        serializedVersion: 2
+        x: 853
+        y: 38
+        width: 21
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db183539775002770800000000000000
+      internalID: 8583866900899135933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 0cf73b5f4500df543a36cc434a50b619
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Enemy3-Die_0: -2972036191842016592
+      Enemy3-Die_1: -159471237804162671
+      Enemy3-Die_10: -2939310452358904614
+      Enemy3-Die_11: -7698739107275621989
+      Enemy3-Die_12: 7164601772064196678
+      Enemy3-Die_13: 3408891426301796182
+      Enemy3-Die_14: 1153381017663961975
+      Enemy3-Die_15: 5150658302090646717
+      Enemy3-Die_16: -3012442119957255600
+      Enemy3-Die_17: 4339944327612879585
+      Enemy3-Die_18: -8797068181711134152
+      Enemy3-Die_19: 2115770690344236900
+      Enemy3-Die_2: -7271908975891209729
+      Enemy3-Die_20: 1291130238646272762
+      Enemy3-Die_21: 1628644410123361574
+      Enemy3-Die_22: -1768149229200685205
+      Enemy3-Die_23: 9076715064295181232
+      Enemy3-Die_24: -655509917987538867
+      Enemy3-Die_25: 1299518158781609373
+      Enemy3-Die_26: -1314205383524535499
+      Enemy3-Die_27: -6392498101780756578
+      Enemy3-Die_28: 5785179071258548934
+      Enemy3-Die_29: -1446911466899368380
+      Enemy3-Die_3: 6582403810663315581
+      Enemy3-Die_30: 3482835095664444641
+      Enemy3-Die_31: 8583866900899135933
+      Enemy3-Die_32: -7559465039586383130
+      Enemy3-Die_33: 8080532241963273501
+      Enemy3-Die_34: 6194601154565674828
+      Enemy3-Die_35: 4215731163153831983
+      Enemy3-Die_36: 5545976062224533242
+      Enemy3-Die_37: -8113586616164209056
+      Enemy3-Die_38: 2586803595054750331
+      Enemy3-Die_39: 2303568163690090351
+      Enemy3-Die_4: -4233480742366209014
+      Enemy3-Die_40: 3208348337413445461
+      Enemy3-Die_41: -7335703763139852203
+      Enemy3-Die_42: 8341940983803048083
+      Enemy3-Die_43: -8449456897293999444
+      Enemy3-Die_44: -2713971215820153462
+      Enemy3-Die_45: -762913654323211830
+      Enemy3-Die_46: -1925726483491964220
+      Enemy3-Die_47: -8734995482329770828
+      Enemy3-Die_48: -4066299292104154904
+      Enemy3-Die_49: 2613102239677133242
+      Enemy3-Die_5: -4104085121918862432
+      Enemy3-Die_50: -2006805581527582338
+      Enemy3-Die_51: 1458277070157374567
+      Enemy3-Die_52: 6929709610784197837
+      Enemy3-Die_53: 700373535909643369
+      Enemy3-Die_54: -5274295097204266808
+      Enemy3-Die_55: -8012076108860706011
+      Enemy3-Die_56: 4841062207073559320
+      Enemy3-Die_57: -1899025085360914061
+      Enemy3-Die_6: 2194431486516726683
+      Enemy3-Die_7: 6578289606886903594
+      Enemy3-Die_8: 4495158783311054929
+      Enemy3-Die_9: 3013106740965844416
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

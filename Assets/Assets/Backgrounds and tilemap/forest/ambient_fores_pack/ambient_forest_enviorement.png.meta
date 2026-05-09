@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: b47ef3558b2bb0f45b5fbaa229553d07
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1244088541469061702
+    second: ambient_forest_enviorement_0
+  - first:
+      213: -2205885254586687171
+    second: ambient_forest_enviorement_1
+  - first:
+      213: 8465572092584534360
+    second: ambient_forest_enviorement_2
+  - first:
+      213: -2919567637915458120
+    second: ambient_forest_enviorement_3
+  - first:
+      213: 8964617567474123823
+    second: ambient_forest_enviorement_4
+  - first:
+      213: -3064734650904279867
+    second: ambient_forest_enviorement_5
+  - first:
+      213: 3501514347481839944
+    second: ambient_forest_enviorement_6
+  - first:
+      213: -7375045207279451243
+    second: ambient_forest_enviorement_7
+  - first:
+      213: -4212418789519430936
+    second: ambient_forest_enviorement_8
+  - first:
+      213: -1904116842787611211
+    second: ambient_forest_enviorement_9
+  - first:
+      213: 5274088579463346622
+    second: ambient_forest_enviorement_10
+  - first:
+      213: 7314294806956666036
+    second: ambient_forest_enviorement_11
+  - first:
+      213: -6420395986362995873
+    second: ambient_forest_enviorement_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ambient_forest_enviorement_0
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 94
+        width: 36
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abd4a90201c1cbee0800000000000000
+      internalID: -1244088541469061702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ambient_forest_enviorement_1
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 94
+        width: 62
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d31a6195c0f1361e0800000000000000
+      internalID: -2205885254586687171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ambient_forest_enviorement_2
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 94
+        width: 66
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85126f637f0cb7570800000000000000
+      internalID: 8465572092584534360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ambient_forest_enviorement_3
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 62
+        width: 20
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b5a25ca3bc9b77d0800000000000000
+      internalID: -2919567637915458120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ambient_forest_enviorement_4
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 62
+        width: 23
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2485885e28b86c70800000000000000
+      internalID: 8964617567474123823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ambient_forest_enviorement_5
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 46
+        width: 23
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c4050a9210e775d0800000000000000
+      internalID: -3064734650904279867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ambient_forest_enviorement_6
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 46
+        width: 23
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 849b6994fb0e79030800000000000000
+      internalID: 3501514347481839944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ambient_forest_enviorement_7
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 46
+        width: 25
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59349a9657396a990800000000000000
+      internalID: -7375045207279451243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ambient_forest_enviorement_8
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 46
+        width: 27
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ea6385ed6b7a85c0800000000000000
+      internalID: -4212418789519430936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ambient_forest_enviorement_9
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 30
+        width: 16
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bd5ec6e1d73395e0800000000000000
+      internalID: -1904116842787611211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ambient_forest_enviorement_10
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 30
+        width: 19
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb97bd4ae93513940800000000000000
+      internalID: 5274088579463346622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ambient_forest_enviorement_11
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 14
+        width: 19
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bce227cf58918560800000000000000
+      internalID: 7314294806956666036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ambient_forest_enviorement_12
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 14
+        width: 20
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5b6d7bfddb26e6a0800000000000000
+      internalID: -6420395986362995873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      ambient_forest_enviorement_0: -1244088541469061702
+      ambient_forest_enviorement_1: -2205885254586687171
+      ambient_forest_enviorement_10: 5274088579463346622
+      ambient_forest_enviorement_11: 7314294806956666036
+      ambient_forest_enviorement_12: -6420395986362995873
+      ambient_forest_enviorement_2: 8465572092584534360
+      ambient_forest_enviorement_3: -2919567637915458120
+      ambient_forest_enviorement_4: 8964617567474123823
+      ambient_forest_enviorement_5: -3064734650904279867
+      ambient_forest_enviorement_6: 3501514347481839944
+      ambient_forest_enviorement_7: -7375045207279451243
+      ambient_forest_enviorement_8: -4212418789519430936
+      ambient_forest_enviorement_9: -1904116842787611211
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
