@@ -1,11 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Attach to any hazard object (spikes, lava, enemy, etc.)
-/// Kills the player on contact and respawns them at the last
-/// activated checkpoint, or restarts the scene if none exist.
+/// Attach to any instant-kill hazard (pit, lava, etc.).
+/// Delegates death to the character script so all respawn logic stays
+/// inside GameManager — no duplicate checkpoint state.
 /// </summary>
 public class Hazard : MonoBehaviour
 {
@@ -13,84 +12,60 @@ public class Hazard : MonoBehaviour
     [Tooltip("Tag used to identify the player GameObject.")]
     [SerializeField] private string playerTag = "Player";
 
-    [Tooltip("Optional delay (seconds) before respawning — useful for death effects.")]
-    [SerializeField] private float respawnDelay = 0.5f;
+    [Tooltip("Optional delay (seconds) before death triggers — useful for brief death effects.")]
+    [SerializeField] private float deathDelay = 0.5f;
 
     [Tooltip("Trigger on Enter (default) or Stay — useful for damage-over-time zones.")]
     [SerializeField] private bool triggerOnStay = false;
 
-    // ── Checkpoint static state ────────────────────────────────────────────
-    // Static so all hazards and scenes share the same checkpoint data.
-    private static Vector3? lastCheckpointPosition = null;
-
-    /// <summary>
-    /// Call this from your Checkpoint script when the player activates it.
-    /// </summary>
-    public static void RegisterCheckpoint(Vector3 position)
-    {
-        lastCheckpointPosition = position;
-        Debug.Log($"[Hazard] Checkpoint registered at {position}");
-    }
-
-    /// <summary>
-    /// Clears the stored checkpoint (e.g. when starting a new game).
-    /// </summary>
-    public static void ClearCheckpoint()
-    {
-        lastCheckpointPosition = null;
-    }
-
-    // ── Collision detection ────────────────────────────────────────────────
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!triggerOnStay && other.CompareTag(playerTag))
-            HandlePlayerDeath(other.gameObject);
+            StartCoroutine(KillRoutine(other.gameObject));
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
         if (triggerOnStay && other.CompareTag(playerTag))
-            HandlePlayerDeath(other.gameObject);
+            StartCoroutine(KillRoutine(other.gameObject));
     }
 
-    // ── Death / respawn logic ──────────────────────────────────────────────
-    private void HandlePlayerDeath(GameObject player)
+    private IEnumerator KillRoutine(GameObject playerObj)
     {
-        // Prevent multiple triggers while the coroutine is running
-        // by disabling the hazard collider temporarily.
+        // Temporarily disable collider to prevent re-triggering during the delay
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
-        StartCoroutine(RespawnRoutine(player, col));
-    }
+        yield return new WaitForSeconds(deathDelay);
 
-    private IEnumerator RespawnRoutine(GameObject player, Collider2D hazardCollider)
-    {
-        // ── Optional: disable player input / play death anim here ──────────
-        // Example: player.GetComponent<PlayerController>().SetDead(true);
-
-        yield return new WaitForSeconds(respawnDelay);
-
-        if (lastCheckpointPosition.HasValue)
+        if (playerObj == null)
         {
-            // Respawn at the last activated checkpoint
-            player.transform.position = lastCheckpointPosition.Value;
-
-            // ── Optional: re-enable player input here ──────────────────────
-            // Example: player.GetComponent<PlayerController>().SetDead(false);
-
-            Debug.Log($"[Hazard] Player respawned at checkpoint {lastCheckpointPosition.Value}");
-        }
-        else
-        {
-            // No checkpoint — reload from scene index 0
-            Debug.Log("[Hazard] No checkpoint found. Reloading scene index 0.");
-            SceneManager.LoadScene(0);
-            yield break; // Scene is reloading; stop the coroutine
+            if (col != null) col.enabled = true;
+            yield break;
         }
 
-        // Re-enable the hazard collider after respawn
-        if (hazardCollider != null)
-            hazardCollider.enabled = true;
+        // Level 1: Joy character
+        player joyScript = playerObj.GetComponent<player>();
+        if (joyScript != null)
+        {
+            joyScript.Die();
+            if (col != null) col.enabled = true;
+            yield break;
+        }
+
+        // Level 2: Anger character
+        AngerHealth angerHealth = playerObj.GetComponent<AngerHealth>();
+        if (angerHealth != null)
+        {
+            angerHealth.TakeDamage(1, transform.position);
+            if (col != null) col.enabled = true;
+            yield break;
+        }
+
+        // Fallback: let GameManager handle it directly
+        if (GameManager.instance != null)
+            GameManager.instance.PlayerDied();
+
+        if (col != null) col.enabled = true;
     }
 }

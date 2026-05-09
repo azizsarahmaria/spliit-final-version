@@ -39,6 +39,7 @@ public class SFXManager : MonoBehaviour
             return;
         }
         Instance = this;
+        DontDestroyOnLoad(this.gameObject);
     }
 
     private void Start()

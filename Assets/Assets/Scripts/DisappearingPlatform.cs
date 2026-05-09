@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class DisappearingCloud : MonoBehaviour
+public class DisappearingPlatform : MonoBehaviour
 {
     [Header("Settings")]
     public float delayBeforeFade = 0.5f;

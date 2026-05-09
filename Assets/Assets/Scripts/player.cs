@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -64,18 +64,8 @@ public class player : MonoBehaviour
     private MovingPlatform currentPlatform;
     private readonly HashSet<Collider2D> groundedColliders = new HashSet<Collider2D>();
 
-    [Header("Dash Settings")]
-    public float dashSpeed = 25f;
-    public float dashDuration = 0.2f;
-    public float dashCooldown = 1f;
-    private bool isDashing;
-    private bool canDash = true;
-    private Collider2D lastDashHitEnemy;
-
     [Header("Respawn Logic")]
     private bool isDead = false;
-
-    public bool IsDashing => isDashing;
 
     void Start()
     {
@@ -92,8 +82,18 @@ public class player : MonoBehaviour
         if (playercollider == null)
             playercollider = GetComponent<CapsuleCollider2D>();
 
-        if (GameManager.instance != null && GameManager.instance.lastCheckpointPos == Vector2.zero)
-            GameManager.instance.lastCheckpointPos = transform.position;
+        if (GameManager.instance != null)
+        {
+            if (GameManager.instance.lastCheckpointPos != Vector2.zero)
+                Respawn(GameManager.instance.lastCheckpointPos);
+            else
+                GameManager.instance.lastCheckpointPos = transform.position;
+        }
+
+        // Force a clean idle start regardless of any input held during scene load
+        // or stale velocity carried over from before the scene reload.
+        moveInput = Vector2.zero;
+        if (rb != null) rb.linearVelocity = Vector2.zero;
     }
 
     void Update()
@@ -101,9 +101,6 @@ public class player : MonoBehaviour
         if (isDead) return;
 
         UpdateAnimations();
-
-        if (isDashing) return;
-
         HandleSlideTimers();
         Flip();
 
@@ -115,7 +112,7 @@ public class player : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isDashing || isDead) return;
+        if (isDead) return;
 
         CheckGrounded();
         HandleJumpLogic();
@@ -145,6 +142,7 @@ public class player : MonoBehaviour
         isDead = false;
         transform.position = position;
         rb.linearVelocity = Vector2.zero;
+        moveInput = Vector2.zero;
         jumpsRemaining = maxJumps;
     }
 
@@ -171,31 +169,6 @@ public class player : MonoBehaviour
     {
         if (value.isPressed && canSlide && !isSliding && isGrounded && Mathf.Abs(moveInput.x) > 0.01f)
             StartSlide();
-    }
-
-    public void OnDash(InputValue value)
-    {
-        if (value.isPressed && canDash && !isSliding)
-            StartCoroutine(PerformDash());
-    }
-
-    private IEnumerator PerformDash()
-    {
-        canDash = false;
-        isDashing = true;
-        lastDashHitEnemy = null;
-
-        float originalGravity = rb.gravityScale;
-        rb.gravityScale = 0f;
-        rb.linearVelocity = new Vector2(facingDirection * dashSpeed, 0f);
-
-        yield return new WaitForSeconds(dashDuration);
-
-        rb.gravityScale = originalGravity;
-        isDashing = false;
-
-        yield return new WaitForSeconds(dashCooldown);
-        canDash = true;
     }
 
     private void HandleMovement()
@@ -247,7 +220,6 @@ public class player : MonoBehaviour
         {
             jumpsRemaining = maxJumps;
             canVariableJump = false;
-            canDash = true;
         }
     }
 
@@ -336,13 +308,12 @@ public class player : MonoBehaviour
         anim.SetBool("isJumping", !isGrounded && rb.linearVelocity.y > 0.1f);
         anim.SetBool("isFalling", !isGrounded && rb.linearVelocity.y < -0.1f);
         anim.SetBool("isSliding", isSliding);
-        anim.SetBool("isDashing", isDashing);
         anim.SetFloat("yVelocity", rb.linearVelocity.y);
     }
 
     private void Flip()
     {
-        if (isSliding || isDashing) return;
+        if (isSliding) return;
 
         if (moveInput.x > 0.1f)
         {

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -7,9 +7,9 @@ public class GameManager : MonoBehaviour
     public Vector2 lastCheckpointPos;
     public int playerLives = 3;
     public int maxLives = 3;
-    private bool isFirstLoad = true;
-    private bool checkpointEverSet = false;
 
+    // Tracks which scene owns the current checkpoint so it resets on level transition
+    private string checkpointScene = "";
 
     void Awake()
     {
@@ -36,20 +36,13 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (isFirstLoad)
+        // If this is a new/different scene (level transition), clear the checkpoint.
+        // Characters' Start() methods will then store their spawn position as the default.
+        // If it's the same scene reloading (death), the stored checkpoint is intentionally kept.
+        if (scene.name != checkpointScene)
         {
-            isFirstLoad = false;
-            player player = FindFirstObjectByType<player>();
-            if (player != null && !checkpointEverSet)
-                lastCheckpointPos = player.transform.position;
-            return;
-        }
-
-        player freshPlayer = FindFirstObjectByType<player>();
-        if (freshPlayer != null)
-        {
-            freshPlayer.Respawn(lastCheckpointPos);
-            Debug.Log("Player respawned at: " + lastCheckpointPos);
+            checkpointScene = scene.name;
+            lastCheckpointPos = Vector2.zero;
         }
     }
 
@@ -63,10 +56,11 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Game Over! Restarting...");
+            Debug.Log("Game Over! Restarting from scene start.");
             playerLives = maxLives;
-            lastCheckpointPos = Vector2.zero; // ← fixed
-            checkpointEverSet = false;
+            // Clear checkpoint so the scene restarts from the beginning
+            lastCheckpointPos = Vector2.zero;
+            checkpointScene = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
@@ -74,15 +68,15 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         playerLives = maxLives;
-        lastCheckpointPos = Vector2.zero; // ← fixed
-        checkpointEverSet = false;
+        lastCheckpointPos = Vector2.zero;
+        checkpointScene = "";
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void SetCheckpoint(Vector2 position)
     {
         lastCheckpointPos = position;
-        checkpointEverSet = true;
+        checkpointScene = SceneManager.GetActiveScene().name;
         Debug.Log("Checkpoint saved at: " + position);
     }
 }

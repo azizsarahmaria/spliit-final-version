@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class BubblegumMachine : MonoBehaviour
+public class Checkpoint : MonoBehaviour
 {
     private Animator anim;
     private bool isUsed = false;
@@ -14,7 +14,8 @@ public class BubblegumMachine : MonoBehaviour
     {
         if (other.CompareTag("Player") && !isUsed)
         {
-            SFXManager.Instance.Playbubblegum();
+            if (SFXManager.Instance != null)
+                SFXManager.Instance.Playbubblegum();
 
             Activate();
         }

@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class UIManagerScript : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
     public TextMeshProUGUI coinText;
     public GameObject pauseMenuUI; // Reference to the pause menu UI GameObject
@@ -10,11 +10,11 @@ public class UIManagerScript : MonoBehaviour
     public GameObject Winscreen;
     public bool isPaused = false;
 
-    public static UIManagerScript Instance;
+    public static UIManager Instance;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (Instance != null && Instance != this)  // enforce singleton
         {
             Destroy(gameObject);
         }

@@ -72,10 +72,16 @@ public class Anger : MonoBehaviour
     [SerializeField] private GameObject dashFireEffect;
     [SerializeField] private Animator fireEffectAnimator;
 
+    // Cached "facing right" pose of the dash fire effect, captured at Start.
+    // Used to compute a clean horizontal mirror for left-dash that works regardless of any base rotation.
+    private Vector3 fireBaseLocalPos;
+    private Quaternion fireBaseLocalRot;
+    private Vector3 fireBaseLocalScale;
+    private bool fireBaseFlipX;
+    private bool fireBaseCached;
+
     [Header("Respawn Logic")]
     private bool isDead = false;
-
-
 
     public bool IsDashing => isDashing;
 
@@ -97,6 +103,21 @@ public class Anger : MonoBehaviour
         normalHeight = playercollider.size.y;
         normalOffset = playercollider.offset;
 
+        // Cache the dash fire effect's authored "facing right" pose so we can mirror cleanly later.
+        if (dashFireEffect != null)
+        {
+            Transform ft = dashFireEffect.transform;
+            fireBaseLocalPos = ft.localPosition;
+            fireBaseLocalRot = ft.localRotation;
+            fireBaseLocalScale = new Vector3(
+                Mathf.Abs(ft.localScale.x),
+                Mathf.Abs(ft.localScale.y),
+                Mathf.Abs(ft.localScale.z));
+            SpriteRenderer fireSR = dashFireEffect.GetComponent<SpriteRenderer>();
+            fireBaseFlipX = fireSR != null && fireSR.flipX;
+            fireBaseCached = true;
+        }
+
         // After scene reload, lastCheckpointPos is already set — move there
         // On first load, it's zero — store our starting position as default
         if (GameManager.instance != null)
@@ -106,6 +127,11 @@ public class Anger : MonoBehaviour
             else
                 GameManager.instance.lastCheckpointPos = transform.position;
         }
+
+        // Force a clean idle start regardless of any input held during scene load
+        // or stale velocity carried over from before the scene reload.
+        moveInput = Vector2.zero;
+        if (rb != null) rb.linearVelocity = Vector2.zero;
     }
 
     void Update()
@@ -141,6 +167,7 @@ public class Anger : MonoBehaviour
         isDead = false;
         transform.position = position;
         rb.linearVelocity = Vector2.zero;
+        moveInput = Vector2.zero;
         jumpsRemaining = maxJumps;
     }
 
@@ -173,32 +200,29 @@ public class Anger : MonoBehaviour
         // This avoids a race where OnMove updates moveInput but Flip() hasn't run yet this frame.
         int dashDir = moveInput.x < -0.1f ? -1 : (moveInput.x > 0.1f ? 1 : facingDirection);
 
-        if (dashFireEffect != null)
+        if (dashFireEffect != null && fireBaseCached)
         {
             dashFireEffect.SetActive(true);
+            ApplyDashFirePose(dashDir);
 
-            // Flip SpriteRenderer (animator only animates Sprite frames, not flipX)
-            SpriteRenderer fireSR = dashFireEffect.GetComponent<SpriteRenderer>();
-            if (fireSR != null) fireSR.flipX = (dashDir == -1);
-
-            // Also flip localScale as a belt-and-suspenders backup
-            Vector3 fireScale = dashFireEffect.transform.localScale;
-            fireScale.x = Mathf.Abs(fireScale.x) * dashDir;
-            dashFireEffect.transform.localScale = fireScale;
-
-            // Position fire on the correct side of the player
-            Vector3 firePos = dashFireEffect.transform.localPosition;
-            firePos.x = Mathf.Abs(firePos.x) * (dashDir == 1 ? -1 : 1);
-            dashFireEffect.transform.localPosition = firePos;
-
-            fireEffectAnimator.SetTrigger("PlayFire");
+            if (fireEffectAnimator != null)
+                fireEffectAnimator.SetTrigger("PlayFire");
         }
 
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         rb.linearVelocity = new Vector2(dashDir * dashSpeed, 0f);
 
-        yield return new WaitForSeconds(dashDuration);
+        // Re-apply the pose every frame so the fire effect's animator clips can't
+        // overwrite our position/rotation/scale mid-dash.
+        float t = 0f;
+        while (t < dashDuration)
+        {
+            if (dashFireEffect != null && fireBaseCached)
+                ApplyDashFirePose(dashDir);
+            t += Time.deltaTime;
+            yield return null;
+        }
 
         rb.gravityScale = originalGravity;
         isDashing = false;
@@ -208,6 +232,32 @@ public class Anger : MonoBehaviour
 
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
+    }
+
+    // Mirrors the dash fire effect across the player's vertical axis when dashing left.
+    // Uses a 180° Y-axis pre-rotation, which produces a clean horizontal flip in world space
+    // regardless of any base Z rotation the artist gave the effect.
+    private void ApplyDashFirePose(int dashDir)
+    {
+        Transform ft = dashFireEffect.transform;
+        SpriteRenderer fireSR = dashFireEffect.GetComponent<SpriteRenderer>();
+
+        if (dashDir >= 0)
+        {
+            ft.localPosition = fireBaseLocalPos;
+            ft.localRotation = fireBaseLocalRot;
+            ft.localScale = fireBaseLocalScale;
+            if (fireSR != null) fireSR.flipX = fireBaseFlipX;
+        }
+        else
+        {
+            // Mirror: flip X position and apply 180° Y rotation
+            // Add a small offset to move the effect closer to Anger when dashing left
+            ft.localPosition = new Vector3(-fireBaseLocalPos.x - 2.5f, fireBaseLocalPos.y, fireBaseLocalPos.z);
+            ft.localRotation = Quaternion.Euler(0f, 180f, 0f) * fireBaseLocalRot;
+            ft.localScale = fireBaseLocalScale;
+            if (fireSR != null) fireSR.flipX = fireBaseFlipX;
+        }
     }
 
     private void HandleMovement()
@@ -377,15 +427,18 @@ public class Anger : MonoBehaviour
         if (isSliding || isDashing) return;
 
         if (moveInput.x > 0.1f)
-        {
             facingDirection = 1;
-            spriteRenderer.flipX = false;
-        }
         else if (moveInput.x < -0.1f)
-        {
             facingDirection = -1;
-            spriteRenderer.flipX = true;
-        }
+
+        // Anger's idle animation sprites are authored facing the opposite direction
+        // compared to walk/jump/etc., so we invert flipX while idle to compensate.
+        bool isIdle = Mathf.Abs(moveInput.x) < 0.01f && isGrounded;
+
+        if (isIdle)
+            spriteRenderer.flipX = (facingDirection == 1);
+        else
+            spriteRenderer.flipX = (facingDirection == -1);
     }
 
     private void OnCollisionEnter2D(Collision2D col)
