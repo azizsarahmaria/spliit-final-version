@@ -85,7 +85,7 @@ public class Hazard2 : MonoBehaviour
         {
             // No checkpoint — reload from scene index 0
             Debug.Log("[Hazard] No checkpoint found. Reloading scene index 0.");
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             yield break; // Scene is reloading; stop the coroutine
         }
 

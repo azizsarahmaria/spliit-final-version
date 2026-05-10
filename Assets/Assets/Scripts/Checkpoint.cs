@@ -14,7 +14,7 @@ public class BubblegumMachine : MonoBehaviour
     {
         if (other.CompareTag("Player") && !isUsed)
         {
-            SFXManager.Instance.Playbubblegum();
+            SFXManager.Instance?.Playbubblegum();
 
             Activate();
         }

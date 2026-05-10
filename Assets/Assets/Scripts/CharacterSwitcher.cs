@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;  // ? Add this
 
@@ -42,5 +43,7 @@ public class CharacterSwitcher : MonoBehaviour
         current.SetActive(false);
         next.SetActive(true);
         activeCharacter = activeCharacter == 1 ? 2 : 1;
+
+        GameObject.FindObjectOfType<CameraFollowChanger>().ChangeFollowTarget(next.transform);
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Anger : MonoBehaviour
 {
@@ -101,7 +102,8 @@ public class Anger : MonoBehaviour
         // On first load, it's zero — store our starting position as default
         if (GameManager.instance != null)
         {
-            if (GameManager.instance.lastCheckpointPos != Vector2.zero)
+            if (GameManager.instance.lastCheckpointPos != Vector2.zero 
+                && (SceneManager.GetActiveScene().name != "level 3"))
                 Respawn(GameManager.instance.lastCheckpointPos);
             else
                 GameManager.instance.lastCheckpointPos = transform.position;
