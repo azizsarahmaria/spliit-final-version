@@ -70,7 +70,9 @@ public class Anger : MonoBehaviour
     private bool canDash = true;
     private Collider2D lastDashHitEnemy;
 
-    [SerializeField] private GameObject dashFireEffect;
+    [SerializeField] private GameObject dashFireEffectLeft;
+    [SerializeField] private GameObject dashFireEffectRight;
+
     [SerializeField] private Animator fireEffectAnimator;
 
     [Header("Respawn Logic")]
@@ -175,25 +177,17 @@ public class Anger : MonoBehaviour
         // This avoids a race where OnMove updates moveInput but Flip() hasn't run yet this frame.
         int dashDir = moveInput.x < -0.1f ? -1 : (moveInput.x > 0.1f ? 1 : facingDirection);
 
-        if (dashFireEffect != null)
+        if (dashFireEffectLeft != null && dashFireEffectRight != null)
         {
-            dashFireEffect.SetActive(true);
+            if (this.rb.linearVelocityX > 0)
+            {
+                dashFireEffectLeft.SetActive(true);
+            }
+            else
+            {
+                dashFireEffectRight.SetActive(true);
 
-            // Flip SpriteRenderer (animator only animates Sprite frames, not flipX)
-            SpriteRenderer fireSR = dashFireEffect.GetComponent<SpriteRenderer>();
-            if (fireSR != null) fireSR.flipX = (dashDir == -1);
-
-            // Also flip localScale as a belt-and-suspenders backup
-            Vector3 fireScale = dashFireEffect.transform.localScale;
-            fireScale.x = Mathf.Abs(fireScale.x) * dashDir;
-            dashFireEffect.transform.localScale = fireScale;
-
-            // Position fire on the correct side of the player
-            Vector3 firePos = dashFireEffect.transform.localPosition;
-            firePos.x = Mathf.Abs(firePos.x) * (dashDir == 1 ? -1 : 1);
-            dashFireEffect.transform.localPosition = firePos;
-
-            fireEffectAnimator.SetTrigger("PlayFire");
+            }
         }
 
         float originalGravity = rb.gravityScale;
@@ -205,8 +199,13 @@ public class Anger : MonoBehaviour
         rb.gravityScale = originalGravity;
         isDashing = false;
 
-        if (dashFireEffect != null)
-            dashFireEffect.SetActive(false);
+        if (dashFireEffectLeft != null && dashFireEffectRight != null)
+        {
+            dashFireEffectLeft.SetActive(false);
+            dashFireEffectRight.SetActive(false);
+
+        }
+
 
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
